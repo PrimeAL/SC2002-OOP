@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Patient extends User {
+	private MedicalRecord medicalRecord;
+	private ArrayList<Appointment> appt;
+	private ArrayList<Appointment> completedAppt;
+
+	public Patient(String uid, String pw) {
+		super(uid, pw);
+		this.appt=new ArrayList<Appointment>();
+		this.completedAppt=new ArrayList<Appointment>();
+	}
 
 	public MedicalRecord getMedicalRecord() {
 		return medicalRecord;
@@ -21,16 +30,6 @@ public class Patient extends User {
 		return completedAppt;
 	}
 
-	public Patient(String uid, String pw) {
-		super(uid, pw);
-		this.appt=new ArrayList<Appointment>();
-		this.completedAppt=new ArrayList<Appointment>();
-	}
-
-	private MedicalRecord medicalRecord;
-	private ArrayList<Appointment> appt;
-	private ArrayList<Appointment> completedAppt;
-
 	/**
 	 * 
 	 * @param apptSys
@@ -39,23 +38,27 @@ public class Patient extends User {
 		// TODO - implement Patient.userInterface
 		System.out.println("Patient UI");
 		int userMenuInput=0;
-		while(userMenuInput!=7) {
+		while(userMenuInput!=6) {
 			this.displayMenu();
 			userMenuInput=sc.nextInt();
+			sc.nextLine();//clear buffer
 			switch(userMenuInput) {
 				case 1:
-				case 2: break;
+					printMedicalRecord();
+					break;
+				case 2:
+					updateInfo(sc);
+					break;
 				case 3: 
 					this.apptOp(patientCont,sc);
 					break;
-				case 5:
-					int cnt=1;
-					for(Appointment appt: this.getAppt()) {
-						System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
-						cnt++;
-					}
+				case 4:
+					viewAppt();
 					break;
-				case 7:
+				case 5:
+					viewCompAppt();
+					break;
+				case 6:
 					System.out.println("Logging out as Patient");
 					break;
 				default:
@@ -66,17 +69,68 @@ public class Patient extends User {
 	}
 	
 	public void displayMenu() {
-		System.out.println("1.View Medical Record\n2.Update Personal Information"
-				+ "\n3.View,Schedule,Reschedule Appointments\n4.Cancel an Appointment\n"
-				+ "5.View Scheduled Appointments\n6.View Past Appointment Outcome Records\n7.Logout");
+		System.out.println(
+                """
+                1.View Medical Record
+                2.Update Personal Information
+                3.Schedule, Reschedule or Cancel Appointment
+                4.View Scheduled Appointments
+                5.View Past Appointment Outcome Records
+                6.Logout
+                """);
+	}
+
+	public void printMedicalRecord() {
+		System.out.println("Diagnosis: ");
+		for (Diagnosis diagnosis : this.getMedicalRecord().getDiagnoses()) {
+			System.out.println(diagnosis);
+		}
+
+		System.out.println("Treatments: ");
+		for (Treatment treatment : this.getMedicalRecord().getTreatments()) {
+			System.out.println(treatment);
+		}
+	}
+
+	public void updateInfo(Scanner sc) {
+		System.out.println(
+				"""
+				Which would you like to change?
+				1.Phone Number
+				2.Email
+				""");
+		// Should add error checking here
+		int choice=sc.nextInt();
+		sc.nextLine();//clear buffer
+		switch (choice) {
+			case 1:
+				System.out.println("This is your current phone number: " + this.getMedicalRecord().getPhone());
+				System.out.print("Please enter your new phone number: ");
+				this.getMedicalRecord().setPhone(sc.nextLine());
+				break;
+			case 2:
+				System.out.println("This is your current email: " + this.getMedicalRecord().getEmail());
+				System.out.print("Please enter your new email: ");
+				this.getMedicalRecord().setEmail(sc.nextLine());
+				break;
+			default:
+				break;
+		}
+		System.out.println("Your information has been updated. ");
 	}
 
 	public void apptOp(PatientController patientCont,Scanner sc) {
 		// TODO - implement Patient.apptOp
 		System.out.println("Manage Appointments(Patient)");
 		int uApptOpIn=0;
-		while(uApptOpIn!=3) {
-			System.out.println("1.View and Schedule available appointments\n2.Reschedule appointments\n3.Exit managing appointment");
+		while(uApptOpIn!=4) {
+			System.out.println(
+			"""
+			1.View and Schedule available appointments
+			2.Reschedule appointments
+			3.Cancel appointments
+			4.Exit managing appointment
+			""");
 			uApptOpIn=sc.nextInt();
 			if(uApptOpIn==1)
 				patientCont.getApptSys().scheAppt(patientCont,sc);
@@ -97,32 +151,44 @@ public class Patient extends User {
 				else {
 					System.out.println("No appointment has been scheduled so far.");
 				}
+			} else if (uApptOpIn==3) {
+				if(this.getAppt().size()>0) {
+					int cnt=1;
+					System.out.println("Appointment Scheduled: (enter 0 to go back)");
+					for(Appointment appt: this.getAppt()) {
+						System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+						cnt++;
+					}
+					int apptSelect=0;
+					apptSelect=sc.nextInt();
+					if(apptSelect>0) {
+						patientCont.getApptSys().cancelAppt(patientCont,this.getAppt().get(apptSelect-1));
+					}
+				}
+				else {
+					System.out.println("No appointment has been scheduled so far.");
+				}
 			}
 		}
 	}
 
-	public void changePW() {
-		// TODO - implement Patient.changePW
-		throw new UnsupportedOperationException();
-	}
-
-	public void updateInfo() {
-		// TODO - implement Patient.updateInfo
-		throw new UnsupportedOperationException();
-	}
-
 	public void viewAppt() {
-		// TODO - implement Patient.viewAppt
-		throw new UnsupportedOperationException();
+		int cnt=1;
+		for(Appointment appt: this.getAppt()) {
+			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+			cnt++;
+		}
 	}
 
 	public void viewCompAppt() {
-		// TODO - implement Patient.viewCompAppt
-		throw new UnsupportedOperationException();
+		int cnt=1;
+		for(Appointment appt: this.getCompletedAppt()) {
+			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+			cnt++;
+		}
 	}
 
 	public void removeAppt(Appointment appt) {
-		// TODO Auto-generated method stub
-		this.appt.remove(appt);		
+		this.appt.remove(appt);
 	}
 }
