@@ -8,7 +8,15 @@ public class DataStorage {
 	public DataStorage(){
 		this.user=new ArrayList<User>();
 		user.add(new Patient("p1","pw1"));
-		((Patient) user.get(0)).setMedicalRecord(new MedicalRecord());
+		MedicalRecord medRecord = new MedicalRecord();
+		medRecord.setpID(1);
+		medRecord.setName("Patient 1");
+		medRecord.setDOB("11/01/12");
+		medRecord.setGender("F");
+		medRecord.setPhone("12349876");
+		medRecord.setEmail("Patient1@tmail.com");
+		medRecord.setBloodType("B+");
+		((Patient) user.get(0)).setMedicalRecord(medRecord);
 		
 		user.add(new Doctor("d1","pw2","dr"));
 		Doctor d1=(Doctor) user.get(1);
