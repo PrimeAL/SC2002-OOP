@@ -1,8 +1,9 @@
 package hmsProject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
 	private int pID;
 	private String name;
 	private String DOB;

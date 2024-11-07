@@ -22,9 +22,4 @@ public class Pharmacist extends User {
 		throw new UnsupportedOperationException();
 	}
 
-	public void changePW() {
-		// TODO - implement Pharmacist.changePW
-		throw new UnsupportedOperationException();
-	}
-
 }

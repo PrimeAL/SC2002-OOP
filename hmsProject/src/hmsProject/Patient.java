@@ -1,9 +1,10 @@
 package hmsProject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Patient extends User {
+public class Patient extends User implements Serializable {
 	private MedicalRecord medicalRecord;
 	private ArrayList<Appointment> appt;
 	private ArrayList<Appointment> completedAppt;
@@ -38,7 +39,7 @@ public class Patient extends User {
 		// TODO - implement Patient.userInterface
 		System.out.println("Patient UI");
 		int userMenuInput=0;
-		while(userMenuInput!=6) {
+		while(userMenuInput!=7) {
 			this.displayMenu();
 			userMenuInput=sc.nextInt();
 			sc.nextLine();//clear buffer
@@ -59,6 +60,9 @@ public class Patient extends User {
 					viewCompAppt();
 					break;
 				case 6:
+					this.changePW(sc);
+					break;
+				case 7:
 					System.out.println("Logging out as Patient");
 					break;
 				default:
@@ -76,7 +80,8 @@ public class Patient extends User {
                 3.Schedule, Reschedule or Cancel Appointment
                 4.View Scheduled Appointments
                 5.View Past Appointment Outcome Records
-                6.Logout
+                6.Change Password
+                7.Logout
                 """);
 	}
 

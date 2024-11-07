@@ -1,7 +1,9 @@
 package hmsProject;
 
+import java.util.Scanner;
+
 public interface UserOp {
 
-	void changePW();
+	void changePW(Scanner sc);
 
 }

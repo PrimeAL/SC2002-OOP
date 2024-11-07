@@ -1,9 +1,10 @@
 package hmsProject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Doctor extends User {
+public class Doctor extends User implements Serializable {
 
 	private ArrayList<Patient> patients;
 	private ArrayList<Appointment> availableAppt;
@@ -174,11 +175,6 @@ public class Doctor extends User {
 			}
 			
 		}
-	}
-
-	public void changePW() {
-		// TODO - implement Doctor.changePW
-		throw new UnsupportedOperationException();
 	}
 
 	public void setAvailAppt() {

@@ -1,6 +1,8 @@
 package hmsProject;
 
-public class Appointment {
+import java.io.Serializable;
+
+public class Appointment implements Serializable {
 
 	private String status;
 	private Doctor doctor;
