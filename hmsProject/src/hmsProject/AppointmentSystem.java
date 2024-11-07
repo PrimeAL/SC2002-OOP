@@ -1,8 +1,9 @@
 package hmsProject;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class AppointmentSystem {
+public class AppointmentSystem implements Serializable {
 
 	private ArrayList<Doctor> doctors;
 	private ArrayList<OutcomeRecord> apptOutcomeRec;

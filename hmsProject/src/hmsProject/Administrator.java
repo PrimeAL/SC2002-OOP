@@ -18,11 +18,6 @@ public class Administrator extends User {
 		throw new UnsupportedOperationException();
 	}
 
-	public void changePW() {
-		// TODO - implement Administrator.changePW
-		throw new UnsupportedOperationException();
-	}
-
 	public void manageStaff() {
 		// TODO - implement Administrator.manageStaff
 		throw new UnsupportedOperationException();

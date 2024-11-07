@@ -28,6 +28,7 @@ public class HMS {
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
 			//exit of user interface means logout
+			getMainController().save(currentUser);
 			currentUser=null;
 		}
 	}
@@ -47,6 +48,10 @@ public class HMS {
 			System.exit(0);
 		}
 		
+	}
+
+	public MainController getMainController() {
+		return this.mainController;
 	}
 
 	public void stop() {

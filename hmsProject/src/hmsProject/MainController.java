@@ -11,6 +11,11 @@ public class MainController extends controller{
 		return super.getDataStorage().getUser(id,pw);
 	}
 
+	public void save(User currentUser) {
+		super.getDataStorage().saveUser(currentUser);
+		super.getDataStorage().saveApptSys();
+	}
+
 	public controller getUserCont(User currentUser) {
 		// TODO Auto-generated method stub
 		if(currentUser instanceof Patient) {
