@@ -1,4 +1,5 @@
 package hmsProject;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class HMS {
@@ -28,7 +29,7 @@ public class HMS {
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
 			//exit of user interface means logout
-			getMainController().save(currentUser);
+			this.getMainController().save(currentUser);
 			currentUser=null;
 		}
 	}
@@ -43,6 +44,10 @@ public class HMS {
 			System.out.print("Password:");
 			String pw=sc.nextLine();
 			this.currentUser=this.mainController.authenticateUser(userName,pw);
+			if (Objects.equals(currentUser.getPw(), "default")) {
+				currentUser.changePW(sc);
+				this.getMainController().save(currentUser);
+			}
 		}
 		else {
 			System.exit(0);
