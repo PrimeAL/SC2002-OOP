@@ -11,14 +11,19 @@ public class Doctor extends User implements Serializable {
 	private ArrayList<Appointment> apptRequest;
 	private ArrayList<Appointment> comingAppt;
 	private String name;
+	private String gender;
+	private int age;
 	
-	public Doctor(String uid, String pw, String name) {
+	public Doctor(String uid, String pw, String name, String gender, int age) {
 		super(uid,pw);
 		this.patients=new ArrayList<Patient>();
 		this.availableAppt=new ArrayList<Appointment>();
 		this.apptRequest=new ArrayList<Appointment>();
 		this.comingAppt=new ArrayList<Appointment>();
 		this.name=name;
+		//Remember getter setters
+		this.gender=gender;
+		this.age=age;
 	}
 	
 	public void updateApptReq(Appointment appt) {

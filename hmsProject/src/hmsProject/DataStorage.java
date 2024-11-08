@@ -1,9 +1,13 @@
 package hmsProject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class DataStorage {
-	private ArrayList<User> user;
+	//private ArrayList<User> user;
 	private AppointmentSystem apptSystem;
 	private DataSerialization dataOps;
 	
@@ -11,21 +15,24 @@ public class DataStorage {
 		this.dataOps =new DataSerialization();
 		this.apptSystem=this.retrieveApptSys();
 
-		//AFTER INITIALISING THE FILES, COMMENT OUT EVERYTHING BELOW IF YOU WANT TO ACTUALLY SAVE
+		System.out.println("To refresh data, key in 1. Otherwise, key whatever. ");
+		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
+		if (scanner.nextInt() == 1) {
+			this.apptSystem = new AppointmentSystem();
+			this.initialisingPatientData();
+			this.initialisingStaffData();
+			this.initialisingMedicineData();
+			Doctor d1 = this.getApptSys().getFirstDocForTesting(); //I had no choice but to do this for testing because
+																	// ApptSys keeps its own Doctors list. This can be avoided if
+																	//ApptSys retrieves its Doctors from database instead of having its own storage
+			d1.addPatient(((Patient) retrieveUser("P1001")));
+			d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
+			this.saveApptSys();
+		}
+		scanner.nextLine();//Clear buffer
 
-		this.apptSystem=new AppointmentSystem();
+		/*
 		this.user=new ArrayList<User>();
-		user.add(new Patient("p1","pw1"));
-		MedicalRecord medRecord = new MedicalRecord();
-		medRecord.setpID(1);
-		medRecord.setName("Patient 1");
-		medRecord.setDOB("11/01/12");
-		medRecord.setGender("F");
-		medRecord.setPhone("12349876");
-		medRecord.setEmail("Patient1@tmail.com");
-		medRecord.setBloodType("B+");
-		((Patient) user.get(0)).setMedicalRecord(medRecord);
-		
 		user.add(new Doctor("d1","pw2","dr"));
 		Doctor d1=(Doctor) user.get(1);
 		d1.addPatient(((Patient)user.get(0)));
@@ -34,10 +41,101 @@ public class DataStorage {
 		apptSystem.addDoc(d1);
 		this.saveUser(user.get(0));
 		this.saveUser(user.get(1));
-		this.saveApptSys();
-
+		 */
 	}
-	
+
+	public void initialisingMedicineData() {
+		String line = "";
+		String splitBy = ",";
+
+		try
+		{
+			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Medicine_List.csv");
+			BufferedReader br = new BufferedReader(file);
+			while ((line = br.readLine()) != null)
+			{
+				String[] medicine = line.split(splitBy);
+				if (Objects.equals(medicine[0], "Medicine Name")) { //To ignore first line of csv which are headers
+					continue;
+				}
+				Medicine newMedicine = new Medicine(medicine[0], Integer.parseInt(medicine[1]), Integer.parseInt(medicine[2]));
+				this.saveMedicine(newMedicine);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error: " + e);
+		}
+	}
+
+	public void initialisingStaffData() {
+		String line = "";
+		String splitBy = ",";
+
+		try
+		{
+			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Staff_List.csv");
+			BufferedReader br = new BufferedReader(file);
+			while ((line = br.readLine()) != null)
+			{
+				String[] staff = line.split(splitBy);
+				if (Objects.equals(staff[0], "Staff ID")) { //To ignore first line of csv which are headers
+					continue;
+				}
+				switch (staff[2]) {
+					case "Doctor":
+						Doctor newDoctor = new Doctor(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
+						apptSystem.addDoc(newDoctor);
+						this.saveUser(newDoctor);
+						break;
+					case "Pharmacist":
+						Pharmacist newPharmacist = new Pharmacist(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
+						this.saveUser(newPharmacist);
+						break;
+					case "Administrator":
+						Administrator newAdmin = new Administrator(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
+						this.saveUser(newAdmin);
+						break;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error: " + e);
+		}
+	}
+
+	public void initialisingPatientData() {
+		String line = "";
+		String splitBy = ",";
+
+		try
+		{
+			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Patient_List.csv");
+			BufferedReader br = new BufferedReader(file);
+			while ((line = br.readLine()) != null)
+			{
+				String[] patient = line.split(splitBy);
+				if (Objects.equals(patient[0], "Patient ID")) { //To ignore first line of csv which are headers
+					continue;
+				}
+				Patient newPatient = new Patient(patient[0], "default");
+				MedicalRecord newMedicalRecord = new MedicalRecord();
+				newMedicalRecord.setName(patient[1]);
+				newMedicalRecord.setDOB(patient[2]);
+				newMedicalRecord.setGender(patient[3]);
+				newMedicalRecord.setBloodType(patient[4]);
+				newMedicalRecord.setEmail(patient[5]);
+				newPatient.setMedicalRecord(newMedicalRecord);
+				this.saveUser(newPatient);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error: " + e);
+		}
+	}
+
 	public User getUser(String id, String pw) {
 		User rUser = this.retrieveUser(id);
 		if (rUser == null) {
@@ -70,9 +168,13 @@ public class DataStorage {
 
 	public void saveApptSys() { dataOps.serialiseApptSys(this.getApptSys()); }
 
+	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
+
 	public User retrieveUser(String id) { return dataOps.deserialiseUser(id); }
 
 	public AppointmentSystem retrieveApptSys() { return dataOps.deserialiseApptSys(); }
+
+	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); }
 
 	public void declineAppt(Doctor dr,Appointment appt) {
 		dr.getComingAppt().remove(appt);

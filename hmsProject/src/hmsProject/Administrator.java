@@ -1,10 +1,16 @@
 package hmsProject;
 
 public class Administrator extends User {
+	private String name;
+	private String gender;
+	private int age;
 
-	public Administrator(String uid, String pw) {
+	public Administrator(String uid, String pw, String name, String gender, int age) {
 		super(uid, pw);
-		// TODO Auto-generated constructor stub
+		this.name=name;
+		//Remember getter setters
+		this.gender=gender;
+		this.age=age;
 	}
 
 	/**

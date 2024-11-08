@@ -16,6 +16,9 @@ public class AppointmentSystem implements Serializable {
 		this.scheduledAppt=new ArrayList<Appointment>();
 		this.completedAppt=new ArrayList<Appointment>();
 	}
+
+	//This is just for testing because the doctors list is independent of database doctors. See DataStorage for more info.
+	public Doctor getFirstDocForTesting() { return this.doctors.get(0); };
 	
 	public void addDoc(Doctor dr) {
 		this.doctors.add(dr);
