@@ -16,5 +16,15 @@ public class prescribedMed {
 		prescribedMed newMed= new prescribedMed(sc.nextLine());
 		return newMed;
 	}
+
+	public String getMedicationName() {
+		// TODO Auto-generated method stub
+		return medicationName;
+	}
+
+	public String getStatus() {
+		// TODO Auto-generated method stub
+		return status;
+	}
 	
 }
