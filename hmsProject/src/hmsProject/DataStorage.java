@@ -236,5 +236,8 @@ public class DataStorage {
 		this.saveApptSys();
 	}
 	
+	public void updateInventory(Medicine medicine) { 
+		this.saveMedicine(medicine); 
+	}
 	
 }
