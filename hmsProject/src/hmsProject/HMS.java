@@ -6,10 +6,15 @@ public class HMS {
 
 	private MainController mainController;
 	private User currentUser;
+	private AppointmentSystem apptSys; //test
+	private Inventory inven; //test
+
 	
 	public HMS() {
 		this.mainController=new MainController();
 		this.currentUser=null;
+		this.apptSys = new AppointmentSystem(); //test
+		this.inven = new Inventory(); //test
 	}
 	
 	public void initialise(Scanner sc) {
@@ -28,6 +33,13 @@ public class HMS {
 				System.out.println("Doctor");
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
+
+			//added pharm, just based on the above
+			if(currentUser instanceof Pharmacist){
+				System.out.println("Pharmacist");
+				((Pharmacist)(currentUser)).userInterface(apptSys,inven);
+			}
+
 			//exit of user interface means logout
 			this.getMainController().save(currentUser);
 			currentUser=null;

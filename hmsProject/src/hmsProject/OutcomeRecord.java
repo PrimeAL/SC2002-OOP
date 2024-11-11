@@ -8,8 +8,10 @@ public class OutcomeRecord implements Serializable {
 	private String serviceProvided;
 	private ArrayList<prescribedMed> meds;
 	private String consultationNote;
+	private String status; // new field for prescription status (Alan)
+
 	public OutcomeRecord() {
-		
+		this.status = "pending"; // default status (Alan)
 	}
 	
 	public OutcomeRecord(Appointment appt) {
@@ -17,8 +19,16 @@ public class OutcomeRecord implements Serializable {
 		this.serviceProvided=null;
 		this.meds=null;
 		this.consultationNote=null;
+		this.status = "pending"; // default status
 	}
 	
+	public String getStatus() {
+        return this.status;
+    }
+
+	public void setStatus(String status) {
+        this.status = status;
+    }
 	
 	public static OutcomeRecord createOutcomeRecord(Appointment cmptAppt) {
 		// TODO - implement OutcomeRecord.createOutcomeRecord

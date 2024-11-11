@@ -61,6 +61,7 @@ public class AppointmentSystem implements Serializable {
 	 * 
 	 * @param appt
 	 */
+	
 	public void rescheAppt(PatientController patientCont, Appointment appt, Scanner sc) {
 		//appointment of pending/completed status will be passed in from user
 		//after rescheduling it will be pending again, going through the SAME doctor
@@ -130,4 +131,9 @@ public class AppointmentSystem implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
+	//A method to return appt outcome rec for viewing - alan
+	public ArrayList<OutcomeRecord> getApptOutcomeRecords() {
+		return this.apptOutcomeRec;
+	}
 }
+
