@@ -1,20 +1,30 @@
 package hmsProject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-public class Inventory {
+public class Inventory implements Serializable {
 
 	private ArrayList<Medicine> medicineList;
 	private StockRequest[] pendingStockReq;
 	private StockRequest[] completedStockReq;
 
-	public void viewStock() {
-		System.out.println("Medicine Name\t Stock Level\t Stock Alert\n"); //View Medicine
+	public Inventory() {
+		this.medicineList = new ArrayList<Medicine>();
+		this.pendingStockReq = new StockRequest[0];
+		this.completedStockReq = new StockRequest[0];
+	}
+
+	public void viewInventory() {
+		System.out.println("\tMedicine Name\t Stock Level\t Stock Alert\n"); //View Medicine
 
 		for (int i = 0; i < medicineList.size(); i++) { //Display medicines and their current stock levels
-			System.out.println((i + 1) + ". " + medicineList.get(i).getName() + "\t" + medicineList.get(i).getStock()
+			System.out.println((i + 1) + ".\t " + medicineList.get(i).getName() + "\t" + medicineList.get(i).getStock()
 			+ "\t" + medicineList.get(i).getStockThreshold());
+
+			if (medicineList.get(i).getStock() < medicineList.get(i).getStockThreshold()) {
+				System.out.println("\t" +medicineList.get(i).getName() + " is running low on stock.");
+			}
 		}
 	}
 
@@ -22,16 +32,7 @@ public class Inventory {
 		return this.medicineList;
 	}
 
-	public void checkStock() {
-		for (int i = 0; i < medicineList.size(); i++) {
-			if (medicineList.get(i).getStock() < medicineList.get(i).getStockThreshold()) {
-				System.out.println(medicineList.get(i).getName() + " is running low on stock.");
-			}
-		}
-	}
-
-	public void addMedicine(String name, int stock, int stockThreshold) {
-		Medicine newMedicine = new Medicine(name, stock, stockThreshold);
+	public void addMedicine(Medicine newMedicine) {
 		medicineList.add(newMedicine);
 		medicineList.sort(Comparator.comparing(Medicine::getName, String.CASE_INSENSITIVE_ORDER)); //Sort by name
 	}
@@ -39,7 +40,12 @@ public class Inventory {
 	public void deleteMedicine(int index) {
 		String removeMedName = medicineList.get(index).getName();
 		medicineList.remove(index);
-		System.out.println(removeMedName + "has been removed!");
+		System.out.println(removeMedName + " has been removed!");
+	}
+
+	public void changeMedicineName(int index, String name) {
+		medicineList.get(index).setName(name);
+		medicineList.sort(Comparator.comparing(Medicine::getName, String.CASE_INSENSITIVE_ORDER)); //Sort by name
 	}
 
 	public void submitReq() {

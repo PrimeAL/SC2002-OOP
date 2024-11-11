@@ -28,6 +28,10 @@ public class HMS {
 				System.out.println("Doctor");
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
+			if(currentUser instanceof Administrator) {
+				System.out.println("Administrator");
+				((Administrator)(currentUser)).userInterface((AdministratorController)userCont, sc); 
+			}
 			//exit of user interface means logout
 			this.getMainController().save(currentUser);
 			currentUser=null;

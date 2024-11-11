@@ -10,6 +10,7 @@ public class DataStorage {
 	//private ArrayList<User> user;
 	private AppointmentSystem apptSystem;
 	private DataSerialization dataOps;
+	private Inventory inventory;
 	
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
@@ -19,6 +20,7 @@ public class DataStorage {
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
 		if (scanner.nextInt() == 1) {
 			this.apptSystem = new AppointmentSystem();
+			this.inventory = new Inventory(); //test
 			this.initialisingPatientData();
 			this.initialisingStaffData();
 			this.initialisingMedicineData();
@@ -27,7 +29,12 @@ public class DataStorage {
 																	//ApptSys retrieves its Doctors from database instead of having its own storage
 			d1.addPatient(((Patient) retrieveUser("P1001")));
 			d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
+			
+			
 			this.saveApptSys();
+
+			
+			//this.saveInventory();
 		}
 		scanner.nextLine();//Clear buffer
 
@@ -60,7 +67,10 @@ public class DataStorage {
 				}
 				Medicine newMedicine = new Medicine(medicine[0], Integer.parseInt(medicine[1]), Integer.parseInt(medicine[2]));
 				this.saveMedicine(newMedicine);
+				inventory.addMedicine(newMedicine); //add medicine into inventory
 			}
+
+			
 		}
 		catch (Exception e)
 		{
@@ -164,17 +174,24 @@ public class DataStorage {
 		return this.apptSystem;
 	}
 
+	public Inventory getInventory() { //test
+		return this.inventory;
+	}
+
 	public void saveUser(User userToSave) { dataOps.serialiseUser(userToSave); }
 
 	public void saveApptSys() { dataOps.serialiseApptSys(this.getApptSys()); }
 
 	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
 
+	//public void saveInventory() { dataOps.serialiseInventory(this.getInventory()); } //test
+
 	public User retrieveUser(String id) { return dataOps.deserialiseUser(id); }
 
 	public AppointmentSystem retrieveApptSys() { return dataOps.deserialiseApptSys(); }
 
-	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); }
+	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); } //test
+
 
 	public void declineAppt(Doctor dr,Appointment appt) {
 		dr.getComingAppt().remove(appt);
@@ -235,9 +252,4 @@ public class DataStorage {
 		this.saveUser(appt.getDoctor());
 		this.saveApptSys();
 	}
-	
-	public void updateInventory(Medicine medicine) { 
-		this.saveMedicine(medicine); 
-	}
-	
 }
