@@ -54,9 +54,16 @@ public class OutcomeRecord implements Serializable {
     public String getServiceProvided() {
         return serviceProvided;
     }
-
+    
     public ArrayList<prescribedMed> getMeds() {
-        return meds;
+    	return this.meds;
+    }
+    
+    public void printMeds() {  
+    	System.out.print("\n\tMedicine List:");
+        for(prescribedMed preMed: this.getMeds()) {
+        	System.out.print("\n\tMedication Name"+preMed.getMedicationName()+" Status:"+preMed.getStatus());
+        }
     }
 
     public String getConsultationNote() {

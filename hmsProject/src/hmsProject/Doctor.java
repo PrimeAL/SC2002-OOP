@@ -129,7 +129,7 @@ public class Doctor extends User implements Serializable {
                     viewPersonalSchedule();
                     break;
                 case 4:
-                    setAvailAppt();
+                    setAvailAppt(docCont,sc);
                     break;
                 case 5:
                     apptOp(docCont, sc);
@@ -138,7 +138,7 @@ public class Doctor extends User implements Serializable {
                     viewUpcomingAppointments();
                     break;
                 case 7:
-                    recordAppointmentOutcome(sc);
+                    recordAppointmentOutcome(docCont,sc);
                     break;
                 case 0:
                     System.out.println("Logging out.");
@@ -185,7 +185,7 @@ public class Doctor extends User implements Serializable {
 	        Appointment selectedAppt = this.getApptReq().get(apptSelect - 1);
 	        switch(opSelect) {
 	            case 1:
-	                selectedAppt.setStatus("Confirmed");
+	                //selectedAppt.setStatus("Confirmed");
 	                docCont.getApptSys().acceptAppt(docCont, selectedAppt);
 	                Collections.sort(comingAppt, (a1, a2) -> {
 	                    int dateCompare = a1.getDate().compareTo(a2.getDate());
@@ -194,7 +194,7 @@ public class Doctor extends User implements Serializable {
 	                System.out.println("Appointment accepted successfully.");
 	                break;
 	            case 2:
-	                selectedAppt.setStatus("Cancelled");
+	                //selectedAppt.setStatus("Cancelled");
 	                docCont.declineAppt(selectedAppt);
 	                System.out.println("Appointment declined successfully.");
 	                break;
@@ -220,8 +220,8 @@ public class Doctor extends User implements Serializable {
         viewUpcomingAppointments();
     }
 
-	public void setAvailAppt() {
-	    Scanner sc = new Scanner(System.in);
+	public void setAvailAppt(DoctorController docCont,Scanner sc) {
+	    //Scanner sc = new Scanner(System.in);
 	    System.out.println("\n=== Set Available Appointments ===");
 	    while(true) {
 	        String date;
@@ -248,7 +248,7 @@ public class Doctor extends User implements Serializable {
 	            break;
 	        }
 	        Appointment newAppt = new Appointment("Available", this, date, time);
-	        this.addAvailAppointment(newAppt);
+	        docCont.addAvailAppointment(newAppt);
 	        System.out.println("Appointment slot added successfully!");
 	        System.out.println("Add another appointment? (Y/N)");
 	        if(!sc.nextLine().equalsIgnoreCase("Y")) break;
@@ -405,7 +405,7 @@ public class Doctor extends User implements Serializable {
         System.out.println();
     }
 
-    private void recordAppointmentOutcome(Scanner sc) {
+    private void recordAppointmentOutcome(DoctorController docCont,Scanner sc) {
         System.out.println("\n=== Record Appointment Outcome ===");
         if(comingAppt.isEmpty()) {
             System.out.println("No appointments to record outcome for.\n");

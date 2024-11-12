@@ -48,7 +48,7 @@ public class Patient extends User implements Serializable {
 					printMedicalRecord();
 					break;
 				case 2:
-					updateInfo(sc);
+					updateInfo(patientCont,sc);
 					break;
 				case 3: 
 					this.apptOp(patientCont,sc);
@@ -97,7 +97,7 @@ public class Patient extends User implements Serializable {
 		}
 	}
 
-	public void updateInfo(Scanner sc) {
+	public void updateInfo(PatientController patientCont,Scanner sc) {
 		System.out.println(
 				"""
 				Which would you like to change?
@@ -111,12 +111,14 @@ public class Patient extends User implements Serializable {
 			case 1:
 				System.out.println("This is your current phone number: " + this.getMedicalRecord().getPhone());
 				System.out.print("Please enter your new phone number: ");
-				this.getMedicalRecord().setPhone(sc.nextLine());
+				patientCont.updatePhone(sc.nextLine());
+				//this.getMedicalRecord().setPhone(sc.nextLine());
 				break;
 			case 2:
 				System.out.println("This is your current email: " + this.getMedicalRecord().getEmail());
 				System.out.print("Please enter your new email: ");
-				this.getMedicalRecord().setEmail(sc.nextLine());
+				patientCont.updateEmail(sc.nextLine());
+				//this.getMedicalRecord().setEmail(sc.nextLine());
 				break;
 			default:
 				break;

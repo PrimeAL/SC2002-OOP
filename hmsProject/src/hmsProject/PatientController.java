@@ -1,5 +1,7 @@
 package hmsProject;
 
+import java.util.ArrayList;
+
 public class PatientController extends controller{
 	private Patient currentPatient;
 	
@@ -9,7 +11,7 @@ public class PatientController extends controller{
 	}
 	
 	public AppointmentSystem getApptSys() {
-		return this.getDataStorage().getApptSys();
+		return this.getDataStorage().retrieveApptSys();
 	}
 
 	public void addToScheduled(Appointment selectedAppt) {
@@ -28,5 +30,20 @@ public class PatientController extends controller{
 	public void cancelAppt(Appointment appt) {
 		// TODO Auto-generated method stub
 		this.getDataStorage().cancelAppt(this.currentPatient,appt);
+	}
+
+	public ArrayList<Doctor> getDocList() {
+		// TODO Auto-generated method stub
+		return this.getDataStorage().retrieveDoctors();
+	}
+
+	public void updatePhone(String phoneNum) {
+		// TODO Auto-generated method stub
+		this.getDataStorage().updatePhone(currentPatient,phoneNum);
+	}
+
+	public void updateEmail(String email) {
+		// TODO Auto-generated method stub
+		this.getDataStorage().updateEmail(currentPatient,email);
 	}
 }
