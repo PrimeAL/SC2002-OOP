@@ -30,3 +30,4 @@ public class PatientController extends controller{
 		this.getDataStorage().cancelAppt(this.currentPatient,appt);
 	}
 }
+ 

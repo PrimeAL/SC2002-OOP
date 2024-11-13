@@ -24,6 +24,9 @@ public class MainController extends controller{
 		if(currentUser instanceof Doctor) {
 			return new DoctorController(this,(Doctor)currentUser);
 		}
+		if(currentUser instanceof Pharmacist){
+			return new PharmacistController(this,(Pharmacist)currentUser);
+		}
 		
 		return this;
 	}

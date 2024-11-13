@@ -10,7 +10,8 @@ public class DataStorage {
 	//private ArrayList<User> user;
 	private AppointmentSystem apptSystem;
 	private DataSerialization dataOps;
-	
+	private Inventory inventory; //Test
+
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
 		this.apptSystem=this.retrieveApptSys();
@@ -162,6 +163,10 @@ public class DataStorage {
 	
 	public AppointmentSystem getApptSys() {
 		return this.apptSystem;
+	}
+
+	public Inventory getInventory(){
+		return this.inventory; //Test
 	}
 
 	public void saveUser(User userToSave) { dataOps.serialiseUser(userToSave); }

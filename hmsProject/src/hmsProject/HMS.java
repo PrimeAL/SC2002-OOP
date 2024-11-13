@@ -26,7 +26,11 @@ public class HMS {
 			}
 			if(currentUser instanceof Doctor) {
 				System.out.println("Doctor");
-				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
+				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc);
+			}
+			if (currentUser instanceof Pharmacist){
+				System.out.println("Pharmacist");
+				((Pharmacist)(currentUser)).userInterface((PharmacistController)userCont, sc);
 			}
 			//exit of user interface means logout
 			this.getMainController().save(currentUser);

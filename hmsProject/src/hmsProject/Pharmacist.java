@@ -1,5 +1,7 @@
 package hmsProject;
 
+import java.util.Scanner;
+
 public class Pharmacist extends User {
 	private String name;
 	private String gender;
@@ -18,9 +20,21 @@ public class Pharmacist extends User {
 	 * @param apptSys
 	 * @param inven
 	 */
-	public void userInterface(AppointmentSystem apptSys, Inventory inven) {
+	public void userInterface(PharmacistController pharmacistCont, Scanner sc){
 		// TODO - implement Pharmacist.userInterface
-		throw new UnsupportedOperationException();
+		System.out.println("\nPharmacist UI");
+		displayMenu();
+		
+	}
+
+	public void displayMenu(){
+		String text = 
+			"1. View appointment outcome record\n"
+    		+"2. Update prescription (Appt Outcome Record)\n"
+    		+"3. View medicine inventory\n"
+			+"4. Request for replenishment\n"
+			+"5. Log out\n\n"; 
+		System.out.print(text);
 	}
 
 	public void apptOp() {
