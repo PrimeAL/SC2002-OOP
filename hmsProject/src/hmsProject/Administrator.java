@@ -1,5 +1,7 @@
 package hmsProject;
 
+import java.util.Scanner;
+
 public class Administrator extends User {
 	private String name;
 	private String gender;
@@ -19,11 +21,13 @@ public class Administrator extends User {
 	 * @param inven
 	 * @param users
 	 */
-	public void userInterface(AppointmentSystem apptSys, Inventory inven, User[] users) {
+	public void userInterface(AdminController adminCont,Scanner sc) {
 		// TODO - implement Administrator.userInterface
-		throw new UnsupportedOperationException();
+		for(Appointment appt: adminCont.getScheduledAppts()) { //testing
+			System.out.println("Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+		} 
 	}
-
+	
 	public void manageStaff() {
 		// TODO - implement Administrator.manageStaff
 		throw new UnsupportedOperationException();

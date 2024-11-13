@@ -7,18 +7,23 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class DataStorage {
-	//private ArrayList<User> user;
+	private ArrayList<User> user;
 	private AppointmentSystem apptSystem;
+	private Inventory inven;
 	private DataSerialization dataOps;
+	private ArrayList<Doctor> docList;
 	
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
-		this.apptSystem=this.retrieveApptSys();
-
 		System.out.println("To refresh data, key in 1. Otherwise, key whatever. ");
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
+		
+		this.apptSystem=new AppointmentSystem();
+		this.inven=new Inventory();
+		this.user=new ArrayList<User>();
+		
 		if (scanner.nextInt() == 1) {
-			this.apptSystem = new AppointmentSystem();
+			/*this.apptSystem = new AppointmentSystem();
 			this.initialisingPatientData();
 			this.initialisingStaffData();
 			this.initialisingMedicineData();
@@ -27,115 +32,50 @@ public class DataStorage {
 																	//ApptSys retrieves its Doctors from database instead of having its own storage
 			d1.addPatient(((Patient) retrieveUser("P1001")));
 			d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
-			this.saveApptSys();
+			this.saveApptSys();*/
+
+			dataOps.initializeUser(this.user);
+			dataOps.initializeMedData(this.inven);
+			dataOps.serializeAll(apptSystem, inven, user);
+		}
+		else {
+			//this.apptSystem =null;
+			//this.user=null;
+			//this.inven=null;
+			//dataOps.deserializeAll(this.apptSystem,this.inven,this.user);
+			dataOps.deserializeAll(this);
+		}
+		this.docList=new ArrayList<Doctor>();
+		for(User u:this.user) {
+			if(u.gethID().startsWith("D")) this.addToDocList(u); //doctor
 		}
 		scanner.nextLine();//Clear buffer
-
-		/*
-		this.user=new ArrayList<User>();
-		user.add(new Doctor("d1","pw2","dr"));
-		Doctor d1=(Doctor) user.get(1);
-		d1.addPatient(((Patient)user.get(0)));
-		d1.addAvailAppointment(new Appointment("Available",d1,"1/11/2024", "1000"));
-		//.out.println("DataStorage initialised")
-		apptSystem.addDoc(d1);
-		this.saveUser(user.get(0));
-		this.saveUser(user.get(1));
-		 */
+		
+	}
+	
+	public void setAppt(AppointmentSystem apptSys) {
+		// TODO Auto-generated method stub
+		this.apptSystem=apptSys;
 	}
 
-	public void initialisingMedicineData() {
-		String line = "";
-		String splitBy = ",";
-
-		try
-		{
-			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Medicine_List.csv");
-			BufferedReader br = new BufferedReader(file);
-			while ((line = br.readLine()) != null)
-			{
-				String[] medicine = line.split(splitBy);
-				if (Objects.equals(medicine[0], "Medicine Name")) { //To ignore first line of csv which are headers
-					continue;
-				}
-				Medicine newMedicine = new Medicine(medicine[0], Integer.parseInt(medicine[1]), Integer.parseInt(medicine[2]));
-				this.saveMedicine(newMedicine);
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Error: " + e);
-		}
+	public void setInven(Inventory inven) {
+		// TODO Auto-generated method stub
+		this.inven=inven;
 	}
 
-	public void initialisingStaffData() {
-		String line = "";
-		String splitBy = ",";
-
-		try
-		{
-			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Staff_List.csv");
-			BufferedReader br = new BufferedReader(file);
-			while ((line = br.readLine()) != null)
-			{
-				String[] staff = line.split(splitBy);
-				if (Objects.equals(staff[0], "Staff ID")) { //To ignore first line of csv which are headers
-					continue;
-				}
-				switch (staff[2]) {
-					case "Doctor":
-						Doctor newDoctor = new Doctor(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
-						apptSystem.addDoc(newDoctor);
-						this.saveUser(newDoctor);
-						break;
-					case "Pharmacist":
-						Pharmacist newPharmacist = new Pharmacist(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
-						this.saveUser(newPharmacist);
-						break;
-					case "Administrator":
-						Administrator newAdmin = new Administrator(staff[0], "default", staff[1], staff[3], Integer.parseInt(staff[4]));
-						this.saveUser(newAdmin);
-						break;
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Error: " + e);
-		}
+	public void setUser(ArrayList<User> user) {
+		// TODO Auto-generated method stub
+		this.user=user;
 	}
-
-	public void initialisingPatientData() {
-		String line = "";
-		String splitBy = ",";
-
-		try
-		{
-			FileReader file = new FileReader("hmsProject/src/hmsProject/database/Patient_List.csv");
-			BufferedReader br = new BufferedReader(file);
-			while ((line = br.readLine()) != null)
-			{
-				String[] patient = line.split(splitBy);
-				if (Objects.equals(patient[0], "Patient ID")) { //To ignore first line of csv which are headers
-					continue;
-				}
-				Patient newPatient = new Patient(patient[0], "default");
-				MedicalRecord newMedicalRecord = new MedicalRecord();
-				newMedicalRecord.setName(patient[1]);
-				newMedicalRecord.setDOB(patient[2]);
-				newMedicalRecord.setGender(patient[3]);
-				newMedicalRecord.setBloodType(patient[4]);
-				newMedicalRecord.setEmail(patient[5]);
-				newPatient.setMedicalRecord(newMedicalRecord);
-				this.saveUser(newPatient);
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Error: " + e);
-		}
+	
+	public void save() {
+		dataOps.serializeAll(apptSystem, inven, user);
 	}
-
+	
+	public void addToDocList(User user) {
+		this.docList.add((Doctor)user);
+	}
+	
 	public User getUser(String id, String pw) {
 		User rUser = this.retrieveUser(id);
 		if (rUser == null) {
@@ -159,29 +99,38 @@ public class DataStorage {
 		 */
         return null;
     }
-	
-	public AppointmentSystem getApptSys() {
-		return this.apptSystem;
-	}
 
 	public void saveUser(User userToSave) { dataOps.serialiseUser(userToSave); }
 
-	public void saveApptSys() { dataOps.serialiseApptSys(this.getApptSys()); }
+	public void saveApptSys() { dataOps.serialiseApptSys(this.retrieveApptSys()); }
 
 	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
 
-	public User retrieveUser(String id) { return dataOps.deserialiseUser(id); }
+	public User retrieveUser(String id) { //return dataOps.deserialiseUser(id); 
+		for(User u: this.user) {
+			if(u.gethID().equals(id)) return u;
+		}
+		return null;
+	}
+	
+	public ArrayList<Doctor> retrieveDoctors(){
+		return this.docList;
+	}
 
-	public AppointmentSystem retrieveApptSys() { return dataOps.deserialiseApptSys(); }
+	public AppointmentSystem retrieveApptSys() { //return dataOps.deserialiseApptSys(); 
+		return this.apptSystem;
+	}
 
 	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); }
 
 	public void declineAppt(Doctor dr,Appointment appt) {
+		appt.setStatus("Cancelled");
 		dr.getComingAppt().remove(appt);
 		appt.getPatient().removeAppt(appt);
-		this.saveUser(appt.getPatient());
-		this.saveUser(dr);
-		this.saveApptSys();
+		this.save();
+		//this.saveUser(appt.getPatient());
+		//this.saveUser(dr);
+		//this.saveApptSys();
 	}
 
 	public void patientSchAppt(Patient currentPatient, Appointment selectedAppt) {
@@ -190,9 +139,11 @@ public class DataStorage {
 		selectedAppt.setPatient(currentPatient);
 		Doctor docOfAppt=selectedAppt.getDoctor();
 		docOfAppt.updateApptReq(selectedAppt);
-		this.saveUser(currentPatient);
-		this.saveUser(docOfAppt);
-		this.saveApptSys();
+		this.retrieveApptSys().addSchAppt(selectedAppt); //added pending appointments
+		this.save();
+		//this.saveUser(currentPatient);
+		//this.saveUser(docOfAppt);
+		//this.saveApptSys();
 	}
 
 	public void revertOldAppt(Appointment oldAppt) {
@@ -200,9 +151,10 @@ public class DataStorage {
 		oldAppt.setPatient(null);
 		oldAppt.setStatus("Available");
 		docOfAppt.revertSetAppointment(oldAppt);
-		this.saveUser(oldAppt.getPatient());
-		this.saveUser(docOfAppt);
-		this.saveApptSys();
+		this.save();
+		//this.saveUser(oldAppt.getPatient());
+		//this.saveUser(docOfAppt);
+		//this.saveApptSys();
 	}
 
 	public void cancelAppt(Patient patient, Appointment appt) {
@@ -210,31 +162,48 @@ public class DataStorage {
 		Doctor docOfAppt=appt.getDoctor();
 		docOfAppt.revertSetAppointment(appt);
 		patient.removeAppt(appt);
-		this.saveUser(patient);
-		this.saveUser(docOfAppt);
-		this.saveApptSys();
+		this.save();
+		//this.saveUser(patient);
+		//this.saveUser(docOfAppt);
+		//this.saveApptSys();
 	}
 
 	public void acceptAppt(Appointment appt) {
-		this.apptSystem.addSchAppt(appt);
 		Doctor docOfAppt=appt.getDoctor();
 		appt.setStatus("Confirmed");
 		docOfAppt.updateComingAppt(appt);
-		this.saveUser(appt.getPatient());
-		this.saveUser(docOfAppt);
-		this.saveApptSys();
+		this.retrieveApptSys().addSchAppt(appt);
+		this.save();
+		//this.saveUser(appt.getPatient());
+		//this.saveUser(docOfAppt);
+		//this.saveApptSys();
 	}
 
 	public void updateCompletedAppt(Appointment appt) {
-		this.getApptSys().addCompAppt(appt);
+		this.retrieveApptSys().addCompAppt(appt);
 		appt.setStatus("Completed");
 		appt.getDoctor().completedAppt(appt);
 		appt.setApptOutcomeRecord(OutcomeRecord.createOutcomeRecord(appt));
-		this.getApptSys().addOutcomeRecord(appt.getApptOutcomeRecord());
-		this.saveUser(appt.getPatient());
-		this.saveUser(appt.getDoctor());
-		this.saveApptSys();
+		this.retrieveApptSys().addOutcomeRecord(appt.getApptOutcomeRecord());
+		this.save();
+		//this.saveUser(appt.getPatient());
+		//this.saveUser(appt.getDoctor());
+		//this.saveApptSys();
 	}
-	
+
+	public void updatePhone(Patient currentPatient, String phoneNum) {
+		// TODO Auto-generated method stub
+		currentPatient.getMedicalRecord().setPhone(phoneNum);
+	}
+
+	public void updateEmail(Patient currentPatient, String email) {
+		// TODO Auto-generated method stub
+		currentPatient.getMedicalRecord().setEmail(email);
+	}
+
+	public void updateAvailAppt(Doctor currentDoctor, Appointment newAppt) {
+		// TODO Auto-generated method stub
+		currentDoctor.addAvailAppointment(newAppt);
+	}	
 	
 }

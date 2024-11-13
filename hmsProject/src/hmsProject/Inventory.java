@@ -1,11 +1,44 @@
 package hmsProject;
 
-public class Inventory {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-	private Medicine[] medicine;
-	private StockRequest[] pendingStockReq;
-	private StockRequest[] completedStockReq;
+public class Inventory implements Serializable{
+	private ArrayList<Medicine> medicine;
+	private ArrayList<StockRequest> pendingStockReq;
+	private ArrayList<StockRequest> completedStockReq;
 
+	public ArrayList<Medicine> getMedicine() {
+		return medicine;
+	}
+
+	public void addMedicine(Medicine medicine) {
+		this.medicine.add(medicine);
+	}
+
+	public ArrayList<StockRequest> getPendingStockReq() {
+		return pendingStockReq;
+	}
+
+	public void addPendingStockReq(StockRequest pendingStockReq) {
+		this.pendingStockReq.add(pendingStockReq);
+	}
+
+	public ArrayList<StockRequest> getCompletedStockReq() {
+		return completedStockReq;
+	}
+
+	public void addCompletedStockReq(StockRequest completedStockReq) {
+		this.completedStockReq.add(completedStockReq);
+	}
+
+
+	public Inventory() {
+		this.medicine = new ArrayList<Medicine>();
+		this.pendingStockReq = new ArrayList<StockRequest>();
+		this.completedStockReq = new ArrayList<StockRequest>();
+	}
+	
 	public void viewStock() {
 		// TODO - implement Inventory.viewStock
 		throw new UnsupportedOperationException();
