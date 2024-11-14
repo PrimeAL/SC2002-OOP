@@ -12,6 +12,9 @@ public class HMS {
 		this.currentUser=null;
 	}
 	
+	/**
+	 * @param sc
+	 */
 	public void initialise(Scanner sc) {
 		// TODO - implement HMS.initialise
 		while(true) {
@@ -32,7 +35,11 @@ public class HMS {
 				System.out.println("Admin");
 				((Administrator)(currentUser)).userInterface((AdminController)userCont, sc); 
 			}
-			
+			if(currentUser instanceof Pharmacist){
+				System.out.println("Pharmacist");
+				((Pharmacist)(currentUser)).userInterface((PharmacistController)userCont, sc);  
+			}
+		
 			//exit of user interface means logout
 			this.getMainController().save();
 			currentUser=null;
