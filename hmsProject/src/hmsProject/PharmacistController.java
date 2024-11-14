@@ -16,3 +16,4 @@ public class PharmacistController extends controller{
         return this.getDataStorage().getInventory();
     }
 }
+

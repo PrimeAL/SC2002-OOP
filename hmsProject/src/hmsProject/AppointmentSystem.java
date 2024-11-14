@@ -138,4 +138,20 @@ public class AppointmentSystem implements Serializable {
 
 		return true;
 	}
+
+	//For pharm to display the list
+	public void displayOutcomeRecords() {
+        if (apptOutcomeRec.isEmpty()) {
+            System.out.println("No outcome records available.");
+        } else {
+            for (OutcomeRecord record : apptOutcomeRec) {
+                System.out.println("Date: " + record.getDateOfAppointment());
+                System.out.println("Service Provided: " + record.getServiceProvided());
+                record.printMeds();
+                System.out.println("Consultation Note: " + record.getConsultationNote());
+                System.out.println("-------------------------------");
+            }
+        }
+	}
+	
 }
