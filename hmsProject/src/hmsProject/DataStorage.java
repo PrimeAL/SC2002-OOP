@@ -121,6 +121,11 @@ public class DataStorage {
 		return this.apptSystem;
 	}
 
+	public Inventory getInventory(){
+		return this.inven; //Test
+	}
+
+
 	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); }
 
 	public void declineAppt(Doctor dr,Appointment appt) {
