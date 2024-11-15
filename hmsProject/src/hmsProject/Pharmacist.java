@@ -8,13 +8,16 @@ public class Pharmacist extends User implements Serializable {
 	private String name;
 	private String gender;
 	private int age;
+	private AppointmentSystem apptSys;
 	private ArrayList<OutcomeRecord> apptOutcomeRecords;
+	private AppointmentSystem appointmentSystem;  // Reference to AppointmentSystem
 	
 
 	public Pharmacist(String uid, String pw, String name, String gender, int age) {
 		super(uid, pw);
 		this.name=name;
 		this.apptOutcomeRecords = new ArrayList<OutcomeRecord>();
+		this.appointmentSystem = apptSys;
 		
 		//Remember getter setters
 		this.gender=gender;
@@ -51,15 +54,15 @@ public class Pharmacist extends User implements Serializable {
 				switch (choice) {
 					case 1:
 						System.out.println("Option 1 selected");
-						//pharmacistCont.getApptSys().getOutcomeRec();
 						viewApptOutcomeRec();
 						break;
 					case 2:
 						System.out.println("Option 2 selected");
-						// Add functionality for Option 2
+						updateOutcomeRecords(pharmacistCont,sc);
 						break;
-					case 3:
-						System.out.println("Option 3 selected");
+					case 3: 
+						Inventory inventory = pharmacistCont.getInventory();
+						inventory.viewInventory(); 
 						// Add functionality for Option 3
 						break;
 					case 4:
@@ -114,4 +117,16 @@ public class Pharmacist extends User implements Serializable {
 		}
 	}
 
+
+	public void updateOutcomeRecords(PharmacistController pharmacistCont, Scanner sc) {
+		if (appointmentSystem == null) {
+			System.out.println("Error: Appointment system is not available.");
+			return;
+		}
+
+		appointmentSystem.updateOutcomeRec(pharmacistCont, sc);
+	}
+	
+
 }
+

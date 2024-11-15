@@ -26,5 +26,10 @@ public class prescribedMed {
 		// TODO Auto-generated method stub
 		return status;
 	}
+
+    public void setStatus(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    }
 	
 }
