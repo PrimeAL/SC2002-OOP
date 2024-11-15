@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MedicalRecord implements Serializable {
-	private int pID;
+	private String pID;
 	private String name;
 	private String DOB;
 	private String gender;
@@ -18,12 +18,27 @@ public class MedicalRecord implements Serializable {
 		diagnoses = new ArrayList<Diagnosis>();
 		treatments = new ArrayList<Treatment>();
 	}
-
-	public int getpID() {
+	
+	public MedicalRecord(String pID, String name, String DOB, String gender, 
+            String phone, String email, String bloodType) {
+	this.pID = pID;
+	this.name = name;
+	this.DOB = DOB;
+	this.gender = gender;
+	this.phone = phone;
+	this.email = email;
+	this.bloodType = bloodType;
+	
+	// Initialize ArrayLists as in the default constructor
+	this.diagnoses = new ArrayList<Diagnosis>();
+	this.treatments = new ArrayList<Treatment>();
+	}
+	
+	public String getpID() {
 		return pID;
 	}
 
-	public void setpID(int pID) {
+	public void setpID(String pID) {
 		this.pID = pID;
 	}
 

@@ -9,7 +9,7 @@ public class DoctorController extends controller{
 	}
 	
 	public AppointmentSystem getApptSys() {
-		return this.getDataStorage().getApptSys();
+		return this.getDataStorage().retrieveApptSys();
 	}
 
 	public void declineAppt(Appointment appt) {
@@ -26,5 +26,10 @@ public class DoctorController extends controller{
 		// TODO Auto-generated method stub
 		this.getDataStorage().updateCompletedAppt(appt);
 		
+	}
+
+	public void addAvailAppointment(Appointment newAppt) {
+		// TODO Auto-generated method stub
+		this.getDataStorage().updateAvailAppt(currentDoctor,newAppt);
 	}
 }

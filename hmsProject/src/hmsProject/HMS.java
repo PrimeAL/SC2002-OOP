@@ -12,6 +12,9 @@ public class HMS {
 		this.currentUser=null;
 	}
 	
+	/**
+	 * @param sc
+	 */
 	public void initialise(Scanner sc) {
 		// TODO - implement HMS.initialise
 		while(true) {
@@ -29,11 +32,16 @@ public class HMS {
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
 			if(currentUser instanceof Administrator) {
-				System.out.println("Administrator");
-				((Administrator)(currentUser)).userInterface((AdministratorController)userCont, sc); 
+				System.out.println("Admin");
+				((Administrator)(currentUser)).userInterface((AdminController)userCont, sc); 
 			}
+			if(currentUser instanceof Pharmacist){
+				System.out.println("Pharmacist");
+				((Pharmacist)(currentUser)).userInterface((PharmacistController)userCont, sc);  
+			}
+		
 			//exit of user interface means logout
-			this.getMainController().save(currentUser);
+			this.getMainController().save();
 			currentUser=null;
 		}
 	}
@@ -47,10 +55,14 @@ public class HMS {
 			String userName=sc.nextLine();
 			System.out.print("Password:");
 			String pw=sc.nextLine();
+			try {
 			this.currentUser=this.mainController.authenticateUser(userName,pw);
 			if (Objects.equals(currentUser.getPw(), "default")) {
 				currentUser.changePW(sc);
-				this.getMainController().save(currentUser);
+				this.getMainController().save();
+			}
+			} catch (Exception e) {
+				System.out.println("Authentication failed, please try again");
 			}
 		}
 		else {
@@ -62,15 +74,4 @@ public class HMS {
 	public MainController getMainController() {
 		return this.mainController;
 	}
-
-	public void stop() {
-		// TODO - implement HMS.stop
-		throw new UnsupportedOperationException();
-	}
-	
-	public void logout() {
-		// TODO - implement HMS.logout
-		throw new UnsupportedOperationException();
-	}
-
 }

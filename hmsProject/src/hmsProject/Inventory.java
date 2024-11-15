@@ -1,45 +1,16 @@
 package hmsProject;
 
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
-public class Inventory implements Serializable {
 
+public class Inventory implements Serializable{
 	private ArrayList<Medicine> medicineList;
-	private StockRequest[] pendingStockReq;
-	private StockRequest[] completedStockReq;
-
-	public Inventory() {
-		this.medicineList = new ArrayList<Medicine>();
-		this.pendingStockReq = new StockRequest[0];
-		this.completedStockReq = new StockRequest[0];
-	}
-
-	public void viewInventory() {
-		ArrayList<Medicine> tempArray = new ArrayList<Medicine>();
-		for (int i = 0; i < medicineList.size(); i++) { //Display medicines and their current stock levels
-			System.out.println((i + 1) + ". MedicineName: " + medicineList.get(i).getName() + 
-			" | Stock: " + medicineList.get(i).getStock() + 
-			" | Stock Alert Threshold: " + medicineList.get(i).getStockThreshold());
-			
-			if (medicineList.get(i).getStock() < medicineList.get(i).getStockThreshold()) { //adds low stock medicine into temp array
-				tempArray.add(medicineList.get(i));
-			}
-		}
-
-		System.out.println("Warning! The following medicines are low on stock: ");
-		for (int i = 0; i < medicineList.size(); i++) {
-			System.out.println(tempArray.get(i).getName() + ", ");
-		}
-	}
+	private ArrayList<StockRequest> pendingStockReq;
+	private ArrayList<StockRequest> completedStockReq;
 
 	public ArrayList<Medicine> getMedicineList() {
-		return this.medicineList;
-	}
-
-	public void submitReq() {
-		// TODO - implement Inventory.submitReq
-		throw new UnsupportedOperationException();
+		return medicineList;
 	}
 
 	public void addMedicine(Medicine newMedicine) {
@@ -57,14 +28,43 @@ public class Inventory implements Serializable {
 		medicineList.get(index).setName(name);
 	}
 
-	public void acceptReq() {
-		// TODO - implement Inventory.acceptReq
-		throw new UnsupportedOperationException();
+	public ArrayList<StockRequest> getPendingStockReq() {
+		return pendingStockReq;
 	}
 
-	public void dispense() {
-		// TODO - implement Inventory.dispense
-		throw new UnsupportedOperationException();
+	public void addPendingStockReq(StockRequest pendingStockReq) {
+		this.pendingStockReq.add(pendingStockReq);
 	}
 
+	public ArrayList<StockRequest> getCompletedStockReq() {
+		return completedStockReq;
+	}
+
+	public void addCompletedStockReq(StockRequest completedStockReq) {
+		this.completedStockReq.add(completedStockReq);
+	}
+
+	public Inventory() {
+		this.medicineList = new ArrayList<Medicine>();
+		this.pendingStockReq = new ArrayList<StockRequest>();
+		this.completedStockReq = new ArrayList<StockRequest>();
+	}
+	
+	public void viewInventory() {
+		ArrayList<Medicine> tempArray = new ArrayList<Medicine>();
+		for (int i = 0; i < medicineList.size(); i++) { //Display medicines and their current stock levels
+			System.out.println((i + 1) + ". MedicineName: " + medicineList.get(i).getName() + 
+			" | Stock: " + medicineList.get(i).getStock() + 
+			" | Stock Alert Threshold: " + medicineList.get(i).getStockThreshold());
+			
+			if (medicineList.get(i).getStock() < medicineList.get(i).getStockThreshold()) { //adds low stock medicine into temp array
+				tempArray.add(medicineList.get(i));
+			}
+		}
+
+		System.out.println("Warning! The following medicines are low on stock: ");
+		for (int i = 0; i < medicineList.size(); i++) {
+			System.out.println(tempArray.get(i).getName() + ", ");
+		}
+	}
 }

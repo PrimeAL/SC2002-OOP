@@ -8,12 +8,13 @@ public class MainController extends controller{
 	}
 	
 	public User authenticateUser(String id, String pw) {
-		return super.getDataStorage().getUser(id,pw);
+		return this.getDataStorage().getUser(id,pw);
 	}
 
-	public void save(User currentUser) {
-		super.getDataStorage().saveUser(currentUser);
-		super.getDataStorage().saveApptSys();
+	public void save() {
+		//super.getDataStorage().saveUser(currentUser);
+		//super.getDataStorage().saveApptSys();
+		this.getDataStorage().save();
 	}
 
 	public controller getUserCont(User currentUser) {
@@ -24,9 +25,15 @@ public class MainController extends controller{
 		if(currentUser instanceof Doctor) {
 			return new DoctorController(this,(Doctor)currentUser);
 		}
+		
 		if(currentUser instanceof Administrator) {
-			return new AdministratorController(this,(Administrator)currentUser);
+			return new AdminController(this,(Administrator)currentUser);
 		}
+
+		if(currentUser instanceof Pharmacist){
+			return new PharmacistController(this,(Pharmacist)currentUser);
+		}
+
 		return this;
 	}
 	
