@@ -15,6 +15,7 @@ public class DataStorage {
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
 		this.apptSystem=this.retrieveApptSys();
+		this.inventory=this.retrieveInventory(); //test
 
 		System.out.println("To refresh data, key in 1. Otherwise, key whatever. ");
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
@@ -67,7 +68,7 @@ public class DataStorage {
 				}
 				Medicine newMedicine = new Medicine(medicine[0], Integer.parseInt(medicine[1]), Integer.parseInt(medicine[2]));
 				this.saveMedicine(newMedicine);
-				inventory.addMedicine(newMedicine); //add medicine into inventory
+				inventory.addMedicine(newMedicine);
 			}
 
 			
@@ -174,7 +175,7 @@ public class DataStorage {
 		return this.apptSystem;
 	}
 
-	public Inventory getInventory() { //test
+	public Inventory getInventory() {
 		return this.inventory;
 	}
 
@@ -184,7 +185,8 @@ public class DataStorage {
 
 	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
 
-	//public void saveInventory() { dataOps.serialiseInventory(this.getInventory()); } //test
+	public void saveInventory(Inventory inventory) { dataOps.serialiseInventory(this.getInventory()); } //test
+	public void retrieveInventory() { return dataOps.deserialiseInventory(); } //test
 
 	public User retrieveUser(String id) { return dataOps.deserialiseUser(id); }
 

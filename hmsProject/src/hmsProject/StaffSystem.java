@@ -1,6 +1,6 @@
 package hmsProject;
 
-public class StaffSystem {
+public class StaffSystem{
 
 	/**
 	 * 

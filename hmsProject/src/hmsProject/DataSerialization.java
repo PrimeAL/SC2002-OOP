@@ -101,4 +101,36 @@ public class DataSerialization {
             return null;
         }
     }
+
+    public void serialiseInventory(Inventory inventory) {
+        try {
+            FileOutputStream out = new FileOutputStream("hmsProject/src/hmsProject/database/System/inventory.dat");
+            ObjectOutputStream oos = new ObjectOutputStream(out);
+            oos.writeObject(inventory);
+            oos.flush();
+            oos.close();
+            out.close();
+            System.out.println("Serialization Successful");
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    public Inventory deserialiseInventory() {
+        try {
+            FileInputStream in = new FileInputStream("hmsProject/src/hmsProject/database/System/inventory.dat");
+            ObjectInputStream ois = new ObjectInputStream(in);
+            Inventory retrieved = (Inventory) ois.readObject();
+            ois.close();
+            in.close();
+            System.out.println("Deserialization Successful");
+            return retrieved;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("File not found");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            return null;
+        }
+    }
 }

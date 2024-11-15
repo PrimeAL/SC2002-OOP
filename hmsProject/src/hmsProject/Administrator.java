@@ -1,11 +1,9 @@
 package hmsProject;
 
-import java.util.Scanner;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-
-public class Administrator extends User implements Serializable{	
+public class Administrator extends User {
 	private String name;
 	private String gender;
 	private int age;
@@ -16,16 +14,7 @@ public class Administrator extends User implements Serializable{
 		this.age = age;
 		this.gender = gender;
 	}
-
-	/**
-	 * 
-	 * @param apptSys
-	 * @param inven
-	 * @param users
-	 */
-
-	 //AppointmentSystem apptSys, Inventory inven, User[] users
-	 //	public void userInterface(AdministratorController adminCont, AppointmentSystem apptSys, Inventory inven, User[] users, Scanner sc)
+	
 	public void userInterface(AdministratorController adminCont, Scanner sc) {
 		// TODO - implement Administrator.userInterface
 		System.out.println("Administrator UI");
@@ -40,7 +29,7 @@ public class Administrator extends User implements Serializable{
 				this.changePW();
 				break;
 			case 2:
-				this.manageStaff();
+				this.manageStaff(sc);
 				break;
 			case 3:
 				this.apptOp(adminCont.getApptSys());
@@ -77,14 +66,42 @@ public class Administrator extends User implements Serializable{
 		throw new UnsupportedOperationException();
 	}
 
-	public void manageStaff() {
-		// TODO - implement Administrator.manageStaff
-		throw new UnsupportedOperationException();
+	public void manageStaff(Scanner sc) {
+		int choice = 0;
+		System.out.println(
+			"""
+			\n========================
+			Manage Staff Menu
+			=========================
+			1. View Staff List
+			2. Add New Staff
+			3. Update Staff
+			4. Remove Staff
+			"""
+		);
+		System.out.println("Input Choice: ");
+		choice = sc.nextInt();
+
+		switch (choice) {
+			case 1: //View Staff List
+				break;
+			case 2: //Add new Staff
+				break;
+			case 3: //Update Existng Staff
+				break;
+			case 4: //Remove Staff
+				break;
+			default:
+				System.out.println("Input out of range");
+				break;
+
+		}
+
 	}
 
 	public void apptOp(AppointmentSystem apptSys) {
 		System.out.println("List of Scheduled Appointments: ");
-		ArrayList<Appointment> scheduledAppt = apptSys.getScheduleAppt();
+		ArrayList<Appointment> scheduledAppt = apptSys.getScheduledAppt();
 		Appointment appt = null;
 		System.out.println("Patient ID\tDoctor ID\tStatus\tDate\tTime\tOutcome Record");
 
@@ -98,7 +115,7 @@ public class Administrator extends User implements Serializable{
 	}
 
 	public void manageMedicines(Inventory inventory, Scanner sc) {
-		int choice = 0, changeMed = 0, newStockLevel = 0, newStockThreshold = 0;
+		int choice = 0, changeMedOption = 0, newStockLevel = 0, newStockThreshold = 0;
 	
 		while (choice != 7) {
 			System.out.println(
@@ -124,11 +141,11 @@ public class Administrator extends User implements Serializable{
 				case 2: //Change Medicine Name
 					inventory.viewInventory();
 					System.out.println("Select Medicine to change: ");
-					changeMed = selectMedicine(inventory, sc, changeMed);
+					changeMedOption = selectMedicine(inventory, sc, changeMedOption);
 					
 					System.out.println("Input New Name: ");
 					String newName = sc.next();
-					inventory.changeMedicineName(changeMed - 1, newName);
+					inventory.changeMedicineName(changeMedOption - 1, newName);
 					break;
 				case 3: //Add New Medicine
 					System.out.println("Input Name of Medicine: ");
@@ -155,39 +172,40 @@ public class Administrator extends User implements Serializable{
 				case 4: //Remove Medicine
 					inventory.viewInventory();
 					System.out.println("Select Medicine to remove: ");
-					changeMed = selectMedicine(inventory, sc, changeMed);
-					inventory.deleteMedicine(changeMed - 1);
+					changeMedOption = sc.nextInt();
+					changeMedOption = selectMedicine(inventory, sc, changeMedOption);
+					inventory.deleteMedicine(changeMedOption - 1);
 					break;
 				case 5: //Change Stock Level
 					inventory.viewInventory();
 					System.out.println("Select Medicine to change stock level: ");
-					changeMed = selectMedicine(inventory, sc, newStockLevel);
-
+					changeMedOption = sc.nextInt();
+					changeMedOption = selectMedicine(inventory, sc, changeMedOption);
 					System.out.println("Input New Stock Level: ");
 					newStockLevel = sc.nextInt();
 
-					while (inventory.getMedicineList().get(changeMed - 1).getStockThreshold() <= newStockLevel) { //Checks if input is valid
+					while (inventory.getMedicineList().get(changeMedOption - 1).getStockThreshold() <= newStockLevel) { //Checks if input is valid
 						System.out.println("Stock Level must be higher than Stock Alert!!!\n");
 						System.out.println("Input Stock Level: ");
 						newStockLevel = sc.nextInt();
 					}
 
-					inventory.getMedicineList().get(changeMed - 1).setStock(newStockLevel);
+					inventory.getMedicineList().get(changeMedOption - 1).setStock(newStockLevel);
 					break;
 				case 6: //Change Stock Alert
 					inventory.viewInventory();
 					System.out.println("Select Medicine to change stock alert threshold: ");
-					changeMed = selectMedicine(inventory, sc, changeMed);
+					changeMedOption = selectMedicine(inventory, sc, changeMedOption);
 
 					System.out.println("Input New Stock Threshold: ");
 					newStockThreshold = sc.nextInt();
 					
-					while (inventory.getMedicineList().get(changeMed - 1).getStock() <= newStockThreshold) { //Checks if input is valid
+					while (inventory.getMedicineList().get(changeMedOption - 1).getStock() <= newStockThreshold) { //Checks if input is valid
 						System.out.println("Stock Level must be higher than Stock Alert!!!\n");
 						System.out.println("Input New Stock Threshold: ");
 						newStockLevel = sc.nextInt();
 					}
-					inventory.getMedicineList().get(changeMed - 1).setStockThreshold(newStockThreshold);
+					inventory.getMedicineList().get(changeMedOption - 1).setStockThreshold(newStockThreshold);
 					break;
 				case 7: //Exit to Admin Menu
 					System.out.println("Exiting Manage Medicine Menu...");

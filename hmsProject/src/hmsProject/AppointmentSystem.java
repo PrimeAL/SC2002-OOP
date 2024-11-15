@@ -9,16 +9,14 @@ public class AppointmentSystem implements Serializable {
 	private ArrayList<OutcomeRecord> apptOutcomeRec;
 	private ArrayList<Appointment> scheduledAppt;
 	private ArrayList<Appointment> completedAppt;
+	private ArrayList<Appointment> allAppt;
 	
 	public AppointmentSystem() {
 		this.doctors=new ArrayList<Doctor>();
 		this.apptOutcomeRec=new ArrayList<OutcomeRecord>();
 		this.scheduledAppt=new ArrayList<Appointment>();
 		this.completedAppt=new ArrayList<Appointment>();
-	}
-
-	public ArrayList<Appointment> getScheduleAppt() { //testing to return List of Scheduled Appointments
-		return this.scheduledAppt;
+		this.allAppt = new ArrayList<Appointment>();
 	}
 
 	//This is just for testing because the doctors list is independent of database doctors. See DataStorage for more info.
@@ -134,4 +132,16 @@ public class AppointmentSystem implements Serializable {
 		throw new UnsupportedOperationException();
 	}
 
+
+	//for Administrator
+	public ArrayList<Appointment> getAllAppt() { // returns the list of scheduled appointments
+		int index = 0;
+		while (index < this.scheduledAppt.size() && index <this.completedAppt.size()) {
+			getAllAppt().add(scheduledAppt.get(index));
+			getAllAppt().add(completedAppt.get(index));
+			index++;
+		}
+		
+		return allAppt;
+	}
 }
