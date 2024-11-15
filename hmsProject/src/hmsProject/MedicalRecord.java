@@ -114,4 +114,22 @@ public class MedicalRecord implements Serializable {
 		treatments.add(newTreatment);
 	}
 
+	public void viewAll() {
+		System.out.println(this.getpID());
+		System.out.println("Name: " + this.getName());
+		System.out.println("DOB: " + this.getDOB());
+		System.out.println("Phone: " + this.getPhone());
+		System.out.println("Email: " + this.getEmail());
+		System.out.println("Blood Type: " + this.getBloodType());
+		System.out.println("Diagnosis: ");
+		for (Diagnosis diagnosis : this.getDiagnoses()) {
+			System.out.println("- " + diagnosis);
+		}
+
+		System.out.println("Treatments: ");
+		for (Treatment treatment : this.getTreatments()) {
+			System.out.println("- " + treatment);
+		}
+	}
+
 }

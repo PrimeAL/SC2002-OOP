@@ -181,6 +181,7 @@ public class DataSerialization {
 				}
 				Patient newPatient = new Patient(patient[0], "default");
 				MedicalRecord newMedicalRecord = new MedicalRecord();
+                newMedicalRecord.setpID(patient[0]);
 				newMedicalRecord.setName(patient[1]);
 				newMedicalRecord.setDOB(patient[2]);
 				newMedicalRecord.setGender(patient[3]);
