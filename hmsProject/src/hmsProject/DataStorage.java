@@ -12,6 +12,7 @@ public class DataStorage {
 	private Inventory inven;
 	private DataSerialization dataOps;
 	private ArrayList<Doctor> docList;
+	private int choice;
 	
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
@@ -21,36 +22,42 @@ public class DataStorage {
 		this.apptSystem=new AppointmentSystem();
 		this.inven=new Inventory();
 		this.user=new ArrayList<User>();
-		
-		if (scanner.nextInt() == 1) {
-			/*this.apptSystem = new AppointmentSystem();
-			this.initialisingPatientData();
-			this.initialisingStaffData();
-			this.initialisingMedicineData();
-			Doctor d1 = this.getApptSys().getFirstDocForTesting(); //I had no choice but to do this for testing because
-																	// ApptSys keeps its own Doctors list. This can be avoided if
-																	//ApptSys retrieves its Doctors from database instead of having its own storage
-			d1.addPatient(((Patient) retrieveUser("P1001")));
-			d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
-			this.saveApptSys();*/
 
-			dataOps.initializeUser(this.user);
-			dataOps.initializeMedData(this.inven);
-			dataOps.serializeAll(apptSystem, inven, user);
+		while (true) {
+			try {
+				if (scanner.nextInt() == 1) {
+					/*this.apptSystem = new AppointmentSystem();
+					this.initialisingPatientData();
+					this.initialisingStaffData();
+					this.initialisingMedicineData();
+					Doctor d1 = this.getApptSys().getFirstDocForTesting(); //I had no choice but to do this for testing because
+																			// ApptSys keeps its own Doctors list. This can be avoided if
+																			//ApptSys retrieves its Doctors from database instead of having its own storage
+					d1.addPatient(((Patient) retrieveUser("P1001")));
+					d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
+					this.saveApptSys();*/
+
+					dataOps.initializeUser(this.user);
+					dataOps.initializeMedData(this.inven);
+					dataOps.serializeAll(apptSystem, inven, user);
+				} else {
+					//this.apptSystem =null;
+					//this.user=null;
+					//this.inven=null;
+					//dataOps.deserializeAll(this.apptSystem,this.inven,this.user);
+					dataOps.deserializeAll(this);
+				}
+				this.docList = new ArrayList<Doctor>();
+				for (User u : this.user) {
+					if (u.gethID().startsWith("D")) this.addToDocList(u); //doctor
+				}
+				scanner.nextLine();
+				break;
+			} catch (Exception e) {
+				scanner.nextLine();
+				System.out.println("Wrong input. Please try again. ");
+			}
 		}
-		else {
-			//this.apptSystem =null;
-			//this.user=null;
-			//this.inven=null;
-			//dataOps.deserializeAll(this.apptSystem,this.inven,this.user);
-			dataOps.deserializeAll(this);
-		}
-		this.docList=new ArrayList<Doctor>();
-		for(User u:this.user) {
-			if(u.gethID().startsWith("D")) this.addToDocList(u); //doctor
-		}
-		scanner.nextLine();//Clear buffer
-		
 	}
 	
 	public void setAppt(AppointmentSystem apptSys) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class PatientController extends controller{
 	private Patient currentPatient;
+	private String[] acceptedEmails = {"gmail.com", "hotmail.com", "e.ntu.edu.sg", "yahoo.com", "live.com", "msn.com"};
 	
 	public PatientController(MainController mainCont, Patient patient) {
 		super(mainCont); //references the same datastorage that was initialised
@@ -37,13 +38,23 @@ public class PatientController extends controller{
 		return this.getDataStorage().retrieveDoctors();
 	}
 
-	public void updatePhone(String phoneNum) {
+	public int updatePhone(String phoneNum) {
 		// TODO Auto-generated method stub
-		this.getDataStorage().updatePhone(currentPatient,phoneNum);
+		if (phoneNum.matches("[0-9]+")) {
+			this.getDataStorage().updatePhone(currentPatient,phoneNum);
+			return 0;
+		}
+		else return 1;
 	}
 
-	public void updateEmail(String email) {
+	public int updateEmail(String email) {
 		// TODO Auto-generated method stub
-		this.getDataStorage().updateEmail(currentPatient,email);
+		for (String i : acceptedEmails) {
+			if (email.endsWith(i)) {
+				this.getDataStorage().updateEmail(currentPatient, email);
+				return 0;
+			}
+		}
+		return 2;
 	}
 }
