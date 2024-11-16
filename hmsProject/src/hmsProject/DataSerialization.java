@@ -9,7 +9,16 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Handles all serialization, deserialization and file reading operations.
+ */
 public class DataSerialization {
+	/**
+	 * Serialize AppointmentSystem, Inventory and all Users.
+	 * @param apptSystem Appointment System
+	 * @param inven Inventory
+	 * @param user List of Users
+	 */
     public void serializeAll(AppointmentSystem apptSystem, Inventory inven,ArrayList<User> user) {
     	try {
     		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("hmsProject/src/hmsProject/newDB.ser"));
@@ -20,7 +29,11 @@ public class DataSerialization {
             System.out.println("Error: " + e);
         }
     }
-    
+
+	/**
+	 * Deserialize everything from serialized file into DataStorage.
+	 * @param dataStorage DataStorage class
+	 */
 	public void deserializeAll(DataStorage dataStorage) {
 		// TODO Auto-generated method stub
 		try {
@@ -36,6 +49,10 @@ public class DataSerialization {
         }
 	}
 
+	/**
+	 * Initialize Users from the csv given.
+	 * @param user List of Users from DataStorage
+	 */
 	public void initializeUser(ArrayList<User> user) {
 		// TODO Auto-generated method stub
 		String line = "";
@@ -100,6 +117,10 @@ public class DataSerialization {
 		}
 	}
 
+	/**
+	 * Initialize Inventory from the csv given.
+	 * @param inven Inventory class from DataStorage
+	 */
 	public void initializeMedData(Inventory inven) {
 		// TODO Auto-generated method stub
 		String line = "";

@@ -1,7 +1,7 @@
 package hmsProject;
 
 
-public class MainController extends controller{
+public class MainController extends Controller{
 	public MainController() {
 		//initialise the db
 		super();
@@ -17,7 +17,7 @@ public class MainController extends controller{
 		this.getDataStorage().save();
 	}
 
-	public controller getUserCont(User currentUser) {
+	public Controller getUserCont(User currentUser) {
 		// TODO Auto-generated method stub
 		if(currentUser instanceof Patient) {
 			return new PatientController(this,(Patient)currentUser);

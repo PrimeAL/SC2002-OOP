@@ -1,6 +1,6 @@
 package hmsProject;
 
-public class PharmacistController extends controller{
+public class PharmacistController extends Controller{
     private Pharmacist currentPharmacist;
 
     public PharmacistController(MainController mainCont, Pharmacist pharmacist){

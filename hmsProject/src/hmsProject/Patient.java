@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Patient Class
+ * Patient subclass of User
  */
 public class Patient extends User implements Serializable {
 	private MedicalRecord medicalRecord;
@@ -13,9 +13,9 @@ public class Patient extends User implements Serializable {
 	private ArrayList<Appointment> completedAppt;
 
 	/**
-	 *
-	 * @param uid
-	 * @param pw
+	 * Patient constructor
+	 * @param uid unique user identifier
+	 * @param pw password
 	 */
 	public Patient(String uid, String pw) {
 		super(uid, pw);
@@ -23,30 +23,52 @@ public class Patient extends User implements Serializable {
 		this.completedAppt=new ArrayList<Appointment>();
 	}
 
+	/**
+	 * Medical Record getter.
+	 * @return MedicalRecord.
+	 */
 	public MedicalRecord getMedicalRecord() {
 		return medicalRecord;
 	}
 
+	/**
+	 * Medical Record setter.
+	 * @param medicalRecord new MedicalRecord
+	 */
 	public void setMedicalRecord(MedicalRecord medicalRecord) {
 		this.medicalRecord = medicalRecord;
 	}
 
+	/**
+	 * Current appointments list.
+	 * @return appointment list.
+	 */
 	public ArrayList<Appointment> getAppt() {
 		return appt;
 	}
 
+	/**
+	 * Completed appointments list.
+	 * @return Completed appointment list.
+	 */
 	public ArrayList<Appointment> getCompletedAppt() {
 		return completedAppt;
 	}
-	
+
+	/**
+	 * Print all current appointments.
+	 */
 	public void viewAppt() {
 		int cnt=1;
 		for(Appointment appt: this.getAppt()) {
-			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
 			cnt++;
 		}
 	}
 
+	/**
+	 * Print all completed appointments.
+	 */
 	public void viewCompAppt() {
 		int cnt=1;
 		for(Appointment appt: this.getCompletedAppt()) {
@@ -56,14 +78,27 @@ public class Patient extends User implements Serializable {
 		}
 	}
 
+	/**
+	 * Remove appointment from current appointment list.
+	 * @param appt appointment to be removed
+	 */
 	public void removeAppt(Appointment appt) {
 		this.appt.remove(appt);
 	}
-	
+
+	/**
+	 * Add completed appointment into completed appointment list.
+	 * @param appt completed appointment
+	 */
 	public void addCompAppt(Appointment appt) {
 		this.completedAppt.add(appt);
 	}
 
+	/**
+	 * Patient-specific user interface that overrides from User.
+	 * @param patientCont PatientController
+	 * @param sc Scanner class for input
+	 */
 	public void userInterface(PatientController patientCont, Scanner sc) {
 		int userMenuInput;
 		System.out.println("Hi " + this.medicalRecord.getName() + "!");
@@ -110,7 +145,10 @@ public class Patient extends User implements Serializable {
 			}
 		}
 	}
-	
+
+	/**
+	 * Patient menu.
+	 */
 	private void displayMenu() {
 		System.out.println(
                 """
@@ -125,10 +163,17 @@ public class Patient extends User implements Serializable {
                 """);
 	}
 
+	/**
+	 * Print medical record.
+	 */
 	private void printMedicalRecord() {
 		this.getMedicalRecord().viewAll();
 	}
 
+	/**
+	 * Update phone and email information.
+	 * @param sc Scanner class for input.
+	 */
 	private void updateInfo(Scanner sc) {
 		int success, choice;
 		String input=null;
@@ -172,6 +217,12 @@ public class Patient extends User implements Serializable {
 		}
 	}
 
+	/**
+	 * All appointment operations such as scheduling appointments, rescheduling appointments and cancelling appointments.
+	 * Links to PatientController.
+	 * @param patientCont PatientController
+	 * @param sc Scanner class for input
+	 */
 	private void apptOp(PatientController patientCont,Scanner sc) {
 		int uApptOpIn;
 		try {

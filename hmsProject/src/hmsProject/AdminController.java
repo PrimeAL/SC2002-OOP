@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Administrator Controller class that controls all interactions between Administrator class and other classes
  */
-public class AdminController extends controller{
+public class AdminController extends Controller{
 	private Administrator currentAdm;
 
 	/**
