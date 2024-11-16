@@ -33,9 +33,18 @@ public class Administrator extends User {
 	 */
 	public void userInterface(AdminController adminCont,Scanner sc) {
 		// TODO - implement Administrator.userInterface
+		System.out.println("Scheduled");
 		for(Appointment appt: adminCont.getScheduledAppts()) { //testing
 			System.out.println("Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
-		} 
+		}
+		System.out.println("Completed Appt");
+		for(Appointment appt: adminCont.getApptSys().getCompAppt()) { //testing
+			System.out.println("Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+		}
+		System.out.println("OutcomeRec");
+		for(OutcomeRecord outrec: adminCont.getApptSys().getOutcomeRec()) { //testing
+			outrec.printAll();
+		}
 	}
 
 	/**

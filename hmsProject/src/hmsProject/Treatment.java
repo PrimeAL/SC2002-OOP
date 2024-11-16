@@ -1,6 +1,8 @@
 package hmsProject;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Treatment implements Serializable {
     private String treatmentType;
@@ -46,5 +48,14 @@ public class Treatment implements Serializable {
     
     public void setPrescribedBy(String prescribedBy) {
         this.prescribedBy = prescribedBy;
+    }
+    
+    public static Treatment createTreatment(Scanner sc, String drName) {
+		System.out.println("Enter treatment type:");
+		String treatmentType = sc.nextLine();
+		System.out.println("Enter prescription:");
+		String prescription = sc.nextLine();
+
+		return new Treatment(treatmentType, prescription, LocalDate.now().toString(), drName);
     }
 }

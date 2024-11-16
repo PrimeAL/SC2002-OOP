@@ -61,6 +61,10 @@ public class AppointmentSystem implements Serializable {
 		//from doctor chosen based on index, the appointment available from the doctor can be retrieved from the doctor
 		try {
 			int docChoice = sc.nextInt() - 1;
+			if(patientCont.getDocList().get(docChoice).getAvailableAppt().size()==0) { 
+				System.out.println("No appointments available from this doctor");
+				return;
+			}
 			
 			System.out.println("Choose an appointment listed");
 			index = 1;
@@ -111,28 +115,4 @@ public class AppointmentSystem implements Serializable {
 				
 	}
 
-	/**
-	 * 
-	 * @param appt
-	 */
-	public boolean cancelAppt(PatientController patientCont,Appointment appt) {
-		// TODO - implement AppointmentSystem.cancelAppt
-		patientCont.cancelAppt(appt);		
-		return true; 
-	}
-
-	public boolean acceptAppt(DoctorController docCont, Appointment appt) {
-		// TODO - implement AppointmentSystem.acceptAppt
-		//appointment passed in from doctor side
-		docCont.addAccAppt(appt);
-		return true;
-	}
-	
-	public boolean updateAppt(DoctorController docCont,Appointment appt) {
-		// TODO - implement AppointmentSystem.updateAppt
-		//after appointment is completed
-		docCont.updateAppt(appt);
-
-		return true;
-	}
 }

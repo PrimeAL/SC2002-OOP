@@ -20,11 +20,6 @@ public class Pharmacist extends User {
 	 * @param apptSys
 	 * @param inven
 	 */
-	/*public void userInterface(AppointmentSystem apptSys, Inventory inven) {
-		// TODO - implement Pharmacist.userInterface
-		throw new UnsupportedOperationException();
-	}*/
-
 
 	public void userInterface(PharmacistController pharmacistCont, Scanner sc){
 		System.out.println("\nPharmacist UI");

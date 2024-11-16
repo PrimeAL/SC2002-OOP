@@ -38,6 +38,31 @@ public class Patient extends User implements Serializable {
 	public ArrayList<Appointment> getCompletedAppt() {
 		return completedAppt;
 	}
+	
+	public void viewAppt() {
+		int cnt=1;
+		for(Appointment appt: this.getAppt()) {
+			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
+			cnt++;
+		}
+	}
+
+	public void viewCompAppt() {
+		int cnt=1;
+		for(Appointment appt: this.getCompletedAppt()) {
+			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
+			appt.getApptOutcomeRecord().printAll();
+			cnt++;
+		}
+	}
+
+	public void removeAppt(Appointment appt) {
+		this.appt.remove(appt);
+	}
+	
+	public void addCompAppt(Appointment appt) {
+		this.completedAppt.add(appt);
+	}
 
 	public void userInterface(PatientController patientCont, Scanner sc) {
 		int userMenuInput;
@@ -54,7 +79,8 @@ public class Patient extends User implements Serializable {
 							printMedicalRecord();
 							break;
 						case 2:
-							updateInfo(patientCont, sc);
+							updateInfo(sc);
+							patientCont.save();
 							break;
 						case 3:
 							this.apptOp(patientCont, sc);
@@ -67,6 +93,7 @@ public class Patient extends User implements Serializable {
 							break;
 						case 6:
 							this.changePW(sc);
+							patientCont.save();
 							break;
 						case 7:
 							System.out.println("Logging out...");
@@ -84,7 +111,7 @@ public class Patient extends User implements Serializable {
 		}
 	}
 	
-	public void displayMenu() {
+	private void displayMenu() {
 		System.out.println(
                 """
                 
@@ -98,12 +125,13 @@ public class Patient extends User implements Serializable {
                 """);
 	}
 
-	public void printMedicalRecord() {
+	private void printMedicalRecord() {
 		this.getMedicalRecord().viewAll();
 	}
 
-	public void updateInfo(PatientController patientCont,Scanner sc) {
+	private void updateInfo(Scanner sc) {
 		int success, choice;
+		String input=null;
 		try {
 			System.out.println(
 					"""
@@ -118,19 +146,24 @@ public class Patient extends User implements Serializable {
 				case 1:
 					System.out.println("This is your current phone number: " + this.getMedicalRecord().getPhone());
 					System.out.print("Please enter your new phone number (enter only numbers and include country code): ");
-					success = patientCont.updatePhone(sc.nextLine());
-					//this.getMedicalRecord().setPhone(sc.nextLine());
+					input=sc.nextLine();
+					success=UtilityClass.checkPhone(input);
+					
 					break;
 				case 2:
 					System.out.println("This is your current email: " + this.getMedicalRecord().getEmail());
 					System.out.print("Please enter your new email: ");
-					success = patientCont.updateEmail(sc.nextLine());
-					//this.getMedicalRecord().setEmail(sc.nextLine());
+					input=sc.nextLine();
+					success=UtilityClass.checkEmail(input);
 					break;
 				default:
 					break;
 			}
-			if (success == 0) System.out.println("Your information has been updated. ");
+			if (success == 0) {
+				if(choice==1) this.getMedicalRecord().setPhone(input);
+				if(choice==2) this.getMedicalRecord().setEmail(input);
+				System.out.println("Your information has been updated. ");
+			}
 			else if (success == 1) System.out.println("Update unsuccessful. Make sure the phone number only contains number and include country code. ");
 			else System.out.println("Update unsuccessful. Make sure you use the correct email format. ");
 		} catch (Exception e) {
@@ -139,7 +172,7 @@ public class Patient extends User implements Serializable {
 		}
 	}
 
-	public void apptOp(PatientController patientCont,Scanner sc) {
+	private void apptOp(PatientController patientCont,Scanner sc) {
 		int uApptOpIn;
 		try {
 			System.out.println("Manage Appointments(Patient)");
@@ -182,7 +215,8 @@ public class Patient extends User implements Serializable {
 						int apptSelect = 0;
 						apptSelect = sc.nextInt();
 						if (apptSelect > 0) {
-							patientCont.getApptSys().cancelAppt(patientCont, this.getAppt().get(apptSelect - 1));
+							//patientCont.getApptSys().cancelAppt(patientCont, this.getAppt().get(apptSelect - 1));
+							patientCont.cancelAppt(this.getAppt().get(apptSelect-1));
 						}
 					} else {
 						System.out.println("No appointment has been scheduled so far.");
@@ -193,25 +227,5 @@ public class Patient extends User implements Serializable {
 			sc.nextLine();
 			System.out.println("Wrong input. Please try again. ");
 		}
-	}
-
-	public void viewAppt() {
-		int cnt=1;
-		for(Appointment appt: this.getAppt()) {
-			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
-			cnt++;
-		}
-	}
-
-	public void viewCompAppt() {
-		int cnt=1;
-		for(Appointment appt: this.getCompletedAppt()) {
-			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
-			cnt++;
-		}
-	}
-
-	public void removeAppt(Appointment appt) {
-		this.appt.remove(appt);
 	}
 }

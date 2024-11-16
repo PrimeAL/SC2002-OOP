@@ -32,43 +32,6 @@ public class Appointment implements Serializable {
 		this.apptOutcomeRecord=null;
 	}
 	
-	/*public static void requestForAppt(Appointment appt, int apptIndex) {
-		System.out.println("Request for Appointment under Dr "+appt.getDoctor().getName()
-		+" at "+appt.getDate() +" "+appt.getTime()+" has been sent");
-		appt.setStatus("Pending");
-		Doctor docOfAppt=appt.getDoctor();
-		docOfAppt.updateApptReq(apptIndex);
-	}*/
-	
-	/*public static void reschAppt(Appointment oldAppt, Appointment newAppt,int newApptIndex) {
-		Doctor docOfAppt=oldAppt.getDoctor();
-		oldAppt.setStatus("Available");
-		docOfAppt.revertSetAppointment(oldAppt);
-		requestForAppt(newAppt,newApptIndex);
-	}*/
-
-	/*public static void cancelAppt(Appointment appt) {
-		// TODO Auto-generated method stub
-		appt.setStatus("Available");
-		Doctor docOfAppt=appt.getDoctor();
-		docOfAppt.revertSetAppointment(appt);
-	}*/
-		
-	/*public static void addAccAppt(Appointment appt) {
-		// TODO Auto-generated method stub
-		Doctor docOfAppt=appt.getDoctor();
-		appt.setStatus("Confirmed");
-		docOfAppt.updateComingAppt(appt);
-	}*/
-	
-	/*public static void removeCompAppt(Appointment appt) {
-		// TODO Auto-generated method stub
-		appt.setStatus("Completed");
-		appt.getDoctor().completedAppt(appt);
-		appt.setApptOutcomeRecord(OutcomeRecord.createOutcomeRecord(appt));
-		
-	}*/
-
 	/**
 	 * Status attribute Getter
 	 * @return String

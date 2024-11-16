@@ -19,12 +19,10 @@ public class prescribedMed implements Serializable {
 	}
 
 	public String getMedicationName() {
-		// TODO Auto-generated method stub
 		return medicationName;
 	}
 
 	public String getStatus() {
-		// TODO Auto-generated method stub
 		return status;
 	}
 	

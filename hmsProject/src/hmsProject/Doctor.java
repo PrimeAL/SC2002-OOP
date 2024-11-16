@@ -29,15 +29,8 @@ public class Doctor extends User implements Serializable {
         this.gender = gender;
         this.age = age;
     }
-	
-	public void updateApptReq(Appointment appt) {
-		this.addApptRequest(appt);		
-		this.removeAvailAppt(appt);
-	}
-	
-	public void revertSetAppointment(Appointment oldAppt) {
-		// TODO Auto-generated method stub
 		
+	public void revertSetAppointment(Appointment oldAppt) {
 		//appointment either pending or confirmed
 		if (oldAppt.getStatus().equals("Pending")) {
 	        this.removeApptReq(oldAppt);
@@ -47,15 +40,19 @@ public class Doctor extends User implements Serializable {
 	        this.addAvailAppointment(oldAppt);
 	    }
 		
-		//to add sort method after appointment has been added back to ensure correct order displayed.
 		Collections.sort(availableAppt, (a1, a2) -> {
 	        int dateCompare = a1.getDate().compareTo(a2.getDate());
 	        return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
 	    });
 	}
 	
+	public void updateApptReq(Appointment appt) {
+		this.addApptRequest(appt);		
+		this.removeAvailAppt(appt);
+	}
+	
+	
 	public void updateComingAppt(Appointment appt) {
-		// TODO Auto-generated method stub
 		this.removeApptReq(appt);
 		this.addComingAppt(appt);
 	}
@@ -68,7 +65,7 @@ public class Doctor extends User implements Serializable {
 		this.comingAppt.add(appt);
 	}
 	
-	private void removeApptReq(Appointment appt) {
+	public void removeApptReq(Appointment appt) {
 		this.apptRequest.remove(appt);
 	}
 	
@@ -104,10 +101,6 @@ public class Doctor extends User implements Serializable {
 		return name;
 	}
 	
-	private void setName(String name) {
-		this.name = name;
-	}
-	
 	public ArrayList<Appointment> getAvailableAppt() {
 		return availableAppt;
 	}
@@ -122,16 +115,18 @@ public class Doctor extends User implements Serializable {
 				sc.nextLine();
 				switch(userMenuInput) {
 					case 1:
-						viewMedRec();
+						viewMedRec(sc);
 						break;
 					case 2:
-						updateMedRec();
+						updateMedRec(sc);
+						docCont.save();
 						break;
 					case 3:
 						viewPersonalSchedule();
 						break;
 					case 4:
-						setAvailAppt(docCont,sc);
+						setAvailAppt(sc);
+						docCont.save();
 						break;
 					case 5:
 						apptOp(docCont, sc);
@@ -185,8 +180,7 @@ public class Doctor extends User implements Serializable {
 				+ "7. Record Appointment Outcome\n0. Logout");
 	}
 
-	public void viewMedRec() {
-		Scanner sc = new Scanner(System.in);
+	private void viewMedRec(Scanner sc) {
 		System.out.println("\n=== View Patient Medical Records ===");
 
 		if (patients.isEmpty()) {
@@ -199,49 +193,21 @@ public class Doctor extends User implements Serializable {
 				int choice = sc.nextInt();
 				if (choice > 0 && choice <= patients.size()) {
 					Patient selectedPatient = patients.get(choice - 1);
-					MedicalRecord record = selectedPatient.getMedicalRecord();
-					printMedicalRecord(record);
+					selectedPatient.getMedicalRecord().viewAll(); //print function copied to medical record
 				} else if (choice != 0) {
 					System.out.println("Invalid input.");
-					viewMedRec();
+					viewMedRec(sc);
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid input.");
 				sc.nextLine();
-				viewMedRec();
+				viewMedRec(sc);
 			}
 		}
 		System.out.println();
 	}
 
-	private void printMedicalRecord(MedicalRecord record) {
-		System.out.println("\nPatient ID: " + record.getpID());
-		System.out.println("Name: " + record.getName());
-		System.out.println("DOB: " + record.getDOB());
-		System.out.println("Gender: " + record.getGender());
-		System.out.println("Phone: " + record.getPhone());
-		System.out.println("Email: " + record.getEmail());
-		System.out.println("Blood Type: " + record.getBloodType());
-
-		System.out.println("\nDiagnoses:");
-		for(Diagnosis diag : record.getDiagnoses()) {
-			System.out.println("- Date: " + diag.getDiagnosisDate());
-			System.out.println("  Description: " + diag.getDescription());
-			System.out.println("  Severity: " + diag.getSeverity());
-			System.out.println("  Diagnosed by: Dr. " + diag.getDiagnosedBy());
-		}
-
-		System.out.println("\nTreatments:");
-		for(Treatment treat : record.getTreatments()) {
-			System.out.println("- Date: " + treat.getPrescribedDate());
-			System.out.println("  Treatment Type: " + treat.getTreatmentType());
-			System.out.println("  Prescription: " + treat.getPrescription());
-			System.out.println("  Prescribed by: Dr. " + treat.getPrescribedBy());
-		}
-	}
-
-	public void updateMedRec() {
-		Scanner sc = new Scanner(System.in);
+	private void updateMedRec(Scanner sc) {
 		System.out.println("\n=== Update Patient Medical Records ===");
 
 		if (patients.isEmpty()) {
@@ -255,52 +221,18 @@ public class Doctor extends User implements Serializable {
 				sc.nextLine();
 				if (choice > 0 && choice <= patients.size()) {
 					Patient selectedPatient = patients.get(choice - 1);
-					updatePatientRecord(selectedPatient, sc);
+					selectedPatient.getMedicalRecord().updatePatientRecord(sc, this.getName()); //updated to be abstracted to respective classes
 				} else if (choice != 0) {
 					System.out.println("Invalid input.");
-					updateMedRec();
+					updateMedRec(sc);
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid input.");
 				sc.nextLine();
-				updateMedRec();
+				updateMedRec(sc);
 			}
 		}
 		System.out.println();
-	}
-
-	private void updatePatientRecord(Patient patient, Scanner sc) {
-		System.out.println("1. Add Diagnosis");
-		System.out.println("2. Add Treatment");
-		System.out.println("Enter choice:");
-		int choice = sc.nextInt();
-		sc.nextLine();
-		if(choice == 1) {
-			System.out.println("Enter diagnosis description:");
-			String description = sc.nextLine();
-			System.out.println("Enter severity (Mild/Moderate/Severe):");
-			String severity = sc.nextLine();
-
-			Diagnosis newDiagnosis = new Diagnosis(description,
-					LocalDate.now().toString(),
-					this.name,
-					severity);
-			patient.getMedicalRecord().updateDiagnosis(newDiagnosis);
-
-		} else if(choice == 2) {
-			System.out.println("Enter treatment type:");
-			String treatmentType = sc.nextLine();
-			System.out.println("Enter prescription:");
-			String prescription = sc.nextLine();
-
-			Treatment newTreatment = new Treatment(treatmentType,
-					prescription,
-					LocalDate.now().toString(),
-					this.name);
-			patient.getMedicalRecord().updateTreatment(newTreatment);
-		}
-
-		System.out.println("Medical record updated successfully!");
 	}
 
 	private void viewPersonalSchedule() {
@@ -312,7 +244,7 @@ public class Doctor extends User implements Serializable {
 		viewUpcomingAppointments();
 	}
 
-	public void setAvailAppt(DoctorController docCont,Scanner sc) {
+	private void setAvailAppt(Scanner sc) {
 		System.out.println("\n=== Set Available Appointments ===");
 		while(true) {
 			String date;
@@ -320,7 +252,7 @@ public class Doctor extends User implements Serializable {
 				System.out.println("Enter date (YYYY-MM-DD) or 0 to exit:");
 				date = sc.nextLine();
 				if(date.equals("0")) return;
-				if (!isValidDate(date)) {
+				if (!UtilityClass.isValidDate(date)) {
 					System.out.println("Invalid date format. Please use YYYY-MM-DD format.");
 					continue;
 				}
@@ -330,7 +262,7 @@ public class Doctor extends User implements Serializable {
 			while(true) {
 				System.out.println("Enter time (HH:mm) in 24-hour format:");
 				time = sc.nextLine();
-				if (!isValidTime(time)) {
+				if (!UtilityClass.isValidTime(time)) {
 					System.out.println("Invalid time format. Please use HH:mm in 24-hour format.");
 					System.out.println("Ensure time is between 00:00 and 23:59.");
 					continue;
@@ -338,7 +270,7 @@ public class Doctor extends User implements Serializable {
 				break;
 			}
 			Appointment newAppt = new Appointment("Available", this, date, time);
-			docCont.addAvailAppointment(newAppt);
+			this.addAvailAppointment(newAppt);
 			System.out.println("Appointment slot added successfully!");
 			System.out.println("Add another appointment? (Y/N)");
 			if(!sc.nextLine().equalsIgnoreCase("Y")) break;
@@ -349,28 +281,7 @@ public class Doctor extends User implements Serializable {
 		});
 	}
 
-	private boolean isValidDate(String dateStr) {
-		try {
-			LocalDate.parse(dateStr);
-			return true;
-		} catch (DateTimeParseException e) {
-			return false;
-		}
-	}
-
-	private boolean isValidTime(String timeStr) {
-		if (!timeStr.matches("\\d{2}:\\d{2}")) {
-			return false;
-		}
-		try {
-			LocalTime inputTime = LocalTime.parse(timeStr);
-			return true;
-		} catch (DateTimeParseException e) {
-			return false;
-		}
-	}
-
-	public void apptOp(DoctorController docCont, Scanner sc) {
+	private void apptOp(DoctorController docCont, Scanner sc) {
 		if (this.getApptReq().isEmpty()) {
 			System.out.println("No appointment requests at the moment.\n");
 			return;
@@ -399,12 +310,14 @@ public class Doctor extends User implements Serializable {
 				Appointment selectedAppt = this.getApptReq().get(apptSelect - 1);
 				switch (opSelect) {
 					case 1:
-						docCont.getApptSys().acceptAppt(docCont, selectedAppt);
+						//docCont.getApptSys().acceptAppt(docCont, selectedAppt);
+						docCont.addAccAppt(selectedAppt);
 						Collections.sort(comingAppt, (a1, a2) -> {
 							int dateCompare = a1.getDate().compareTo(a2.getDate());
 							return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
 						});
 						addPatient(selectedAppt.getPatient());
+						docCont.save();
 						System.out.println("Appointment accepted successfully.");
 						break;
 					case 2:
@@ -445,7 +358,7 @@ public class Doctor extends User implements Serializable {
         System.out.println();
     }
 
-	private void recordAppointmentOutcome(DoctorController docCont, Scanner sc) {
+	private void recordAppointmentOutcome(DoctorController docCont,Scanner sc) {
 		System.out.println("\n=== Record Appointment Outcome ===");
 		if (comingAppt.isEmpty()) {
 			System.out.println("No appointments to record outcome for.\n");
@@ -463,11 +376,12 @@ public class Doctor extends User implements Serializable {
 			sc.nextLine();
 			if (choice > 0 && choice <= comingAppt.size()) {
 				Appointment selectedAppt = comingAppt.get(choice - 1);
-				docCont.addCompletedAppt(selectedAppt);
+				docCont.updateAppt(selectedAppt);
+				this.removeComingAppt(selectedAppt);
 				System.out.println("Appointment outcome recorded successfully!");
 			} else if (choice != 0) {
 				System.out.println("Invalid input.");
-				recordAppointmentOutcome(docCont, sc);
+				recordAppointmentOutcome(docCont,sc);
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Invalid input.");

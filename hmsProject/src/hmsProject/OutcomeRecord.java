@@ -68,13 +68,20 @@ public class OutcomeRecord implements Serializable {
     }
     
     public void printMeds() {  
-    	System.out.print("\n\tMedicine List:");
+    	System.out.println("\tMedicine List:");
         for(prescribedMed preMed: this.getMeds()) {
-        	System.out.print("\n\tMedication Name"+preMed.getMedicationName()+" Status:"+preMed.getStatus());
+        	System.out.println("\tMedication Name:"+preMed.getMedicationName()+" Status:"+preMed.getStatus());
         }
     }
-
+    
     public String getConsultationNote() {
         return consultationNote;
+    }
+    
+    public void printAll() {
+    	System.out.println("Consultation Notes:"+this.consultationNote);
+    	System.out.println("Date of Appointment:"+this.dateOfAppointment);
+    	System.out.println("Service Provided:"+this.serviceProvided);
+    	printMeds();
     }
 }

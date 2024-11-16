@@ -15,8 +15,4 @@ public class controller {
 		return dataStorage;
 	}
 
-	public void setDataStorage(DataStorage dataStorage) {
-		this.dataStorage = dataStorage;
-	}
-	
 }

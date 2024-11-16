@@ -25,25 +25,10 @@ public class DataStorage {
 		while (true) {
 			try {
 				if (scanner.nextInt() == 1) {
-					/*this.apptSystem = new AppointmentSystem();
-					this.initialisingPatientData();
-					this.initialisingStaffData();
-					this.initialisingMedicineData();
-					Doctor d1 = this.getApptSys().getFirstDocForTesting(); //I had no choice but to do this for testing because
-																			// ApptSys keeps its own Doctors list. This can be avoided if
-																			//ApptSys retrieves its Doctors from database instead of having its own storage
-					d1.addPatient(((Patient) retrieveUser("P1001")));
-					d1.addAvailAppointment(new Appointment("Available", d1, "1/11/2024", "1000")); //Just for testing
-					this.saveApptSys();*/
-
 					dataOps.initializeUser(this.user);
 					dataOps.initializeMedData(this.inven);
 					dataOps.serializeAll(apptSystem, inven, user);
 				} else {
-					//this.apptSystem =null;
-					//this.user=null;
-					//this.inven=null;
-					//dataOps.deserializeAll(this.apptSystem,this.inven,this.user);
 					dataOps.deserializeAll(this);
 				}
 				this.docList = new ArrayList<Doctor>();
@@ -60,17 +45,14 @@ public class DataStorage {
 	}
 	
 	public void setAppt(AppointmentSystem apptSys) {
-		// TODO Auto-generated method stub
 		this.apptSystem=apptSys;
 	}
 
 	public void setInven(Inventory inven) {
-		// TODO Auto-generated method stub
 		this.inven=inven;
 	}
 
 	public void setUser(ArrayList<User> user) {
-		// TODO Auto-generated method stub
 		this.user=user;
 	}
 	
@@ -92,27 +74,10 @@ public class DataStorage {
 				return rUser;
 			}
 		}
-		/*
-		int cnt=0;
-		for(User rUser: user) {
-			if( rUser.gethID().equals(id) && rUser.getPw().equals(pw)) {
-				System.out.println("Account Verified");
-				return user.get(cnt);
-			}
-			cnt++;
-		}
-		return null;
-		 */
         return null;
     }
 
-	public void saveUser(User userToSave) { dataOps.serialiseUser(userToSave); }
-
-	public void saveApptSys() { dataOps.serialiseApptSys(this.retrieveApptSys()); }
-
-	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
-
-	public User retrieveUser(String id) { //return dataOps.deserialiseUser(id); 
+	public User retrieveUser(String id) {
 		for(User u: this.user) {
 			if(u.gethID().equals(id)) return u;
 		}
@@ -123,25 +88,21 @@ public class DataStorage {
 		return this.docList;
 	}
 
-	public AppointmentSystem retrieveApptSys() { //return dataOps.deserialiseApptSys(); 
+	public AppointmentSystem retrieveApptSys() {
 		return this.apptSystem;
 	}
 
 	public Inventory getInventory(){
-		return this.inven; //Test
+		return this.inven;
 	}
-
-
-	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); }
 
 	public void declineAppt(Doctor dr,Appointment appt) {
 		appt.setStatus("Cancelled");
-		dr.getComingAppt().remove(appt);
+		dr.removeApptReq(appt);
 		appt.getPatient().removeAppt(appt);
+		this.retrieveApptSys().removeSchAppt(appt);
+		this.retrieveApptSys().addCompAppt(appt); //cancelled appointments are recorded as completed appt
 		this.save();
-		//this.saveUser(appt.getPatient());
-		//this.saveUser(dr);
-		//this.saveApptSys();
 	}
 
 	public void patientSchAppt(Patient currentPatient, Appointment selectedAppt) {
@@ -152,9 +113,6 @@ public class DataStorage {
 		docOfAppt.updateApptReq(selectedAppt);
 		this.retrieveApptSys().addSchAppt(selectedAppt); //added pending appointments
 		this.save();
-		//this.saveUser(currentPatient);
-		//this.saveUser(docOfAppt);
-		//this.saveApptSys();
 	}
 
 	public void revertOldAppt(Appointment oldAppt) {
@@ -162,10 +120,8 @@ public class DataStorage {
 		oldAppt.setPatient(null);
 		oldAppt.setStatus("Available");
 		docOfAppt.revertSetAppointment(oldAppt);
+		this.retrieveApptSys().removeSchAppt(oldAppt);
 		this.save();
-		//this.saveUser(oldAppt.getPatient());
-		//this.saveUser(docOfAppt);
-		//this.saveApptSys();
 	}
 
 	public void cancelAppt(Patient patient, Appointment appt) {
@@ -173,48 +129,26 @@ public class DataStorage {
 		Doctor docOfAppt=appt.getDoctor();
 		docOfAppt.revertSetAppointment(appt);
 		patient.removeAppt(appt);
+		this.retrieveApptSys().removeSchAppt(appt);
 		this.save();
-		//this.saveUser(patient);
-		//this.saveUser(docOfAppt);
-		//this.saveApptSys();
 	}
 
 	public void acceptAppt(Appointment appt) {
 		Doctor docOfAppt=appt.getDoctor();
 		appt.setStatus("Confirmed");
 		docOfAppt.updateComingAppt(appt);
-		this.retrieveApptSys().addSchAppt(appt);
 		this.save();
-		//this.saveUser(appt.getPatient());
-		//this.saveUser(docOfAppt);
-		//this.saveApptSys();
 	}
 
 	public void updateCompletedAppt(Appointment appt) {
 		this.retrieveApptSys().addCompAppt(appt);
+		this.retrieveApptSys().removeSchAppt(appt);
 		appt.setStatus("Completed");
 		appt.getDoctor().completedAppt(appt);
 		appt.setApptOutcomeRecord(OutcomeRecord.createOutcomeRecord(appt));
 		this.retrieveApptSys().addOutcomeRecord(appt.getApptOutcomeRecord());
+		appt.getPatient().removeAppt(appt);
+		appt.getPatient().addCompAppt(appt);
 		this.save();
-		//this.saveUser(appt.getPatient());
-		//this.saveUser(appt.getDoctor());
-		//this.saveApptSys();
 	}
-
-	public void updatePhone(Patient currentPatient, String phoneNum) {
-		// TODO Auto-generated method stub
-		currentPatient.getMedicalRecord().setPhone(phoneNum);
-	}
-
-	public void updateEmail(Patient currentPatient, String email) {
-		// TODO Auto-generated method stub
-		currentPatient.getMedicalRecord().setEmail(email);
-	}
-
-	public void updateAvailAppt(Doctor currentDoctor, Appointment newAppt) {
-		// TODO Auto-generated method stub
-		currentDoctor.addAvailAppointment(newAppt);
-	}	
-	
 }

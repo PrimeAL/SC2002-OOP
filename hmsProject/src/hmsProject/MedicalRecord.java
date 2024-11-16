@@ -1,7 +1,9 @@
 package hmsProject;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MedicalRecord implements Serializable {
 	private String pID;
@@ -21,17 +23,17 @@ public class MedicalRecord implements Serializable {
 	
 	public MedicalRecord(String pID, String name, String DOB, String gender, 
             String phone, String email, String bloodType) {
-	this.pID = pID;
-	this.name = name;
-	this.DOB = DOB;
-	this.gender = gender;
-	this.phone = phone;
-	this.email = email;
-	this.bloodType = bloodType;
-	
-	// Initialize ArrayLists as in the default constructor
-	this.diagnoses = new ArrayList<Diagnosis>();
-	this.treatments = new ArrayList<Treatment>();
+		this.pID = pID;
+		this.name = name;
+		this.DOB = DOB;
+		this.gender = gender;
+		this.phone = phone;
+		this.email = email;
+		this.bloodType = bloodType;
+		
+		// Initialize ArrayLists as in the default constructor
+		this.diagnoses = new ArrayList<Diagnosis>();
+		this.treatments = new ArrayList<Treatment>();
 	}
 	
 	public String getpID() {
@@ -114,22 +116,47 @@ public class MedicalRecord implements Serializable {
 		treatments.add(newTreatment);
 	}
 
-	public void viewAll() {
-		System.out.println(this.getpID());
-		System.out.println("Name: " + this.getName());
-		System.out.println("DOB: " + this.getDOB());
-		System.out.println("Phone: " + this.getPhone());
-		System.out.println("Email: " + this.getEmail());
-		System.out.println("Blood Type: " + this.getBloodType());
-		System.out.println("Diagnosis: ");
-		for (Diagnosis diagnosis : this.getDiagnoses()) {
-			System.out.println("- " + diagnosis);
+	public void viewAll() {	
+		System.out.println("\nPatient ID: " + getpID());
+		System.out.println("Name: " + getName());
+		System.out.println("DOB: " + getDOB());
+		System.out.println("Gender: " + getGender());
+		System.out.println("Phone: " + getPhone());
+		System.out.println("Email: " + getEmail());
+		System.out.println("Blood Type: " + getBloodType());
+
+		System.out.println("\nDiagnoses:");
+		for(Diagnosis diag : getDiagnoses()) {
+			System.out.println("- Date: " + diag.getDiagnosisDate());
+			System.out.println("  Description: " + diag.getDescription());
+			System.out.println("  Severity: " + diag.getSeverity());
+			System.out.println("  Diagnosed by: Dr. " + diag.getDiagnosedBy());
 		}
 
-		System.out.println("Treatments: ");
-		for (Treatment treatment : this.getTreatments()) {
-			System.out.println("- " + treatment);
+		System.out.println("\nTreatments:");
+		for(Treatment treat : getTreatments()) {
+			System.out.println("- Date: " + treat.getPrescribedDate());
+			System.out.println("  Treatment Type: " + treat.getTreatmentType());
+			System.out.println("  Prescription: " + treat.getPrescription());
+			System.out.println("  Prescribed by: Dr. " + treat.getPrescribedBy());
 		}
+		
 	}
+	
+	public void updatePatientRecord(Scanner sc, String drName) {
+		System.out.println("1. Add Diagnosis");
+		System.out.println("2. Add Treatment");
+		System.out.println("Enter choice:");
+		int choice = sc.nextInt();
+		sc.nextLine();
+		if(choice == 1) {
+			updateDiagnosis(Diagnosis.createDiagosis(sc, drName));
 
+		} else if(choice == 2) {
+
+			updateTreatment(Treatment.createTreatment(sc, drName));
+		}
+
+		System.out.println("Medical record updated successfully!");
+	}
 }

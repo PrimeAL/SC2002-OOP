@@ -16,7 +16,6 @@ public class HMS {
 	 * @param sc
 	 */
 	public void initialise(Scanner sc) {
-		// TODO - implement HMS.initialise
 		while(true) {
 			while(currentUser==null) {
 				this.login(sc);

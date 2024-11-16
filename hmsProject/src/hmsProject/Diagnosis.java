@@ -1,6 +1,8 @@
 package hmsProject;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Diagnosis implements Serializable {
     private String description;
@@ -46,5 +48,14 @@ public class Diagnosis implements Serializable {
     
     public void setSeverity(String severity) {
         this.severity = severity;
+    }
+    
+    public static Diagnosis createDiagosis(Scanner sc, String drName) {
+		System.out.println("Enter diagnosis description:");
+		String description = sc.nextLine();
+		System.out.println("Enter severity (Mild/Moderate/Severe):");
+		String severity = sc.nextLine();
+		return new Diagnosis(description, LocalDate.now().toString(), drName, severity);
+    	
     }
 }
