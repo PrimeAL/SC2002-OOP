@@ -12,11 +12,10 @@ public class DataStorage {
 	private Inventory inven;
 	private DataSerialization dataOps;
 	private ArrayList<Doctor> docList;
-	private int choice;
 	
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
-		System.out.println("To refresh data, key in 1. Otherwise, key whatever. ");
+		System.out.println("To refresh data, key in 1. Otherwise, key in anything. ");
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
 		
 		this.apptSystem=new AppointmentSystem();

@@ -6,7 +6,6 @@ public class HMS {
 
 	private MainController mainController;
 	private User currentUser;
-	private int choice;
 
 	public HMS() {
 		this.mainController=new MainController();
@@ -48,7 +47,7 @@ public class HMS {
 	}
 
 	private void login(Scanner sc) {
-		// TODO - implement HMS.login
+		int choice;
 		System.out.println("1.Login\n2.Exit");
 		try {
 			choice = 0;

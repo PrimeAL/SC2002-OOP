@@ -11,7 +11,6 @@ public class Patient extends User implements Serializable {
 	private MedicalRecord medicalRecord;
 	private ArrayList<Appointment> appt;
 	private ArrayList<Appointment> completedAppt;
-	int userMenuInput, choice, success, uApptOpIn, cnt;
 
 	/**
 	 *
@@ -41,7 +40,7 @@ public class Patient extends User implements Serializable {
 	}
 
 	public void userInterface(PatientController patientCont, Scanner sc) {
-		// TODO - implement Patient.userInterface
+		int userMenuInput;
 		System.out.println("Hi " + this.medicalRecord.getName() + "!");
 		while (true) {
 			try {
@@ -104,6 +103,7 @@ public class Patient extends User implements Serializable {
 	}
 
 	public void updateInfo(PatientController patientCont,Scanner sc) {
+		int success, choice;
 		try {
 			System.out.println(
 					"""
@@ -140,7 +140,7 @@ public class Patient extends User implements Serializable {
 	}
 
 	public void apptOp(PatientController patientCont,Scanner sc) {
-		// TODO - implement Patient.apptOp
+		int uApptOpIn;
 		try {
 			System.out.println("Manage Appointments(Patient)");
 			uApptOpIn = 0;
@@ -196,7 +196,7 @@ public class Patient extends User implements Serializable {
 	}
 
 	public void viewAppt() {
-		cnt=1;
+		int cnt=1;
 		for(Appointment appt: this.getAppt()) {
 			System.out.println(cnt+". Date:"+appt.getDate()+"|Time:"+appt.getTime()+"|Status:"+appt.getStatus());
 			cnt++;
@@ -204,7 +204,7 @@ public class Patient extends User implements Serializable {
 	}
 
 	public void viewCompAppt() {
-		cnt=1;
+		int cnt=1;
 		for(Appointment appt: this.getCompletedAppt()) {
 			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
 			cnt++;
