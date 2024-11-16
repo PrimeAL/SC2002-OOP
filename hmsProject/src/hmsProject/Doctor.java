@@ -10,6 +10,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Doctor subclass of User.
+ */
 public class Doctor extends User implements Serializable {
     private ArrayList<Patient> patients;
     private ArrayList<Appointment> availableAppt;
@@ -18,7 +21,15 @@ public class Doctor extends User implements Serializable {
     private String name;
     private String gender;
     private int age;
-    
+
+	/**
+	 * Doctor class constructor.
+	 * @param uid unique user identifier
+	 * @param pw password
+	 * @param name doctor name
+	 * @param gender doctor gender
+	 * @param age doctor age
+	 */
     public Doctor(String uid, String pw, String name, String gender, int age) {
         super(uid,pw);
         this.patients = new ArrayList<Patient>();
@@ -29,7 +40,14 @@ public class Doctor extends User implements Serializable {
         this.gender = gender;
         this.age = age;
     }
-		
+
+	/**
+	 * Removing appointment that has been rescheduled from
+	 * appointment requests list if status is pending or
+	 * coming appointment list if status is confirmed.
+	 * Add appointment back to available appointments list.
+	 * @param oldAppt the rescheduled appointment
+	 */
 	public void revertSetAppointment(Appointment oldAppt) {
 		//appointment either pending or confirmed
 		if (oldAppt.getStatus().equals("Pending")) {
@@ -45,66 +63,126 @@ public class Doctor extends User implements Serializable {
 	        return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
 	    });
 	}
-	
+
+	/**
+	 * Shift appointment from available appointments list to appointment request list.
+	 * @param appt Appointment that was scheduled
+	 */
 	public void updateApptReq(Appointment appt) {
 		this.addApptRequest(appt);		
 		this.removeAvailAppt(appt);
 	}
-	
-	
+
+	/**
+	 * Shift appointment from appointment request list to coming appointments list.
+	 * @param appt Appointment that was confirmed
+	 */
 	public void updateComingAppt(Appointment appt) {
 		this.removeApptReq(appt);
 		this.addComingAppt(appt);
 	}
-	
+
+	/**
+	 * Remove from coming appointments list.
+	 * @param appt appointment that is no longer confirmed because it is completed
+	 */
 	public void completedAppt(Appointment appt) {
 		this.removeComingAppt(appt);
 	}
-	
+
+	/**
+	 * Add into coming appointments list.
+	 * @param appt confirmed appointment
+	 */
 	private void addComingAppt(Appointment appt) {
 		this.comingAppt.add(appt);
 	}
-	
+
+	/**
+	 * Remove from appointment request list.
+	 * @param appt appointment that is no longer pending
+	 */
 	public void removeApptReq(Appointment appt) {
 		this.apptRequest.remove(appt);
 	}
-	
+
+	/**
+	 * Add into available appointments list.
+	 * @param appt available appointment
+	 */
 	public void addAvailAppointment(Appointment appt) {	
 		this.availableAppt.add(appt);
 	}
-	
+
+	/**
+	 * Remove from coming appointments list.
+	 * @param appt appointment that is no longer confirmed
+	 */
 	private void removeComingAppt(Appointment appt) {
 		this.comingAppt.remove(appt);
 	}
-	
+
+	/**
+	 * Remove from available appointments list.
+	 * @param appt appointment that is no longer available
+	 */
 	private void removeAvailAppt(Appointment appt) {
 		this.availableAppt.remove(appt);
 	}
-	
+
+	/**
+	 * Add into appointment request list.
+	 * @param appt appointment that is pending.
+	 */
 	private void addApptRequest(Appointment appt) {
 		this.apptRequest.add(appt);
 	}
-	
+
+	/**
+	 * Coming appointments list getter.
+	 * @return coming appointments list.
+	 */
 	public ArrayList<Appointment> getComingAppt(){
 		return this.comingAppt;
 	}
-	
+
+	/**
+	 * Appointment request list getter.
+	 * @return appointment request list.
+	 */
 	public ArrayList<Appointment> getApptReq(){
 		return this.apptRequest;
 	}
-	
+
+	/**
+	 * Patients list getter.
+	 * @return Patient list.
+	 */
 	public ArrayList<Patient> getPatients() {
 		return patients;
 	}
-	
+
+	/**
+	 * Doctor name getter.
+	 * @return Doctor name.
+	 */
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * Available appointments list getter.
+	 * @return available appointments list.
+	 */
 	public ArrayList<Appointment> getAvailableAppt() {
 		return availableAppt;
 	}
-	
+
+	/**
+	 * Doctor-specific user interface that overrides from User.
+	 * @param docCont DoctorController
+	 * @param sc Scanner class for input
+	 */
 	public void userInterface(DoctorController docCont, Scanner sc) {
         System.out.println("Welcome Dr. " + this.name);
         int userMenuInput = -1;
@@ -153,6 +231,11 @@ public class Doctor extends User implements Serializable {
 	}
 
 	// For testing purposes
+
+	/**
+	 * Printing completed appointments.
+	 * @param apptSystem AppointmentSystem
+	 */
 	private void printCompletedAppointments(AppointmentSystem apptSystem) {
 		System.out.println("\n=== Completed Appointments ===");
 		for (Appointment appt : apptSystem.getCompAppt()) {
@@ -165,14 +248,16 @@ public class Doctor extends User implements Serializable {
 					" | Service Provided: " + outcome.getServiceProvided() +
 					" | Consultation Note: " + outcome.getConsultationNote());
 			System.out.println("Prescribed Medications:");
-			for (prescribedMed med : outcome.getMeds()) {
+			for (PrescribedMed med : outcome.getMeds()) {
 				System.out.println("- Medication Name: " + med.getMedicationName() +
 						" | Status: " + med.getStatus());
 			}
 		}
 	}
 
-
+	/**
+	 * Doctor menu.
+	 */
 	public void displayMenu() {
 		System.out.println("1. View Patient Medical Records\n2. Update Patient Medical Records\n"
 				+ "3. View Personal Schedule\n4. Set Availability for Appointments\n"
@@ -180,6 +265,10 @@ public class Doctor extends User implements Serializable {
 				+ "7. Record Appointment Outcome\n0. Logout");
 	}
 
+	/**
+	 * Print medical records of patients.
+	 * @param sc Scanner class for input.
+	 */
 	private void viewMedRec(Scanner sc) {
 		System.out.println("\n=== View Patient Medical Records ===");
 
@@ -207,6 +296,10 @@ public class Doctor extends User implements Serializable {
 		System.out.println();
 	}
 
+	/**
+	 * Update Medical Records of a Patient.
+	 * @param sc Scanner class for input
+	 */
 	private void updateMedRec(Scanner sc) {
 		System.out.println("\n=== Update Patient Medical Records ===");
 
@@ -235,6 +328,9 @@ public class Doctor extends User implements Serializable {
 		System.out.println();
 	}
 
+	/**
+	 * Print Doctor available appointment slots.
+	 */
 	private void viewPersonalSchedule() {
 		System.out.println("\n=== Personal Schedule ===");
 		System.out.println("Available Appointments:");
@@ -244,6 +340,10 @@ public class Doctor extends User implements Serializable {
 		viewUpcomingAppointments();
 	}
 
+	/**
+	 * Create available appointment slots.
+	 * @param sc Scanner class for input
+	 */
 	private void setAvailAppt(Scanner sc) {
 		System.out.println("\n=== Set Available Appointments ===");
 		while(true) {
@@ -281,6 +381,11 @@ public class Doctor extends User implements Serializable {
 		});
 	}
 
+	/**
+	 * Accept or decline an appointment from Patient.
+	 * @param docCont DoctorController
+	 * @param sc Scanner class for input
+	 */
 	private void apptOp(DoctorController docCont, Scanner sc) {
 		if (this.getApptReq().isEmpty()) {
 			System.out.println("No appointment requests at the moment.\n");
@@ -342,6 +447,9 @@ public class Doctor extends User implements Serializable {
 		System.out.println();
 	}
 
+	/**
+	 * Print upcoming appointments.
+	 */
     private void viewUpcomingAppointments() {
         System.out.println("\n=== Upcoming Appointments ===");
         if(comingAppt.isEmpty()) {
@@ -358,6 +466,11 @@ public class Doctor extends User implements Serializable {
         System.out.println();
     }
 
+	/**
+	 * Create Outcome Record for the patient after an appointment and change appointment status to completed.
+	 * @param docCont DoctorController
+	 * @param sc Scanner class for input
+	 */
 	private void recordAppointmentOutcome(DoctorController docCont,Scanner sc) {
 		System.out.println("\n=== Record Appointment Outcome ===");
 		if (comingAppt.isEmpty()) {
@@ -391,12 +504,19 @@ public class Doctor extends User implements Serializable {
 		System.out.println();
 	}
 
+	/**
+	 * List out all the Patients.
+	 */
     private void listPatients() {
         for(int i = 0; i < patients.size(); i++) {
             System.out.println((i+1) + ". " + patients.get(i).getMedicalRecord().getName());
         }
     }
 
+	/**
+	 * Add Patients to Patients List.
+	 * @param newPatient
+	 */
     public void addPatient(Patient newPatient) {
 		if (!this.patients.contains(newPatient)) {
 			this.patients.add(newPatient);

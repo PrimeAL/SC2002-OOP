@@ -3,29 +3,70 @@ import java.io.Serializable;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * This AppointmentSystem class manages all appointment related operations.
+ */
 public class AppointmentSystem implements Serializable {
-
 	private ArrayList<Appointment> scheduledAppt;
 	private ArrayList<Appointment> completedAppt;
 	private ArrayList<OutcomeRecord> apptOutcomeRec;
-	
+
+	/**
+	 * AppointmentSystem class constructor to initialise the arrays.
+	 */
 	public AppointmentSystem() {
 		this.apptOutcomeRec=new ArrayList<OutcomeRecord>();
 		this.scheduledAppt=new ArrayList<Appointment>();
 		this.completedAppt=new ArrayList<Appointment>();
 	}
-	
+
+	/**
+	 * Adds scheduled appointment into the scheduled appointments list.
+	 * @param appt scheduled appointment to be added.
+	 */
 	public void addSchAppt(Appointment appt) { this.scheduledAppt.add(appt); }
+
+	/**
+	 * Scheduled appointment list getter.
+	 * @return array list of scheduled appointments.
+	 */
 	public ArrayList<Appointment> getSchAppt(){	return this.scheduledAppt; }
+
+	/**
+	 * Removes scheduled appointment from the scheduled appointments list.
+	 * @param appt scheduled appointment to be removed.
+	 */
 	public void removeSchAppt(Appointment appt) { this.scheduledAppt.remove(appt); }
-	
-	public void addCompAppt(Appointment appt) {	this.completedAppt.add(appt); } 
+
+	/**
+	 * Adds completed appointment into the completed appointments list.
+	 * @param appt completed appointment to be added.
+	 */
+	public void addCompAppt(Appointment appt) {	this.completedAppt.add(appt); }
+
+	/**
+	 * Completed appointments list getter.
+	 * @return array list of completed appointments.
+	 */
 	public ArrayList<Appointment> getCompAppt(){ return this.completedAppt; }
 	//should only have add and get operation because its suppose to be a record of completed appointments
-	
+
+	/**
+	 * Adds outcome record into the outcome records list.
+	 * @param rec outcome record to be added.
+	 */
 	public void addOutcomeRecord(OutcomeRecord rec) { this.apptOutcomeRec.add(rec); }
+
+	/**
+	 * Outcome records list getter.
+	 * @return array list of outcome records.
+	 */
 	public ArrayList<OutcomeRecord> getOutcomeRec(){ return this.apptOutcomeRec; }
-	
+
+	/**
+	 * TO-BE-ADDED
+	 * @param sc TO-BE-ADDED
+	 */
 	public void updateOutcomeRec(Scanner sc) {		//used by Pharmacists, add controller to parameter here when
 		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
 		System.out.println("Select Outcome record to update");
@@ -49,7 +90,12 @@ public class AppointmentSystem implements Serializable {
 		}
 		
 	}
-	
+
+	/**
+	 * Scheduling an appointment. Links to PatientController which links to DataStorage.
+	 * @param patientCont Patient Controller
+	 * @param sc Scanner for input
+	 */
 	public void scheAppt(PatientController patientCont,Scanner sc) {	
 		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
 		System.out.println("Choose a doctor for your appointment:");
@@ -84,8 +130,10 @@ public class AppointmentSystem implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param appt
+	 * Rescheduling an appointment. Links to PatientController which links to DataStorage.
+	 * @param patientCont Patient Controller
+	 * @param appt appointment to reschedule
+	 * @param sc Scanner class for input
 	 */
 	public void rescheAppt(PatientController patientCont, Appointment appt, Scanner sc) {
 		//appointment of pending/completed status will be passed in from user

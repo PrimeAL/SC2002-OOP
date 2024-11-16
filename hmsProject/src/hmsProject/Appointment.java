@@ -15,10 +15,10 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Appointment class constructor
-	 * @param status
-	 * @param doctor
-	 * @param date
-	 * @param time
+	 * @param status status of appointment: Available, Pending, Confirmed
+	 * @param doctor doctor-in-charge of appointment
+	 * @param date date of appointment
+	 * @param time time of appointment
 	 */
 	public Appointment(String status, Doctor doctor, String date, String time) {
 		//Appointment will be created through doctor availability and is open as a timeslot that is viewable by the patient
@@ -34,7 +34,7 @@ public class Appointment implements Serializable {
 	
 	/**
 	 * Status attribute Getter
-	 * @return String
+	 * @return status of appointment.
 	 */
 	public String getStatus() {
 		return this.status;
@@ -42,7 +42,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Status attribute Setter
-	 * @param status
+	 * @param status new status
 	 */
 	public void setStatus(String status) {
 		this.status=status;
@@ -50,7 +50,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Doctor attribute Getter
-	 * @return Doctor
+	 * @return the Doctor class of the doctor-in-charge.
 	 */
 	public Doctor getDoctor() {
 		return doctor;
@@ -58,7 +58,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Doctor attribute Setter
-	 * @param doctor
+	 * @param doctor new Doctor class
 	 */
 	private void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
@@ -66,7 +66,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Patient attribute Getter
-	 * @return Patient
+	 * @return the Patient class of the appointment.
 	 */
 	public Patient getPatient() {
 		return patient;
@@ -74,7 +74,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Patient attribute Setter
-	 * @param patient
+	 * @param patient new Patient class of the appointment
 	 */
 	public void setPatient(Patient patient) {
 		this.patient = patient;
@@ -82,7 +82,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Date attribute Getter
-	 * @return String
+	 * @return date of appointment.
 	 */
 	public String getDate() {
 		return date;
@@ -90,7 +90,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Date attribute Setter
-	 * @param date String
+	 * @param date new date
 	 */
 	private void setDate(String date) {
 		this.date = date;
@@ -98,7 +98,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Time attribute Getter
-	 * @return String
+	 * @return time of appointment.
 	 */
 	public String getTime() {
 		return time;
@@ -106,7 +106,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * Time attribute Setter
-	 * @param time
+	 * @param time new time
 	 */
 	private void setTime(String time) {
 		this.time = time;
@@ -114,7 +114,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * OutcomeRecord class Getter
-	 * @return OutcomeRecord
+	 * @return OutcomeRecord class of appointment.
 	 */
 	public OutcomeRecord getApptOutcomeRecord() {
 		return apptOutcomeRecord;
@@ -122,7 +122,7 @@ public class Appointment implements Serializable {
 
 	/**
 	 * OutcomeRecord attribute Setter
-	 * @param apptOutcomeRecord
+	 * @param apptOutcomeRecord new OutcomeRecord class
 	 */
 	public void setApptOutcomeRecord(OutcomeRecord apptOutcomeRecord) {
 		this.apptOutcomeRecord = apptOutcomeRecord;

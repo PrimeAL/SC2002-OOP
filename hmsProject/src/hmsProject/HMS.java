@@ -2,18 +2,24 @@ package hmsProject;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * The main Healthcare Management System itself.
+ */
 public class HMS {
-
 	private MainController mainController;
 	private User currentUser;
 
+	/**
+	 * HMS Constructor.
+	 */
 	public HMS() {
 		this.mainController=new MainController();
 		this.currentUser=null;
 	}
 	
 	/**
-	 * @param sc
+	 * The main backbone of the entire programme. After logging in, initialises EVERYTHING.
+	 * @param sc Scanner class for input
 	 */
 	public void initialise(Scanner sc) {
 		while(true) {
@@ -21,7 +27,7 @@ public class HMS {
 				this.login(sc);
 			}
 			
-			controller userCont=mainController.getUserCont(currentUser);
+			Controller userCont=mainController.getUserCont(currentUser);
 			if(currentUser instanceof Patient) {
 				System.out.println("Patient");
 				((Patient)(currentUser)).userInterface((PatientController)userCont, sc); 
@@ -45,6 +51,10 @@ public class HMS {
 		}
 	}
 
+	/**
+	 * Login interface.
+	 * @param sc Scanner class for input
+	 */
 	private void login(Scanner sc) {
 		int choice;
 		System.out.println("1.Login\n2.Exit");
@@ -78,6 +88,10 @@ public class HMS {
 		
 	}
 
+	/**
+	 * MainController getter.
+	 * @return MainController.
+	 */
 	public MainController getMainController() {
 		return this.mainController;
 	}
