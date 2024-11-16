@@ -5,106 +5,91 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 /**
- * Patient Treatment.
+ * Represents a treatment given to a patient.
  */
 public class Treatment implements Serializable {
-    private String treatmentType;
-    private String prescription;
-    private String prescribedDate;
-    private String prescribedBy;
+    private String description;
+    private String treatmentDate;
+    private String treatmentBy;
 
     /**
-     * Treatment constructor
-     * @param treatmentType treatment type
-     * @param prescription prescription
-     * @param prescribedDate date
-     * @param prescribedBy doctor
+     * Constructs a Treatment with the specified description, date, and doctor.
+     *
+     * @param description the description of the treatment
+     * @param treatmentDate the date the treatment was given
+     * @param treatmentBy the name of the doctor who gave the treatment
      */
-    public Treatment(String treatmentType, String prescription, String prescribedDate, String prescribedBy) {
-        this.treatmentType = treatmentType;
-        this.prescription = prescription;
-        this.prescribedDate = prescribedDate;
-        this.prescribedBy = prescribedBy;
-    }
-    
-    // Getters and Setters
-
-    /**
-     * Treatment type getter.
-     * @return treatment type.
-     */
-    public String getTreatmentType() {
-        return treatmentType;
+    public Treatment(String description, String treatmentDate, String treatmentBy) {
+        this.description = description;
+        this.treatmentDate = treatmentDate;
+        this.treatmentBy = treatmentBy;
     }
 
     /**
-     * Treatment type setter.
-     * @param treatmentType new treatment type
+     * Gets the description of the treatment.
+     *
+     * @return the description of the treatment
      */
-    public void setTreatmentType(String treatmentType) {
-        this.treatmentType = treatmentType;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Prescription getter.
-     * @return prescription.
+     * Sets the description of the treatment.
+     *
+     * @param description the new description of the treatment
      */
-    public String getPrescription() {
-        return prescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Prescription setter.
-     * @param prescription new prescription
+     * Gets the date the treatment was given.
+     *
+     * @return the date the treatment was given
      */
-    public void setPrescription(String prescription) {
-        this.prescription = prescription;
+    public String getTreatmentDate() {
+        return treatmentDate;
     }
 
     /**
-     * Date getter.
-     * @return date.
+     * Sets the date the treatment was given.
+     *
+     * @param treatmentDate the new date the treatment was given
      */
-    public String getPrescribedDate() {
-        return prescribedDate;
+    public void setTreatmentDate(String treatmentDate) {
+        this.treatmentDate = treatmentDate;
     }
 
     /**
-     * Date setter.
-     * @param prescribedDate new Date
+     * Gets the name of the doctor who gave the treatment.
+     *
+     * @return the name of the doctor who gave the treatment
      */
-    public void setPrescribedDate(String prescribedDate) {
-        this.prescribedDate = prescribedDate;
+    public String getTreatmentBy() {
+        return treatmentBy;
     }
 
     /**
-     * Doctor getter.
-     * @return doctor name.
+     * Sets the name of the doctor who gave the treatment.
+     *
+     * @param treatmentBy the new name of the doctor who gave the treatment
      */
-    public String getPrescribedBy() {
-        return prescribedBy;
+    public void setTreatmentBy(String treatmentBy) {
+        this.treatmentBy = treatmentBy;
     }
 
     /**
-     * Doctor setter.
-     * @param prescribedBy doctor name
-     */
-    public void setPrescribedBy(String prescribedBy) {
-        this.prescribedBy = prescribedBy;
-    }
-
-    /**
-     * New Treatment class creation.
-     * @param sc Scanner class for input
-     * @param drName doctor name
-     * @return new Treatment
+     * Creates a new Treatment by prompting the user for input.
+     *
+     * @param sc the Scanner to use for input
+     * @param drName the name of the doctor who is giving the treatment
+     * @return a new Treatment object
      */
     public static Treatment createTreatment(Scanner sc, String drName) {
-		System.out.println("Enter treatment type:");
-		String treatmentType = sc.nextLine();
-		System.out.println("Enter prescription:");
-		String prescription = sc.nextLine();
+        System.out.println("Enter treatment description:");
+        String description = sc.nextLine();
 
-		return new Treatment(treatmentType, prescription, LocalDate.now().toString(), drName);
+        return new Treatment(description, LocalDate.now().toString(), drName);
     }
 }

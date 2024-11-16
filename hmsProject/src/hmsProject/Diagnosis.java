@@ -100,11 +100,19 @@ public class Diagnosis implements Serializable {
      * @return diagnosis object.
      */
     public static Diagnosis createDiagosis(Scanner sc, String drName) {
-		System.out.println("Enter diagnosis description:");
-		String description = sc.nextLine();
-		System.out.println("Enter severity (Mild/Moderate/Severe):");
-		String severity = sc.nextLine();
-		return new Diagnosis(description, LocalDate.now().toString(), drName, severity);
-    	
+        System.out.println("Enter diagnosis description:");
+        String description = sc.nextLine();
+        String severity;
+        while (true) {
+            System.out.println("Enter severity (Mild/Moderate/Severe):");
+            severity = sc.nextLine().toLowerCase();
+            if (severity.equals("mild") || severity.equals("moderate") || severity.equals("severe")) {
+                severity = severity.substring(0, 1).toUpperCase() + severity.substring(1);
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter Mild, Moderate, or Severe.");
+            }
+        }
+        return new Diagnosis(description, LocalDate.now().toString(), drName, severity);
     }
 }

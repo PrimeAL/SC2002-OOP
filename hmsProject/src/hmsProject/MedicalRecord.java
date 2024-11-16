@@ -233,10 +233,9 @@ public class MedicalRecord implements Serializable {
 
 		System.out.println("\nTreatments:");
 		for(Treatment treat : getTreatments()) {
-			System.out.println("- Date: " + treat.getPrescribedDate());
-			System.out.println("  Treatment Type: " + treat.getTreatmentType());
-			System.out.println("  Prescription: " + treat.getPrescription());
-			System.out.println("  Prescribed by: Dr. " + treat.getPrescribedBy());
+			System.out.println("- Date: " + treat.getTreatmentDate());
+			System.out.println("  Description: " + treat.getDescription());
+			System.out.println("  Treatment by: Dr. " + treat.getTreatmentBy());
 		}
 		
 	}
