@@ -33,7 +33,7 @@ public class HMS {
 			}
 			if(currentUser instanceof Administrator) {
 				System.out.println("Admin");
-				((Administrator)(currentUser)).userInterface((AdminController)userCont, sc); 
+				((Administrator)(currentUser)).userInterface((AdministratorController)userCont, sc); 
 			}
 			if(currentUser instanceof Pharmacist){
 				System.out.println("Pharmacist");

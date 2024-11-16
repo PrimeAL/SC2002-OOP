@@ -12,13 +12,9 @@ public class DataStorage {
 	private Inventory inven;
 	private DataSerialization dataOps;
 	private ArrayList<Doctor> docList;
-	private Inventory inventory;
 	
 	public DataStorage(){
-		this.dataOps =new DataSerialization();
-		this.apptSystem=this.retrieveApptSys();
-		this.inventory=this.retrieveInventory(); //test
-
+		this.dataOps = new DataSerialization();
 		System.out.println("To refresh data, key in 1. Otherwise, key whatever. ");
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
 		
@@ -75,6 +71,7 @@ public class DataStorage {
 	
 	public void save() {
 		dataOps.serializeAll(apptSystem, inven, user);
+		dataOps.serialiseInventory(inven);
 	}
 	
 	public void addToDocList(User user) {
@@ -111,8 +108,7 @@ public class DataStorage {
 
 	public void saveMedicine(Medicine medicine) { dataOps.serialiseMedicine(medicine); }
 
-	public void saveInventory(Inventory inventory) { dataOps.serialiseInventory(this.getInventory()); } //test
-	public void retrieveInventory() { return dataOps.deserialiseInventory(); } //test
+	public void saveInventory(Inventory inven) { dataOps.serialiseInventory(this.getInventory()); } //test
 
 	public User retrieveUser(String id) { //return dataOps.deserialiseUser(id); 
 		for(User u: this.user) {
@@ -133,9 +129,7 @@ public class DataStorage {
 		return this.inven; //Test
 	}
 
-
 	public Medicine retrieveMedicine(String medicine) { return dataOps.deserialiseMedicine(medicine); } //test
-
 
 	public void declineAppt(Doctor dr,Appointment appt) {
 		appt.setStatus("Cancelled");
@@ -219,5 +213,8 @@ public class DataStorage {
 		// TODO Auto-generated method stub
 		currentDoctor.addAvailAppointment(newAppt);
 	}	
+
+	//Admin needs user List
+	public ArrayList<User> getUserList() { return user; }
 	
 }

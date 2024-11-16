@@ -28,6 +28,16 @@ public class Doctor extends User implements Serializable {
         this.gender = gender;
         this.age = age;
     }
+
+	/*@Override
+    public String toString() {
+        return String.format("[Name: %s, ID: %s]", getName(), gethID());
+    }*/
+
+	@Override
+    public String toString() {
+        return String.format("Doctor [Name: %s, ID: %s]", getName(), gethID());
+    }
 	
 	public void updateApptReq(Appointment appt) {
 		this.addApptRequest(appt);		
@@ -439,5 +449,22 @@ public class Doctor extends User implements Serializable {
 
     public void addPatient(Patient newPatient) {
 		this.patients.add(newPatient);
+	}
+
+	//Admin Usage
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 }

@@ -140,33 +140,4 @@ public class AppointmentSystem implements Serializable {
 
 		return true;
 	}
-	
-	public void addSchAppt(Appointment appt) {
-		this.scheduledAppt.add(appt);
-	}
-	
-	public void addCompAppt(Appointment appt) {
-		this.completedAppt.add(appt);
-	}
-	
-	public void addOutcomeRecord(OutcomeRecord rec) {
-		this.apptOutcomeRec.add(rec);
-	}
-	
-	public void updateOutcomeRec() {
-		// TODO - implement AppointmentSystem.updateOutcomeRec
-		throw new UnsupportedOperationException();
-	}
-
-		//for Administrator
-		public ArrayList<Appointment> getAllAppt() { // returns the list of scheduled appointments
-			int index = 0;
-			while (index < this.scheduledAppt.size() && index <this.completedAppt.size()) {
-				getAllAppt().add(scheduledAppt.get(index));
-				getAllAppt().add(completedAppt.get(index));
-				index++;
-			}
-			
-			return allAppt;
-		}
 }
