@@ -10,7 +10,7 @@ public class PrescribedMed implements Serializable {
 	public PrescribedMed(String medicationName, int quantity) {
 		this.medicationName = medicationName;
 		this.quantity = quantity;
-		this.status = "Prescribed";
+		this.status = "pending";
 	}
 
 	public static PrescribedMed createPrescribedMed(String medicationName, int quantity) {
@@ -28,4 +28,10 @@ public class PrescribedMed implements Serializable {
 	public int getQuantity() {
 		return quantity;
 	}
+	
+	public void setStatus(String status) {
+	    this.status = status;
+	}
+	
+	
 }

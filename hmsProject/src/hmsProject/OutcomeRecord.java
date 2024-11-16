@@ -11,8 +11,9 @@ public class OutcomeRecord implements Serializable {
     private String serviceProvided;
     private ArrayList<PrescribedMed> meds;
     private String consultationNote;
-
-    /**
+    private Boolean updated;
+    
+	/**
      * OutcomeRecord constructor which creates empty medicine list.
      */
     public OutcomeRecord() {
@@ -28,6 +29,7 @@ public class OutcomeRecord implements Serializable {
         this.serviceProvided = null;
         this.meds = new ArrayList<PrescribedMed>();
         this.consultationNote = null;
+        this.updated=false;
     }
 
     /**
@@ -59,7 +61,7 @@ public class OutcomeRecord implements Serializable {
      */
     public void setMeds(Scanner sc, Inventory inventory) {
         System.out.println("What are the medicine(s) to be prescribed?");
-        ArrayList<Medicine> availableMeds = inventory.getMedicine();
+        ArrayList<Medicine> availableMeds = inventory.getMedicineList();
 
         while (true) {
             System.out.println("Available Medicines:");
@@ -131,14 +133,26 @@ public class OutcomeRecord implements Serializable {
     public ArrayList<PrescribedMed> getMeds() {
     	return this.meds;
     }
+    
+    public Boolean getUpdated() {
+		return updated;
+	}
 
+	public void setUpdated() {
+		for(PrescribedMed pM:this.getMeds()) {
+			if(pM.getStatus().equals("pending")) return;
+		}
+		//if all dispensed, fully updated
+		this.updated=true;
+	} 
+    
     /**
      * Print all medicines prescribed.
      */
     public void printMeds() {  
     	System.out.println("\tMedicine List:");
         for(PrescribedMed preMed: this.getMeds()) {
-        	System.out.println("\tMedication Name:"+preMed.getMedicationName()+" Status:"+preMed.getStatus()+" Quantity:"+preMed.getQuantity());
+        	System.out.println("\tMedication Name:"+preMed.getMedicationName()+" |Status:"+preMed.getStatus()+" |Quantity:"+preMed.getQuantity());
         }
     }
 
@@ -154,8 +168,8 @@ public class OutcomeRecord implements Serializable {
      * Print everything.
      */
     public void printAll() {
-    	System.out.println("Consultation Notes:"+this.consultationNote);
     	System.out.println("Date of Appointment:"+this.dateOfAppointment);
+    	System.out.println("Consultation Notes:"+this.consultationNote);
     	System.out.println("Service Provided:"+this.serviceProvided);
     	printMeds();
     }

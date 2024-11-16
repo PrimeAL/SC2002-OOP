@@ -65,30 +65,71 @@ public class AppointmentSystem implements Serializable {
 
 	/**
 	 * TO-BE-ADDED
+	 * @param pharmacistCont 
 	 * @param sc TO-BE-ADDED
 	 */
-	public void updateOutcomeRec(Scanner sc) {		//used by Pharmacists, add controller to parameter here when
-		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
-		System.out.println("Select Outcome record to update");
-		int index = 1;
-		for(OutcomeRecord outRec: this.getOutcomeRec()) {
-			System.out.println(index+". Date: "+outRec.getDateOfAppointment()+
-										" 1| Service Provide"+outRec.getServiceProvided());
-			outRec.printMeds();
-			index++;
-		}
-		try {
-			int updateChoice = sc.nextInt() - 1;
-			OutcomeRecord selectedRec = this.getOutcomeRec().get(updateChoice);
-			
-			//take selectedRec and cross check with stock to see if its dispensible
-			//make the system check based on string of the medicine, as prescribedMeds and medicine are separate objects
-			//as one exist in the inventory and the other belongs to the patient
-			//logic to add based on pharmacist controller to complete this part
-		} catch (Exception e) {
-			System.out.println("Input out of range, exiting Update of Outcome Records");
+	public void updateOutcomeRec(PharmacistController pharmacistCont, Scanner sc) {		//used by Pharmacists, add controller to parameter here when
+		if(this.getOutcomeRec().isEmpty()) {
+			System.out.println("No Outcome Record available");
+			return;
 		}
 		
+		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
+		System.out.println("Select Outcome record to update");
+		
+		int index = 1;
+		for(OutcomeRecord outRec: this.getOutcomeRec()) {
+				System.out.println(index+". ");
+				outRec.printAll();
+				index++;
+		}
+		try {
+			System.out.print("Enter the record number to update: ");
+			int updateChoice = sc.nextInt() -1;
+			sc.nextLine(); // Clear buffer
+	
+			if (updateChoice < 0 || updateChoice >= getOutcomeRec().size()) {
+				System.out.println("Invalid record selection, exiting.");
+				return;
+			}
+			
+			OutcomeRecord selectedRec = this.getOutcomeRec().get(updateChoice);
+			
+			if(selectedRec.getUpdated()==true) {
+				System.out.println("Record needs no further updates");
+				return;
+			}
+			
+			ArrayList<PrescribedMed> meds = selectedRec.getMeds();
+			
+			Inventory inventory = pharmacistCont.getInventory(); // Access inventory through PharmacistController
+	
+			for (PrescribedMed med : meds) {
+				if(med.getStatus().equalsIgnoreCase("Dispensed")) {   //for dispense in 2 separate func calls
+					continue;
+				}
+				String medName = med.getMedicationName();
+				int stockAmount = inventory.getMedicineStock(medName);
+	
+				if (stockAmount > 0) {
+					System.out.println("Medication " + medName + " is available. Current stock: " + stockAmount);
+					System.out.print("Do you want to update the status of this medication? (yes/no): ");
+					String response = sc.nextLine();
+	
+					if (response.equalsIgnoreCase("yes")) {
+						med.setStatus("Dispensed");
+						selectedRec.setUpdated();
+						inventory.decrementStock(medName, med.getQuantity()); // Deduct units from stock according to quantity prescribed
+						//checking will be done in inventory for abstraction 
+					}
+				} else {
+					System.out.println("Medication " + medName + " is not available in stock.");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Input out of range, exiting Update of Outcome Records.");
+			sc.nextLine(); // Clear invalid input
+		}
 	}
 
 	/**

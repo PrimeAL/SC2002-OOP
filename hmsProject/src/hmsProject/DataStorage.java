@@ -232,4 +232,23 @@ public class DataStorage {
 		appt.getPatient().addCompAppt(appt);
 		this.save();
 	}
+
+	public void addStockReq(StockRequest stockReq) {
+		this.getInventory().addPendingStockReq(stockReq);
+		this.save();
+	}
+
+	public ArrayList<User> getUserList() {
+		return this.user;
+	}
+
+	public void addNewStaff(User staffUser) {
+		this.getUserList().add(staffUser);
+		this.save();
+	}
+
+	public void removeStaff(User staffUser) {
+		this.getUserList().remove(staffUser);
+		this.save();
+	}
 }

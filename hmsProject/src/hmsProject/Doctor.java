@@ -40,6 +40,13 @@ public class Doctor extends User implements Serializable {
         this.gender = gender;
         this.age = age;
     }
+    
+    
+    public String toString() {
+        return String.format("Doctor [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
+    }
+
+    
 
 	/**
 	 * Removing appointment that has been rescheduled from
@@ -63,7 +70,8 @@ public class Doctor extends User implements Serializable {
 	        return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
 	    });
 	}
-
+	
+	
 	/**
 	 * Shift appointment from available appointments list to appointment request list.
 	 * @param appt Appointment that was scheduled
@@ -177,7 +185,15 @@ public class Doctor extends User implements Serializable {
 	public ArrayList<Appointment> getAvailableAppt() {
 		return availableAppt;
 	}
+	
+	public String getGender() {
+		return this.gender;
+	}
 
+	public int getAge() {
+		return this.age;
+	}
+	
 	/**
 	 * Doctor-specific user interface that overrides from User.
 	 * @param docCont DoctorController
@@ -521,5 +537,20 @@ public class Doctor extends User implements Serializable {
 		if (!this.patients.contains(newPatient)) {
 			this.patients.add(newPatient);
 		}
+	}
+
+
+	public void setName(String staffName) {
+		this.name=staffName;		
+	}
+
+
+	public void setAge(int staffAge) {
+		this.age=staffAge;		
+	}
+
+
+	public void setGender(String gender) {
+		this.gender=gender;
 	}
 }

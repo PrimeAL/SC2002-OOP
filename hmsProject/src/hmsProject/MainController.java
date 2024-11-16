@@ -27,7 +27,7 @@ public class MainController extends Controller{
 		}
 		
 		if(currentUser instanceof Administrator) {
-			return new AdminController(this,(Administrator)currentUser);
+			return new AdministratorController(this,(Administrator)currentUser);
 		}
 
 		if(currentUser instanceof Pharmacist){

@@ -3,6 +3,7 @@ package hmsProject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Scanner;
 
 /**
  * Input checking.
@@ -65,4 +66,43 @@ public class UtilityClass {
 			return false;
 		}
 	}
+	
+	public static String getValidAlphabeticString(Scanner sc, String prompt) {
+		String input;
+
+		if (sc.hasNextLine()) {
+			sc.nextLine();
+		}
+
+		while (true) {
+			System.out.print(prompt);
+			input = sc.nextLine();
+			// Check if input contains only alphabets
+			if (input.matches("[a-zA-Z]+")) {break;} // Exit loop if input is valid
+			else { 
+				System.out.println("Invalid input. Please enter alphabets only.");
+			}
+		}
+		
+		return input;
+	}
+	
+	public static int getValidIntInput(Scanner sc, String prompt) {
+        int input = 0;
+
+        while (true) {
+            System.out.print(prompt);
+            
+            // Check if input is a valid integer
+            if (sc.hasNextInt()) {
+                input = sc.nextInt();
+				sc.nextLine();
+                break; // Exit loop if integer is valid
+            } else {
+                System.out.println("Invalid input. Input must be an integer! ");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+        return input;
+    }
 }
