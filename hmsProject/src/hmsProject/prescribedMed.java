@@ -1,14 +1,15 @@
 package hmsProject;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class prescribedMed {
+public class prescribedMed implements Serializable {
 	private String medicationName;
 	private String status;
 	
 	public prescribedMed(String medicationName) {
 		this.medicationName=medicationName;
-		this.status="pending";
+		this.status="Pending";
 	}
 	
 	public static prescribedMed createPrescribedMed(Scanner sc) {

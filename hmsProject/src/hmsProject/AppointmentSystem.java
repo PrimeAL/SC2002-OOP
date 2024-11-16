@@ -29,15 +29,15 @@ public class AppointmentSystem implements Serializable {
 	public void updateOutcomeRec(Scanner sc) {		//used by Pharmacists, add controller to parameter here when
 		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
 		System.out.println("Select Outcome record to update");
-		int index=0;
+		int index = 1;
 		for(OutcomeRecord outRec: this.getOutcomeRec()) {
-			System.out.println(index+": Date: "+outRec.getDateOfAppointment()+
-										"| Service Provide"+outRec.getServiceProvided());
+			System.out.println(index+". Date: "+outRec.getDateOfAppointment()+
+										" 1| Service Provide"+outRec.getServiceProvided());
 			outRec.printMeds();
+			index++;
 		}
 		try {
-			int updateChoice=-1;
-			updateChoice=sc.nextInt();
+			int updateChoice = sc.nextInt() - 1;
 			OutcomeRecord selectedRec = this.getOutcomeRec().get(updateChoice);
 			
 			//take selectedRec and cross check with stock to see if its dispensible
@@ -53,24 +53,23 @@ public class AppointmentSystem implements Serializable {
 	public void scheAppt(PatientController patientCont,Scanner sc) {	
 		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");		
 		System.out.println("Choose a doctor for your appointment:");
-		int index=0;
+		int index = 1;
 		for(Doctor doc: patientCont.getDocList()) {
 			System.out.println(index+": "+doc.getName());
 			index++;
 		}
 		//from doctor chosen based on index, the appointment available from the doctor can be retrieved from the doctor
 		try {
-			int docChoice=-1;
-			docChoice=sc.nextInt();
+			int docChoice = sc.nextInt() - 1;
 			
 			System.out.println("Choose an appointment listed");
-			index=0;
+			index = 1;
 			for(Appointment appt: patientCont.getDocList().get(docChoice).getAvailableAppt()) {
-				System.out.println(index+": Date: "+appt.getDate()+"| Time: "+appt.getTime());
+				System.out.println(index+". Date: "+appt.getDate()+" | Time: "+appt.getTime());
+				index++;
 			}
 			
-			int apptChoice=-1;
-			apptChoice=sc.nextInt();
+			int apptChoice = sc.nextInt() - 1;
 			Appointment selectedAppt=patientCont.getDocList().get(docChoice).getAvailableAppt().get(apptChoice);
 					
 			patientCont.addToScheduled(selectedAppt); //as status pending
@@ -92,21 +91,19 @@ public class AppointmentSystem implements Serializable {
 		System.out.println("Selection of indexes out of range indicated will redirect you back to the main page");
 		//check to be implemented
 		try {
-		Doctor apptDoc=appt.getDoctor();
-		if(apptDoc.getAvailableAppt().size()==0) {
-			System.out.println("No other available appointments under selected Doctor");
-			return;
-		}
-		int index=0;
-		for(Appointment apptOption: apptDoc.getAvailableAppt()) {
-			System.out.println(index+": Date: "+apptOption.getDate()+"| Time: "+apptOption.getTime());
-		}
-		
-		int newApptChoice=-1;
-		newApptChoice=sc.nextInt();
-		Appointment newSelectedAppt=apptDoc.getAvailableAppt().get(newApptChoice);
-		
-		patientCont.reschAppt(appt,newSelectedAppt);
+			Doctor apptDoc = appt.getDoctor();
+			if (apptDoc.getAvailableAppt().size() == 0) {
+				System.out.println("No other available appointments under selected Doctor");
+				return;
+			}
+			int index = 1;
+			for (Appointment apptOption : apptDoc.getAvailableAppt()) {
+				System.out.println(index + ": Date: " + apptOption.getDate() + " | Time: " + apptOption.getTime());
+				index++;
+			}
+			int newApptChoice = sc.nextInt() - 1;
+			Appointment newSelectedAppt = apptDoc.getAvailableAppt().get(newApptChoice);
+			patientCont.reschAppt(appt, newSelectedAppt);
 		} catch (Exception e) {
 			System.out.println("Input out of range, exiting Rescheduling of Appointment");
 		}

@@ -66,14 +66,16 @@ public class HMS {
 						this.getMainController().save();
 					}
 				} catch (Exception e) {
-					System.out.println("Authentication failed, please try again");
+					System.out.println("Authentication failed, please try again.");
 				}
-			} else {
+			} else if(choice == 2) {
 				System.exit(0);
+			} else {
+				System.out.println("Invalid input, please try again.");
 			}
 		} catch (Exception e) {
 			sc.nextLine();
-			System.out.println("Wrong input. Please try again. ");
+			System.out.println("Invalid input, please try again.");
 		}
 		
 	}
