@@ -32,4 +32,8 @@ public class DoctorController extends controller{
 		// TODO Auto-generated method stub
 		this.getDataStorage().updateAvailAppt(currentDoctor,newAppt);
 	}
+	public void addCompletedAppt(Appointment appt) {
+		// TODO Auto-generated method stub
+		this.getDataStorage().updateCompletedAppt(appt);
+	}
 }

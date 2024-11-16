@@ -160,7 +160,7 @@ public class Patient extends User implements Serializable {
 						int cnt = 1;
 						System.out.println("Appointment Scheduled: (enter 0 to go back)");
 						for (Appointment appt : this.getAppt()) {
-							System.out.println(cnt + ". Date:" + appt.getDate() + "| Time:" + appt.getTime() + "| Status:" + appt.getStatus());
+							System.out.println(cnt + ". Date:" + appt.getDate() + " | Time:" + appt.getTime() + " | Status:" + appt.getStatus());
 							cnt++;
 						}
 						int apptSelect = 0;
@@ -176,7 +176,7 @@ public class Patient extends User implements Serializable {
 						int cnt = 1;
 						System.out.println("Appointment Scheduled: (enter 0 to go back)");
 						for (Appointment appt : this.getAppt()) {
-							System.out.println(cnt + ". Date:" + appt.getDate() + "|Time:" + appt.getTime() + "|Status:" + appt.getStatus());
+							System.out.println(cnt + ". Date:" + appt.getDate() + " | Time:" + appt.getTime() + " | Status:" + appt.getStatus());
 							cnt++;
 						}
 						int apptSelect = 0;

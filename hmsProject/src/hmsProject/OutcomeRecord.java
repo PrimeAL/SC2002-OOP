@@ -35,9 +35,17 @@ public class OutcomeRecord implements Serializable {
     }
 
     public void setMeds(Scanner sc) {
-    	prescribedMed newMed = prescribedMed.createPrescribedMed(sc);
-        if(newMed != null) {
-            this.meds.add(newMed);
+        System.out.println("What are the medicine(s) to be prescribed?");
+        while (true) {
+            System.out.println("Enter 1 to add new Medicine or 0 when done.");
+            String input = sc.nextLine();
+            if (input.equals("1")) {
+                this.meds.add(prescribedMed.createPrescribedMed(sc));
+            } else if (input.equals("0")) {
+                return;
+            } else {
+                System.out.println("Invalid input. Enter 1 to add new Medicine or 0 when done.");
+            }
         }
     }
     
