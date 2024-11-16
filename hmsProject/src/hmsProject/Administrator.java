@@ -16,14 +16,10 @@ public class Administrator extends User {
 		this.gender = gender;
 	}
 
-		/*@Override
-    public String toString() {
-        return String.format("[Name: %s, ID: %s]", getName(), gethID());
-    }*/
 
 	@Override
     public String toString() {
-        return String.format("Administrator [Name: %s, ID: %s]", getName(), gethID());
+        return String.format("Administrator [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
 
 	public String getName() {
@@ -57,7 +53,7 @@ public class Administrator extends User {
 		adminCont.getInventory().addPendingStockReq(sr2);
 
 		int choice = 0;
-		while(choice != 6) {
+		while(choice != 5) {
 			this.displayMenu();
 
 			while (true) {
@@ -89,11 +85,13 @@ public class Administrator extends User {
 				this.approveReplenishment(adminCont);
 			case 5:
 				System.out.println("Logging out as Administrator\n");
+				break;
 			default:
 				System.out.println("Input out of range");
 				break;
 			}
 		}
+		adminCont.saveData();
 	}
 
 	public void manageStaff(AdministratorController adminCont, Scanner sc) {
@@ -133,12 +131,13 @@ public class Administrator extends User {
 					staffSys.printStaff(staffList);
 					break;
 				case 2: //Add new Staff
-					staffSys.addStaff(sc, staffList);
+					staffSys.addStaff(adminCont,sc, staffList);
 					break;
 				case 3: //Update Existng Staff
+					staffSys.updateStaff(adminCont, sc, staffList);
 					break;
 				case 4: //Remove Staff
-					staffSys.removeStaff(sc, staffList);
+					staffSys.removeStaff(adminCont, sc, staffList);
 					break;
 				case 5: //Logout
 					System.out.println("Exiting Manage Staff Menu...");
@@ -267,7 +266,7 @@ public class Administrator extends User {
 					System.out.println("Input out of range");
 					break;
 			}
-			adminCont.saveInventory(inventory);
+			adminCont.saveData();
 		}
 	}
 

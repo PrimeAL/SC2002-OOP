@@ -78,7 +78,7 @@ public class StaffSystem{
 		}
 	}
 
-	public void addStaff(Scanner sc, ArrayList<User> staffList) {
+	public void addStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) {
 		int choice = 0;
 		System.out.println(
 			"""
@@ -100,27 +100,44 @@ public class StaffSystem{
 			}
 		}
 
-		String staffName = getValidAlphabeticString(sc, "Enter Staff Name: ");
-/* 					while (true) {
+		String staffName = "";
+		while (true) {
 			boolean nameExists = false; // Flag to track if the name already exists
-		
-			// Check if the entered name matches any existing user's name
+			
+			staffName = getValidAlphabeticString(sc, "Enter Staff Name: ");
+			
 			for (User user : staffList) {
-				Class<?> obj = adminCont.getRole(user);
-				if (obj.getName().equalsIgnoreCase(staffName)) {
-					System.out.println("Name already exists. Please enter a unique name.");
-					nameExists = true;
-					break; // Exit the for loop as we found a duplicate
+				if (choice == 1 && user instanceof Doctor) {
+					Doctor tempDoc = (Doctor) user;
+					if (tempDoc.getName().equalsIgnoreCase(staffName)) {
+						System.out.println("Doctor " + staffName + " already exists. Please enter a different name.");
+						nameExists = true;
+						break;
+					}
+				}
+				if (choice == 2 && user instanceof Pharmacist) {
+					Pharmacist tempPha = (Pharmacist) user;
+					if (tempPha.getName().equalsIgnoreCase(staffName)) {
+						System.out.println("Pharmacist " + staffName + " already exists. Please enter a different name.");
+						nameExists = true;
+						break;
+					}
+				}
+				if (choice == 3 && user instanceof Administrator) {
+					Administrator tempAdm = (Administrator) user;
+					if (tempAdm.getName().equalsIgnoreCase(staffName)) {
+						System.out.println("Administrator " + staffName + " already exists. Please enter a different name.");
+						nameExists = true;
+						break;
+					}
 				}
 			}
-		
-			// If the name exists, prompt for a new name, otherwise break the while loop
-			if (nameExists) {
-				staffName = getValidAlphabeticString(sc, "Enter Staff Name: ");
-			} else {
-				break; // Name is unique, exit the while loop
+			
+			// If no duplicate name is found, exit the while loop
+			if (!nameExists) {
+				break;
 			}
-		} */
+		}
 
 		int staffAge = getValidIntInput(sc, "Enter Staff Age: ");
 		String staffGender = null;
@@ -172,28 +189,297 @@ public class StaffSystem{
 		System.out.println("Staff added successfully!");
 	}
 
-	public void removeStaff(Scanner sc, ArrayList<User> staffList) {
-		int index = 0; int choice = 0; String staffID = "";
-		System.out.println("Doctors:");
+	public void updateStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) { 
+		int changeStaff = 0; int choice = 0;
+		System.out.println(
+			"""
+			1. Update Name
+			2. Update Age
+			3. Update Gender
+			4. Update ID
+			5. Update Role
+			6. Exit
+			""");
+			while (true) {
+				System.out.print("Input Choice: ");
+				if (sc.hasNextInt()) { // check if input is an integer
+					choice = sc.nextInt();
+					sc.nextLine();	// Clear the newline character after the integer
+					if (choice >= 1 && choice <= 6) {break;} // Exit loop if input is valid within the valid range
+					else { System.out.println("Invalid input. Please enter a number between 1 and 5.");}
+				}
+				else { 
+					System.out.println("Invalid input. Please enter a number.");
+					sc.nextLine();
+				}
+			}
+		switch (choice) {
+			case 1:
+			    changeStaff = selectStaff(sc, staffList);
+				String staffName = "";
+				while (true) {
+					boolean nameExists = false; // Flag to track if the name already exists
+					
+					staffName = getValidAlphabeticString(sc, "Enter new Staff Name: ");
+					
+					for (User user : staffList) {
+						if (choice == 1 && user instanceof Doctor) {
+							Doctor tempDoc = (Doctor) user;
+							if (tempDoc.getName().equalsIgnoreCase(staffName)) {
+								System.out.println("Doctor " + staffName + " already exists. Please enter a different name.");
+								nameExists = true;
+								break;
+							}
+						}
+						if (choice == 2 && user instanceof Pharmacist) {
+							Pharmacist tempPha = (Pharmacist) user;
+							if (tempPha.getName().equalsIgnoreCase(staffName)) {
+								System.out.println("Pharmacist " + staffName + " already exists. Please enter a different name.");
+								nameExists = true;
+								break;
+							}
+						}
+						if (choice == 3 && user instanceof Administrator) {
+							Administrator tempAdm = (Administrator) user;
+							if (tempAdm.getName().equalsIgnoreCase(staffName)) {
+								System.out.println("Administrator " + staffName + " already exists. Please enter a different name.");
+								nameExists = true;
+								break;
+							}
+						}
+					}
+					
+					if (!nameExists) {// If no duplicate name is found, exit the while loop
+						break;
+					}
+				}
+				// Determine the staff type and update the name
+				if (changeStaff <= docList.size()) { 
+					Doctor d = docList.get(changeStaff - 1);
+					staffList.remove(d);
+					d.setName(staffName);
+					staffList.add(d);
+				} else if (changeStaff <= docList.size() + phaList.size()) {
+					Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+					staffList.remove(p);
+					p.setName(staffName);
+					staffList.add(p);
+				} else {
+					Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+					staffList.remove(a);
+					a.setName(staffName);
+					staffList.add(a);
+				}
+				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				System.out.println("Staff name updated successfully!");
+				break;
+			case 2: //update age
+				changeStaff = selectStaff(sc, staffList);
+				int staffAge = getValidIntInput(sc, "Enter new Staff Age: ");
+				
+				if (changeStaff <= docList.size()) { // Determine the staff type and update the name
+					Doctor d = docList.get(changeStaff - 1);
+					staffList.remove(d);
+					d.setAge(staffAge);
+					staffList.add(d);
+				} else if (changeStaff <= docList.size() + phaList.size()) {
+					Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+					staffList.remove(p);
+					p.setAge(staffAge);
+					staffList.add(p);
+				} else {
+					Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+					staffList.remove(a);
+					a.setAge(staffAge);
+					staffList.add(a);
+				}
+				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				System.out.println("Staff age updated successfully!");
+				break;
+			case 3: //Update Gender
+				changeStaff = selectStaff(sc, staffList);	
+				if (changeStaff <= docList.size()) { // Determine the staff type and update the name
+					Doctor d = docList.get(changeStaff - 1);
+					staffList.remove(d);
+					if (d.getGender().equalsIgnoreCase("male")) d.setGender("female"); 
+					else d.setGender("male");
+					staffList.add(d);
+				} else if (changeStaff <= docList.size() + phaList.size()) {
+					Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+					staffList.remove(p);
+					if (p.getGender().equalsIgnoreCase("male")) p.setGender("female"); 
+					else p.setGender("male");
+					staffList.add(p);
+				} else {
+					Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+					staffList.remove(a);
+					if (a.getGender().equalsIgnoreCase("male")) a.setGender("female"); 
+					else a.setGender("male");
+					staffList.add(a);
+				}
+				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				System.out.println("Staff Gender updated successfully!");
+				break;
+			case 4: // Update Staff ID
+				changeStaff = selectStaff(sc, staffList);
+				String staffID; boolean validID = false;
+				while (true) {
+					System.out.println("Enter new Staff ID(4 characters starting with D/P/A).");
+					staffID = sc.nextLine().toUpperCase();
+					if (staffID.length() != 4 || staffID.toUpperCase().contains("D") == false && staffID.toUpperCase().contains("P") == false && staffID.toUpperCase().contains("A") == false) {
+						System.out.println("Invalid input. Please enter a valid ID(4 characters starting with D/P/A).");
+					}
+					else {
+						for (User user : staffList) { // check if staff ID already exists
+							if (user.gethID().equals(staffID)) {
+								validID = true;
+							}
+						}
+						if (!validID) { // if unique, check if staff ID is for correct role
+							if (changeStaff <= docList.size()) { // Determine the staff type and update the name
+								Doctor d = docList.get(changeStaff - 1);
+								staffList.remove(d);
+								d.sethID(staffID);
+								staffList.add(d);
+								break;
+							} else if (changeStaff <= docList.size() + phaList.size()) {
+								Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+								staffList.remove(p);
+								p.sethID(staffID);
+								staffList.add(p);
+								break;
+							} else {
+								Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+								staffList.remove(a);
+								a.sethID(staffID);
+								staffList.add(a);
+								break;
+							}
+						}		
+						else {System.out.println("ID already exists. Please enter a unique ID.");}
+					}
+				}
+				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				System.out.println("Staff Gender updated successfully!");
+				break;
+			case 5:
+				changeStaff = selectStaff(sc, staffList);
+				int selectRole = 0;
+				
+				while (true) {
+					System.out.println("Enter new role(1 for Doctor, 2 for Pharmacist, 3 for Administrator).");
+					if (sc.hasNextInt()) {// Check if input is a valid integer
+						selectRole = sc.nextInt();
+						sc.nextLine();
+						if (selectRole <= 0 || selectRole > 3) {
+							System.out.println("Invalid input. Input must 1 to 3! ");
+							continue;
+						}
+					} 
+					else {
+						System.out.println("Invalid input. Input must be an integer! ");
+						sc.nextLine(); // Clear the invalid input
+						continue;
+					}
+
+					if (changeStaff <= docList.size()) { // Determine the staff type and update the name
+						if (selectRole == 1) {
+							System.out.println("This user is already a Doctor. Please try again.");
+							continue;
+						}
+
+						if (selectRole == 2) {
+							Doctor d = docList.get(changeStaff - 1);
+							Pharmacist p = new Pharmacist(d.gethID(), d.getPw(),d.getName(), d.getGender(), d.getAge());
+							staffList.remove(d);
+							staffList.add(p);
+							break;
+						}
+						
+						if (selectRole == 3) {
+							Doctor d = docList.get(changeStaff - 1);
+							Administrator a = new Administrator(d.gethID(), d.getPw(),d.getName(), d.getGender(), d.getAge());
+							staffList.remove(d);
+							staffList.add(a);
+							break;
+						}
+					} 
+					else if (changeStaff <= docList.size() + phaList.size()) {
+						if (selectRole == 2) {
+							System.out.println("This user is already a Pharmacist. Please try again.");
+							continue;
+						}
+
+						if (selectRole == 1) {
+							Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+							Doctor d = new Doctor(p.gethID(), p.getPw(), p.getName(), p.getGender(), p.getAge());
+							staffList.remove(p);
+							staffList.add(d);
+							break;
+						}
+						
+						if (selectRole == 3) {
+							Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+							Administrator a = new Administrator(p.gethID(), p.getPw(), p.getName(), p.getGender(), p.getAge());
+							staffList.remove(p);
+							staffList.add(a);
+							break;
+						}
+					} 
+					else {
+						if (selectRole == 3) {
+							System.out.println("This user is already a Administrator. Please try again.");
+							continue;
+						}
+
+						if (selectRole == 1) {
+							Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+							Doctor d = new Doctor(a.gethID(), a.getPw(), a.getName(), a.getGender(), a.getAge());
+							staffList.remove(a);
+							staffList.add(d);
+							break;
+						}
+						
+						if (selectRole == 2) {
+							Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+							Pharmacist p = new Pharmacist(a.gethID(), a.getPw(),a.getName(), a.getGender(), a.getAge());
+							staffList.remove(a);
+							staffList.add(p);
+							break;
+						}
+					}
+				}
+				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				System.out.println("Staff Role updated successfully!");
+				break;
+			case 6:
+				System.out.println("Exiting update staff menu.");
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+				break;
+		}
+	}
+
+	public int selectStaff(Scanner sc, ArrayList<User> staffList) {
+		int choice = 0, index = 0;
 		for (Doctor doc : docList) {
 			System.out.printf("%d. %s%n", ++index, doc); // Print index + 1 and the object’s toString()
 		}
-	
-		System.out.println("\nPharmacists:");
+
 		for (Pharmacist pha : phaList) {
 			System.out.printf("%d. %s%n", ++index, pha); // Print index + 1 and the object’s toString()
 		}
 	
-		System.out.println("\nAdministrators:");
 		for (Administrator adm : admList) {
 			System.out.printf("%d. %s%n", ++index, adm);
 		}
 
 		while (true) {
-			System.out.print("\nSelect Staff to Remove: ");
+			System.out.print("\nSelect Staff: ");
 			if (sc.hasNextInt()) { // check if input is an integer
 				choice = sc.nextInt();	
-				
+				sc.nextLine(); // Clear the newline character after reading the integer
 				if (choice >= 1 && choice <= index) {break;} // Exit loop if input is valid within the valid range
 				else { System.out.println("Invalid input. Please enter a number between 1 and " + index + ".");}
 			}
@@ -202,6 +488,12 @@ public class StaffSystem{
 				sc.nextLine();
 			}
 		}
+
+		return choice;
+	}
+	public void removeStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) {
+		String staffID = "";
+		int choice = selectStaff(sc, staffList);
 
 		if (choice <= docList.size()) {
 			staffID = docList.get(choice - 1).gethID();
@@ -218,10 +510,13 @@ public class StaffSystem{
 			System.out.println("Administrator removed successfully!");
 			admList.remove(choice - docList.size() - phaList.size() - 1);
 		}
-		for (User user : staffList) {
-			if (user.gethID().equals(staffID)) {
-				staffList.remove(user);
-			}
+
+		User user = null;
+		for (int i = 0; i < staffList.size(); i++) {
+			if (staffList.get(i).gethID().equals(staffID)) {
+				user = staffList.get(i);
+		}
+		staffList.remove(user);
 		}
 	}
 
@@ -262,5 +557,47 @@ public class StaffSystem{
 			}
 		}
 		return input;
+	}
+
+	public void updateStaffID(Scanner sc, ArrayList<User> staffList, int changeStaff) {
+		String staffID; boolean validID = false;
+		while (true) {
+			System.out.println("Enter new Staff ID(4 characters starting with D/P/A).");
+			staffID = sc.nextLine().toUpperCase();
+			if (staffID.length() != 4 || staffID.toUpperCase().contains("D") == false && staffID.toUpperCase().contains("P") == false && staffID.toUpperCase().contains("A") == false) {
+				System.out.println("Invalid input. Please enter a valid ID(4 characters starting with D/P/A).");
+			}
+			else {
+				for (User user : staffList) { // check if staff ID already exists
+					if (user.gethID().equals(staffID)) {
+						validID = true;
+					}
+				}
+				if (!validID) { // if unique, check if staff ID is for correct role
+					if (changeStaff <= docList.size()) { // Determine the staff type and update the name
+						Doctor d = docList.get(changeStaff - 1);
+						staffList.remove(d);
+						d.sethID(staffID);
+						staffList.add(d);
+						break;
+					} else if (changeStaff <= docList.size() + phaList.size()) {
+						Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
+						staffList.remove(p);
+						p.sethID(staffID);
+						staffList.add(p);
+						break;
+					} else {
+						Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
+						staffList.remove(a);
+						a.sethID(staffID);
+						staffList.add(a);
+						break;
+					}
+				}		
+				else {System.out.println("ID already exists. Please enter a unique ID.");}
+			}
+		}
+		staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+		System.out.println("Staff Gender updated successfully!");
 	}
 }

@@ -32,7 +32,7 @@ public class AdministratorController extends controller{
 	}
 
 
-	public void saveInventory(Inventory inven){
+	public void saveData(){
 		this.getDataStorage().save();
 	}
 }

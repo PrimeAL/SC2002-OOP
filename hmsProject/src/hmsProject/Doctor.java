@@ -29,14 +29,9 @@ public class Doctor extends User implements Serializable {
         this.age = age;
     }
 
-	/*@Override
-    public String toString() {
-        return String.format("[Name: %s, ID: %s]", getName(), gethID());
-    }*/
-
 	@Override
     public String toString() {
-        return String.format("Doctor [Name: %s, ID: %s]", getName(), gethID());
+        return String.format("Doctor [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
 	
 	public void updateApptReq(Appointment appt) {
@@ -113,7 +108,7 @@ public class Doctor extends User implements Serializable {
 		return name;
 	}
 	
-	private void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	

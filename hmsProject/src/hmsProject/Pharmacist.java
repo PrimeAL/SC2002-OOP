@@ -40,14 +40,9 @@ public class Pharmacist extends User {
 		this.gender = gender;
 	}
 
-	/*@Override
-    public String toString() {
-        return String.format("[Name: %s, ID: %s]", getName(), gethID());
-    }*/
-
 	@Override
     public String toString() {
-        return String.format("Pharmacist [Name: %s, ID: %s]", getName(), gethID());
+        return String.format("Pharmacist [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
 
 	/**
