@@ -35,11 +35,11 @@ public class OutcomeRecord implements Serializable {
      * @param cmptAppt Completed appointment
      * @return new OutcomeRecord.
      */
-    public static OutcomeRecord createOutcomeRecord(Appointment cmptAppt) {
+    public static OutcomeRecord createOutcomeRecord(Appointment cmptAppt, Inventory inventory) {
         OutcomeRecord newRecord = new OutcomeRecord(cmptAppt);
         Scanner sc = new Scanner(System.in);
         newRecord.setServiceProvided(sc);
-        newRecord.setMeds(sc);
+        newRecord.setMeds(sc, inventory);
         newRecord.writeNote(sc);
         return newRecord;
     }
@@ -57,17 +57,42 @@ public class OutcomeRecord implements Serializable {
      * Medicine to be prescribed input.
      * @param sc Scanner class for input
      */
-    public void setMeds(Scanner sc) {
+    public void setMeds(Scanner sc, Inventory inventory) {
         System.out.println("What are the medicine(s) to be prescribed?");
+        ArrayList<Medicine> availableMeds = inventory.getMedicine();
+
         while (true) {
-            System.out.println("Enter 1 to add new Medicine or 0 when done.");
+            System.out.println("Available Medicines:");
+            for (int i = 0; i < availableMeds.size(); i++) {
+                System.out.println((i + 1) + ". " + availableMeds.get(i).getName());
+            }
+            System.out.println("Enter the medicine number to prescribe or 0 when done.");
+
             String input = sc.nextLine();
-            if (input.equals("1")) {
-                this.meds.add(PrescribedMed.createPrescribedMed(sc));
-            } else if (input.equals("0")) {
+            int choice;
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            if (choice == 0) {
                 return;
+            } else if (choice > 0 && choice <= availableMeds.size()) {
+                Medicine selectedMed = availableMeds.get(choice - 1);
+                System.out.println("Enter the quantity for " + selectedMed.getName() + ":");
+                int quantity;
+                try {
+                    quantity = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                    continue;
+                }
+                this.meds.add(PrescribedMed.createPrescribedMed(selectedMed.getName(), quantity));
+                System.out.println("Medicine " + selectedMed.getName() + " with quantity " + quantity + " added to the prescription.");
             } else {
-                System.out.println("Invalid input. Enter 1 to add new Medicine or 0 when done.");
+                System.out.println("Invalid choice. Please enter a number between 0 and " + availableMeds.size() + ".");
             }
         }
     }
@@ -113,7 +138,7 @@ public class OutcomeRecord implements Serializable {
     public void printMeds() {  
     	System.out.println("\tMedicine List:");
         for(PrescribedMed preMed: this.getMeds()) {
-        	System.out.println("\tMedication Name:"+preMed.getMedicationName()+" Status:"+preMed.getStatus());
+        	System.out.println("\tMedication Name:"+preMed.getMedicationName()+" Status:"+preMed.getStatus()+" Quantity:"+preMed.getQuantity());
         }
     }
 

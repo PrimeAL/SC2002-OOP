@@ -226,7 +226,7 @@ public class DataStorage {
 		this.retrieveApptSys().removeSchAppt(appt);
 		appt.setStatus("Completed");
 		appt.getDoctor().completedAppt(appt);
-		appt.setApptOutcomeRecord(OutcomeRecord.createOutcomeRecord(appt));
+		appt.setApptOutcomeRecord(OutcomeRecord.createOutcomeRecord(appt, this.getInventory()));
 		this.retrieveApptSys().addOutcomeRecord(appt.getApptOutcomeRecord());
 		appt.getPatient().removeAppt(appt);
 		appt.getPatient().addCompAppt(appt);
