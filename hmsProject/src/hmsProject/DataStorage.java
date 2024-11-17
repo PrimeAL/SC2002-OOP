@@ -233,7 +233,6 @@ public class DataStorage {
 		this.save();
 	}
 
-<<<<<<< Updated upstream
 	public void addStockReq(StockRequest stockReq) {
 		this.getInventory().addPendingStockReq(stockReq);
 		this.save();
@@ -250,7 +249,8 @@ public class DataStorage {
 
 	public void removeStaff(User staffUser) {
 		this.getUserList().remove(staffUser);
-=======
+	}
+
 	/**
 	 * Adding a dependant to current patient.
 	 * @param curPatient Current patient
@@ -276,7 +276,6 @@ public class DataStorage {
 	public void removeDependant(Patient curPatient, Patient patient) {
 		curPatient.getMedicalRecord().removeDependencies(patient);
 		System.out.println("User successfully removed!");
->>>>>>> Stashed changes
 		this.save();
 	}
 }
