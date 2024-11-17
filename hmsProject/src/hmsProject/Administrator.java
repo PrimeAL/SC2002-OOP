@@ -130,14 +130,13 @@ public class Administrator extends User {
 
 			switch (choice) {
 				case 1: //View Staff List
-					staffSys.printStaff(staffList);
+					staffSys.filerStaff(sc, staffList);
 					break;
 				case 2: //Add new Staff
 					staffSys.addStaff(adminCont,sc, staffList);
 					break;
 				case 3: //Update Existng Staff
 					staffSys.updateStaff(adminCont, sc, staffList);
-					adminCont.saveData(); 
 					break;
 				case 4: //Remove Staff
 					staffSys.removeStaff(adminCont, sc, staffList);

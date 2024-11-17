@@ -195,9 +195,9 @@ public class DataStorage {
 	 * @param appt the Appointment to be cancelled
 	 */
 	public void cancelAppt(Patient patient, Appointment appt) {
-		appt.setStatus("Available");
 		Doctor docOfAppt=appt.getDoctor();
 		docOfAppt.revertSetAppointment(appt);
+		appt.setStatus("Available");
 		patient.removeAppt(appt);
 		this.retrieveApptSys().removeSchAppt(appt);
 		this.save();
