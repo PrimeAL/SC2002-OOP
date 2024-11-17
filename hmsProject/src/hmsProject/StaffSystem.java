@@ -595,6 +595,7 @@ public class StaffSystem {
 					staffList.add(a);
 				}
 				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				adminCont.saveData();
 				System.out.println("Staff name updated successfully!");
 				break;
 			case 2: //update age
@@ -633,6 +634,7 @@ public class StaffSystem {
 					staffList.add(a);
 				}
 				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				adminCont.saveData();
 				System.out.println("Staff age updated successfully!");
 				break;
 			case 3: //Update Gender
@@ -657,6 +659,7 @@ public class StaffSystem {
 					staffList.add(a);
 				}
 				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				adminCont.saveData();
 				System.out.println("Staff Gender updated successfully!");
 				break;
 			case 4: // Update Staff ID
@@ -704,6 +707,7 @@ public class StaffSystem {
 					}
 				}
 				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
+				adminCont.saveData();
 				System.out.println("Staff ID updated successfully!");
 				break;
 			case 5:
@@ -748,10 +752,12 @@ public class StaffSystem {
 
 						Doctor d = docList.get(changeStaff - 1);
 						staffList.remove(d);
+						adminCont.removeStaff(d);
 						docList.remove(d);
 						if (selectRole == 2) {
 							Pharmacist p = new Pharmacist(id, d.getPw(),d.getName(), d.getGender(), d.getAge());
 							staffList.add(p);
+							adminCont.addNewStaff(p);
 							phaList.add(p);
 							break;
 						}
@@ -759,6 +765,7 @@ public class StaffSystem {
 						if (selectRole == 3) {
 							Administrator a = new Administrator(id, d.getPw(),d.getName(), d.getGender(), d.getAge());
 							staffList.add(a);
+							adminCont.addNewStaff(a);
 							admList.add(a);
 							break;
 						}
@@ -772,10 +779,12 @@ public class StaffSystem {
 						Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
 						staffList.remove(p);
 						phaList.remove(p);
+						adminCont.removeStaff(p);
 						if (selectRole == 1) {
 							Doctor d = new Doctor(id, p.getPw(), p.getName(), p.getGender(), p.getAge());
 							staffList.add(d);
 							docList.add(d);
+							adminCont.addNewStaff(d);
 							break;
 						}
 						
@@ -783,6 +792,7 @@ public class StaffSystem {
 							Administrator a = new Administrator(id, p.getPw(), p.getName(), p.getGender(), p.getAge());
 							staffList.add(a);
 							admList.add(a);
+							adminCont.addNewStaff(a);
 							break;
 						}
 					} 
@@ -794,10 +804,12 @@ public class StaffSystem {
 						Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
 						staffList.remove(a);
 						admList.remove(a);
+						adminCont.removeStaff(a);
 						if (selectRole == 1) {
 							Doctor d = new Doctor(id, a.getPw(), a.getName(), a.getGender(), a.getAge());
 							staffList.add(d);
 							docList.add(d);
+							adminCont.addNewStaff(d);
 							break;
 						}
 						
@@ -805,6 +817,7 @@ public class StaffSystem {
 							Pharmacist p = new Pharmacist(id, a.getPw(),a.getName(), a.getGender(), a.getAge());
 							staffList.add(p);
 							phaList.add(p);
+							adminCont.addNewStaff(p);
 							break;
 						}
 					}
