@@ -1,6 +1,16 @@
 # SC2002
 Developing a Hospital Management System (HMS) with java
 
+# Instructions to start
+HMS:
+When logging in, you will be prompted on whether you wish to refresh the data from the csv. If you would like to test the saving feature, type in 0, otherwise, if you which to start all over, type in 1. 
+
+All users:
+When you first login, the default password will be "default". The username would be the specific id that all roles have. This is under the assumption that the user already know their id. In real application, this would have been the NRIC. Next, you would have to change password the first time you login. 
+
+Doctor:
+When first initialised, doctors will have no appointment slots. You would be required to add appointment slots where the doctor would be available for the patient to see those slots. 
+
 # Branches:
 1. **TRY TO BRANCH EVERYTIME YOU WORK ON A NEW FEATURE**
 2. **DO NOT PUSH TO MAIN**
