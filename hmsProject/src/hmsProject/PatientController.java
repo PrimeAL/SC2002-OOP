@@ -63,6 +63,22 @@ public class PatientController extends Controller{
 	}
 
 	/**
+	 * Adding dependant.
+	 * @param id id of dependant
+	 */
+	public void addDependant(String id) {
+		this.getDataStorage().addDependant(this.currentPatient, id);
+	}
+
+	/**
+	 * Removing dependant.
+	 * @param patient dependant
+	 */
+	public void removeDependant(Patient patient) {
+		this.getDataStorage().removeDependant(this.currentPatient, patient);
+	}
+
+	/**
 	 * Save all changes.
 	 */
 	public void save() {

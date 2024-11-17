@@ -15,4 +15,12 @@ public class PharmacistController extends Controller{
     public Inventory getInventory(){
         return this.getDataStorage().getInventory();
     }
+
+	public void save() {
+		this.getDataStorage().save();
+	}
+
+	public void addStockReq(StockRequest stockReq) {
+		this.getDataStorage().addStockReq(stockReq);		
+	}
 }

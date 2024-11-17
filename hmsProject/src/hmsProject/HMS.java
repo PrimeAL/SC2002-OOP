@@ -30,7 +30,12 @@ public class HMS {
 			Controller userCont=mainController.getUserCont(currentUser);
 			if(currentUser instanceof Patient) {
 				System.out.println("Patient");
-				((Patient)(currentUser)).userInterface((PatientController)userCont, sc); 
+				Patient p = ((Patient)(currentUser)).userInterface((PatientController)userCont, sc);
+				if (p != null) {
+					this.mainController.save();
+					currentUser = p;
+					continue;
+				}
 			}
 			if(currentUser instanceof Doctor) {
 				System.out.println("Doctor");
@@ -38,7 +43,7 @@ public class HMS {
 			}
 			if(currentUser instanceof Administrator) {
 				System.out.println("Admin");
-				((Administrator)(currentUser)).userInterface((AdminController)userCont, sc); 
+				((Administrator)(currentUser)).userInterface((AdministratorController)userCont, sc); 
 			}
 			if(currentUser instanceof Pharmacist){
 				System.out.println("Pharmacist");
