@@ -16,7 +16,7 @@ Lee Yi Yuan - Leader, UML, Appointment System, HMS, Patient, Doctor, Medicine, P
 Wei Jie - Administrator  
 Alden Budiman - Doctor  
 Alan - Pharmacist, UML  
-Wong Jing Han - Patient, Data Serialization, Report, Javadocs  
+Wong Jing Han - Patient, Data Serialization/Initialisation, Report, Javadocs  
 
 # Branches:
 1. **TRY TO BRANCH EVERYTIME YOU WORK ON A NEW FEATURE**
