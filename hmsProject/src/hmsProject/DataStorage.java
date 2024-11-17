@@ -22,6 +22,7 @@ public class DataStorage {
 	 */
 	public DataStorage(){
 		this.dataOps =new DataSerialization();
+		System.out.println("To refresh data, key in 1. Otherwise, key in 0. ");
 		Scanner scanner = new Scanner(System.in); //This is just for testing only. Will remove in final product.
 		
 		this.apptSystem=new AppointmentSystem();
@@ -232,6 +233,7 @@ public class DataStorage {
 		this.save();
 	}
 
+<<<<<<< Updated upstream
 	public void addStockReq(StockRequest stockReq) {
 		this.getInventory().addPendingStockReq(stockReq);
 		this.save();
@@ -248,6 +250,33 @@ public class DataStorage {
 
 	public void removeStaff(User staffUser) {
 		this.getUserList().remove(staffUser);
+=======
+	/**
+	 * Adding a dependant to current patient.
+	 * @param curPatient Current patient
+	 * @param id dependant id
+	 */
+	public void addDependant(Patient curPatient, String id) {
+		Patient u = (Patient) this.retrieveUser(id);
+		if (u == null) System.out.println("User does not exist. ");
+		else if (curPatient.getMedicalRecord().getDependencies().contains(u)) System.out.println("User already added. ");
+		else if (curPatient == u) System.out.println("You cannot add yourself as dependant. ");
+		else {
+			curPatient.getMedicalRecord().addDependencies(u);
+			System.out.println("User successfully added!");
+			this.save();
+		}
+	}
+
+	/**
+	 * Removing a dependant from current patient
+	 * @param curPatient current patient
+	 * @param patient dependant
+	 */
+	public void removeDependant(Patient curPatient, Patient patient) {
+		curPatient.getMedicalRecord().removeDependencies(patient);
+		System.out.println("User successfully removed!");
+>>>>>>> Stashed changes
 		this.save();
 	}
 }
