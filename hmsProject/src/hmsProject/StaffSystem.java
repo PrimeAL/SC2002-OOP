@@ -45,15 +45,16 @@ public class StaffSystem{
 				1. Filter by Role
 				2. Filter by Name
 				3. Filter by Age
-				4. Exit Filter Menu
+				4. View ALL
+				5. Exit Filter Menu
 				""");
 			while (true) {
 				System.out.print("Input Choice: ");
 				if (sc.hasNextInt()) { // check if input is an integer
 					choice = sc.nextInt();
 					sc.nextLine();	// Clear the newline character after the integer
-					if (choice >= 1 && choice <= 4) {break;} // Exit loop if input is valid within the valid range
-					else { System.out.println("Invalid input. Please enter a number between 1 and 4.");}
+					if (choice >= 1 && choice <= 5) {break;} // Exit loop if input is valid within the valid range
+					else { System.out.println("Invalid input. Please enter a number between 1 and 5.");}
 				}
 				else { 
 					System.out.println("Invalid input. Please enter a number.");
@@ -204,10 +205,13 @@ public class StaffSystem{
 					printfilteredList(filteredStaffList);
 					break;
 				case 4:
+					printStaff(staffList);
+					break;
+				case 5:
 					System.out.println("Exiting Filter Menu....");
 					break;
 				default:
-					System.out.println("Invalid input. Please enter a number between 1 and 4.");
+					System.out.println("Invalid input. Please enter a number between 1 and 5.");
 					break;
 			}
 		}
@@ -360,7 +364,22 @@ public class StaffSystem{
 			}
 		}
 
-		int staffAge = getValidIntInput(sc, "Enter Staff Age: ");
+		int staffAge;
+		while (true) {
+			System.out.println("Enter new Staff Age: ");
+			// Check if input is a valid integer
+			if (sc.hasNextInt()) {
+				staffAge = sc.nextInt();
+				sc.nextLine();
+				if (staffAge < 16 || staffAge > 100) {
+					System.out.println("Invalid input. Age must be between 16 to 100! ");
+				}
+				else break;
+			} else {
+				System.out.println("Invalid input. Input must be an integer! ");
+				sc.nextLine(); // Clear the invalid input
+			}
+		}
 		String staffGender = null;
 		while (true) {
 			System.out.print("Enter Staff Gender: ");
@@ -499,7 +518,22 @@ public class StaffSystem{
 				break;
 			case 2: //update age
 				changeStaff = selectStaff(sc, staffList);
-				int staffAge = getValidIntInput(sc, "Enter new Staff Age: ");
+				int staffAge;
+				while (true) {
+					System.out.println("Enter new Staff Age: ");
+					// Check if input is a valid integer
+					if (sc.hasNextInt()) {
+						staffAge = sc.nextInt();
+						sc.nextLine();
+						if (staffAge < 16 || staffAge > 100) {
+							System.out.println("Invalid input. Age must be between 16 to 100! ");
+						}
+						else break;
+					} else {
+						System.out.println("Invalid input. Input must be an integer! ");
+						sc.nextLine(); // Clear the invalid input
+					}
+				}
 				
 				if (changeStaff <= docList.size()) { // Determine the staff type and update the name
 					Doctor d = docList.get(changeStaff - 1);
@@ -875,6 +909,5 @@ public class StaffSystem{
 				}
 			}
 		}
-
 	}
 }

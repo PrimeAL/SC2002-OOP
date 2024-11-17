@@ -47,10 +47,10 @@ public class Administrator extends User {
 	}
 	
 	public void userInterface(AdministratorController adminCont, Scanner sc) {
-		StockRequest sr = new StockRequest("Aspirin", 20, "pending");
-		StockRequest sr2 = new StockRequest("Paracetamol", 20, "pending");
-		adminCont.getInventory().addPendingStockReq(sr);
-		adminCont.getInventory().addPendingStockReq(sr2);
+		//StockRequest sr = new StockRequest("Aspirin", 20, "pending");
+		//StockRequest sr2 = new StockRequest("Paracetamol", 20, "pending");
+		//adminCont.getInventory().addPendingStockReq(sr);
+		//adminCont.getInventory().addPendingStockReq(sr2);
 
 		int choice = 0;
 		while(choice != 5) {
@@ -83,6 +83,8 @@ public class Administrator extends User {
 				break;
 			case 4: 
 				this.approveReplenishment(adminCont);
+				adminCont.saveData();
+				break;
 			case 5:
 				System.out.println("Logging out as Administrator\n");
 				break;
