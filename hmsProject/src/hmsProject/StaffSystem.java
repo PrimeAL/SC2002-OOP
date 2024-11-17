@@ -36,22 +36,23 @@ public class StaffSystem {
 
 	public void filerStaff(Scanner sc, ArrayList<User> staffList) {
 		int choice = 0;
-		while (choice != 4) {
+		while (choice != 6) {
 			System.out.println(
 				"""
 				1. Filter by Role
 				2. Filter by Name
 				3. Filter by Age
-				4. View ALL
-				5. Exit Filter Menu
+				4. Filter by Gender
+				5. View ALL
+				6. Exit Filter Menu
 				""");
 			while (true) {
 				System.out.print("Input Choice: ");
 				if (sc.hasNextInt()) { // check if input is an integer
 					choice = sc.nextInt();
 					sc.nextLine();	// Clear the newline character after the integer
-					if (choice >= 1 && choice <= 4) {break;} // Exit loop if input is valid within the valid range
-					else { System.out.println("Invalid input. Please enter a number between 1 and 4.");}
+					if (choice >= 1 && choice <= 6) {break;} // Exit loop if input is valid within the valid range
+					else { System.out.println("Invalid input. Please enter a number between 1 and 6.");}
 				}
 				else { 
 					System.out.println("Invalid input. Please enter a number.");
@@ -202,9 +203,53 @@ public class StaffSystem {
 					printfilteredList(filteredStaffList);
 					break;
 				case 4:
-					printStaff(staffList);
+					ArrayList<User> filtersStaffList = new ArrayList<User>();
+					String filteredGender;
+					while (true) {
+						System.out.println("Input Gender to search: ");
+						filteredGender = sc.nextLine();
+						if (filteredGender.isEmpty()) {
+							System.out.println("Invalid input. Please enter a Gender(Male or Female).");
+							filteredGender = sc.nextLine();
+						} 
+						else if (!filteredGender.equalsIgnoreCase("male") && !filteredGender.equalsIgnoreCase("female"))
+						{
+							System.out.println("Invalid input. Input must be either 'male' or 'female'.");
+						}
+						else {break;}
+					}
+					
+					for (Doctor doc : docList) {
+						if (doc.getGender().equalsIgnoreCase(filteredGender.toLowerCase())) {
+							filtersStaffList.add(doc);
+						}
+					}
+
+					for (Pharmacist pha : phaList) {
+						if (pha.getGender().equalsIgnoreCase(filteredGender)) {
+							filtersStaffList.add(pha);
+						}
+					}
+
+					for (Administrator ad : admList) {
+						if (ad.getGender().equalsIgnoreCase(filteredGender)) {
+							filtersStaffList.add(ad);
+						}
+					}
+
+					if (filtersStaffList.isEmpty()) {
+						System.out.println("No results found.\n");
+					}
+					else {
+						filtersStaffList.sort(Comparator.comparing(User::gethID, String.CASE_INSENSITIVE_ORDER));
+						System.out.println("Filter Results by Gender: " + filteredGender);
+						printfilteredList(filtersStaffList);
+					}
 					break;
 				case 5:
+					printStaff(staffList);
+					break;
+				case 6:
 					System.out.println("Exiting Filter Menu....");
 					break;
 				default:
@@ -735,11 +780,11 @@ public class StaffSystem {
 	public int selectStaff(Scanner sc, ArrayList<User> staffList) {
 		int choice = 0, index = 0;
 		for (Doctor doc : docList) {
-			System.out.printf("%d. %s%n", ++index, doc); // Print index + 1 and the object s toString()
+			System.out.printf("%d. %s%n", ++index, doc); // Print index + 1 and the objects toString()
 		}
 
 		for (Pharmacist pha : phaList) {
-			System.out.printf("%d. %s%n", ++index, pha); // Print index + 1 and the object s toString()
+			System.out.printf("%d. %s%n", ++index, pha); // Print index + 1 and the objects toString()
 		}
 	
 		for (Administrator adm : admList) {
