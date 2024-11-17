@@ -16,6 +16,7 @@ public class MedicalRecord implements Serializable {
 	private String phone;
 	private String email;
 	private String bloodType;
+	private ArrayList<Patient> dependencies;
 	private ArrayList<Diagnosis> diagnoses;
 	private ArrayList<Treatment> treatments;
 
@@ -25,6 +26,7 @@ public class MedicalRecord implements Serializable {
 	public MedicalRecord() {
 		diagnoses = new ArrayList<Diagnosis>();
 		treatments = new ArrayList<Treatment>();
+		dependencies = new ArrayList<Patient>();
 	}
 
 	/**
@@ -50,6 +52,7 @@ public class MedicalRecord implements Serializable {
 		// Initialize ArrayLists as in the default constructor
 		this.diagnoses = new ArrayList<Diagnosis>();
 		this.treatments = new ArrayList<Treatment>();
+		this.dependencies = new ArrayList<Patient>();
 	}
 
 	/**
@@ -211,6 +214,26 @@ public class MedicalRecord implements Serializable {
 		treatments.add(newTreatment);
 	}
 
+	public ArrayList<Patient> getDependencies() {
+		return this.dependencies;
+	}
+
+	/**
+	 * Adding dependant into dependencies list.
+	 * @param person dependant
+	 */
+	public void addDependencies(Patient person) {
+		dependencies.add(person);
+	}
+
+	/**
+	 * Removing dependant from dependencies list.
+	 * @param patient dependant
+	 */
+	public void removeDependencies(Patient patient) {
+		dependencies.remove(patient);
+	}
+
 	/**
 	 * Print everything.
 	 */
@@ -222,6 +245,11 @@ public class MedicalRecord implements Serializable {
 		System.out.println("Phone: " + getPhone());
 		System.out.println("Email: " + getEmail());
 		System.out.println("Blood Type: " + getBloodType());
+
+		System.out.println("\nDependencies:");
+		for(Patient p : getDependencies()) {
+			System.out.println("- Date: " + p.getMedicalRecord().getName());
+		}
 
 		System.out.println("\nDiagnoses:");
 		for(Diagnosis diag : getDiagnoses()) {

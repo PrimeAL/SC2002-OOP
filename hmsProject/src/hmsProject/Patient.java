@@ -98,14 +98,16 @@ public class Patient extends User implements Serializable {
 	 * Patient-specific user interface that overrides from User.
 	 * @param patientCont PatientController
 	 * @param sc Scanner class for input
+	 * @return Dependant to login as.
 	 */
-	public void userInterface(PatientController patientCont, Scanner sc) {
+	public Patient userInterface(PatientController patientCont, Scanner sc) {
 		int userMenuInput;
+		Patient switchTo = null;
 		System.out.println("Hi " + this.medicalRecord.getName() + "!");
 		while (true) {
 			try {
 				userMenuInput = 0;
-				while (userMenuInput != 7) {
+				while (userMenuInput != 8 && switchTo == null) {
 					this.displayMenu();
 					userMenuInput = sc.nextInt();
 					sc.nextLine();
@@ -127,10 +129,13 @@ public class Patient extends User implements Serializable {
 							viewCompAppt();
 							break;
 						case 6:
+							switchTo = manageDependencies(patientCont, sc);
+							break;
+						case 7:
 							this.changePW(sc);
 							patientCont.save();
 							break;
-						case 7:
+						case 8:
 							System.out.println("Logging out...");
 							break;
 						default:
@@ -138,7 +143,7 @@ public class Patient extends User implements Serializable {
 							break;
 					}
 				}
-				break;
+				return switchTo;
 			} catch (Exception e) {
 				sc.nextLine();
 				System.out.println("Wrong input. Please try again. ");
@@ -158,8 +163,9 @@ public class Patient extends User implements Serializable {
                 3.Schedule, Reschedule or Cancel Appointment
                 4.View Scheduled Appointments
                 5.View Past Appointment Outcome Records
-                6.Change Password
-                7.Logout
+                6.Manage Dependencies
+                7.Change Password
+                8.Logout
                 """);
 	}
 
@@ -193,7 +199,6 @@ public class Patient extends User implements Serializable {
 					System.out.print("Please enter your new phone number (enter only numbers and include country code): ");
 					input=sc.nextLine();
 					success=UtilityClass.checkPhone(input);
-					
 					break;
 				case 2:
 					System.out.println("This is your current email: " + this.getMedicalRecord().getEmail());
@@ -277,6 +282,71 @@ public class Patient extends User implements Serializable {
 		} catch (Exception e) {
 			sc.nextLine();
 			System.out.println("Wrong input. Please try again. ");
+		}
+	}
+
+	/**
+	 * Add, Remove or Login to a dependant.
+	 * @param patientCon Patient Controller
+	 * @param sc Scanner class for input
+	 * @return dependant to log in to if it is chosen.
+	 */
+	public Patient manageDependencies(PatientController patientCon, Scanner sc) {
+		int choice, cnt, index;
+		String dID;
+		try {
+			System.out.println(
+					"""
+                    Which would you like to do?
+                    1.Add dependant
+                    2.Remove dependant
+                    3.Login to dependant
+                    """);
+			choice = sc.nextInt();
+			sc.nextLine();
+			switch (choice) {
+				case 1:
+					System.out.print("Please key in the pID of dependant: ");
+					dID = sc.nextLine();
+					patientCon.addDependant(dID);
+					break;
+				case 2:
+					if (this.getMedicalRecord().getDependencies().size() > 0) {
+						cnt = 1;
+						for (Patient p : this.getMedicalRecord().getDependencies()) {
+							System.out.println(cnt + ". " + p.getMedicalRecord().getName());
+							cnt++;
+						}
+						System.out.print("Please select the dependent you wish to remove (0 to return): ");
+						index = sc.nextInt() - 1;
+						sc.nextLine();
+						if (index != -1) patientCon.removeDependant(this.getMedicalRecord().getDependencies().get(index));
+					} else {
+						System.out.println("You have no dependent.");
+					}
+					break;
+				case 3:
+					if (this.getMedicalRecord().getDependencies().size() > 0) {
+						cnt = 1;
+						for (Patient p : this.getMedicalRecord().getDependencies()) {
+							System.out.println(cnt + ". " + p.getMedicalRecord().getName());
+							cnt++;
+						}
+						System.out.print("Please select the dependent you wish to login to (0 to return): ");
+						index = sc.nextInt() - 1;
+						sc.nextLine();
+						if (index != -1) return this.getMedicalRecord().getDependencies().get(index);
+					} else {
+						System.out.println("You have no dependent.");
+					}
+				default:
+					break;
+			}
+			return null;
+		} catch (Exception e) {
+			sc.nextLine();
+			System.out.println("Wrong input. Please try again. ");
+			return null;
 		}
 	}
 }
