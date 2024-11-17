@@ -403,64 +403,69 @@ public class Doctor extends User implements Serializable {
 	 * @param sc Scanner class for input
 	 */
 	private void apptOp(DoctorController docCont, Scanner sc) {
-		if (this.getApptReq().isEmpty()) {
-			System.out.println("No appointment requests at the moment.\n");
-			return;
-		}
-
-		System.out.println("\nPending Appointment Requests:");
-		int cnt = 1;
-		for (Appointment appt : this.getApptReq()) {
-			System.out.println(cnt + ". Date: " + appt.getDate() +
-					" | Time: " + appt.getTime() +
-					" | Status: " + appt.getStatus() +
-					" | Patient: " + appt.getPatient().getMedicalRecord().getName());
-			cnt++;
-		}
-		System.out.println("\nSelect appointment number to update (1-" + (this.getApptReq().size()) + ") or 0 to cancel:");
-		try {
-			int apptSelect = sc.nextInt();
-			sc.nextLine();
-			if (apptSelect > 0 && apptSelect <= this.getApptReq().size()) {
-				System.out.println("\nFor the selected appointment:");
-				System.out.println("1. Accept");
-				System.out.println("2. Decline");
-				System.out.println("3. Cancel operation");
-				int opSelect = sc.nextInt();
-				sc.nextLine();
-				Appointment selectedAppt = this.getApptReq().get(apptSelect - 1);
-				switch (opSelect) {
-					case 1:
-						//docCont.getApptSys().acceptAppt(docCont, selectedAppt);
-						docCont.addAccAppt(selectedAppt);
-						Collections.sort(comingAppt, (a1, a2) -> {
-							int dateCompare = a1.getDate().compareTo(a2.getDate());
-							return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
-						});
-						addPatient(selectedAppt.getPatient());
-						docCont.save();
-						System.out.println("Appointment accepted successfully.");
-						break;
-					case 2:
-						docCont.declineAppt(selectedAppt);
-						System.out.println("Appointment declined successfully.");
-						break;
-					case 3:
-						System.out.println("Operation cancelled.");
-						break;
-					default:
-						System.out.println("Invalid option selected.");
-						break;
-				}
-			} else if (apptSelect != 0) {
-				System.out.println("Invalid appointment number.");
+			if (this.getApptReq().isEmpty()) {
+				System.out.println("No appointment requests at the moment.\n");
+				return;
 			}
-		} catch (InputMismatchException e) {
-			System.out.println("Invalid input.");
-			sc.nextLine();
-			apptOp(docCont, sc);
-		}
-		System.out.println();
+	
+			Collections.sort(this.getApptReq(), (a1, a2) -> {
+				int dateCompare = a1.getDate().compareTo(a2.getDate());
+				return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
+			});
+	
+			System.out.println("\nPending Appointment Requests:");
+			int cnt = 1;
+			for (Appointment appt : this.getApptReq()) {
+				System.out.println(cnt + ". Date: " + appt.getDate() +
+						" | Time: " + appt.getTime() +
+						" | Status: " + appt.getStatus() +
+						" | Patient: " + appt.getPatient().getMedicalRecord().getName());
+				cnt++;
+			}
+			System.out.println("\nSelect appointment number to update (1-" + (this.getApptReq().size()) + ") or 0 to cancel:");
+			try {
+				int apptSelect = sc.nextInt();
+				sc.nextLine();
+				if (apptSelect > 0 && apptSelect <= this.getApptReq().size()) {
+					System.out.println("\nFor the selected appointment:");
+					System.out.println("1. Accept");
+					System.out.println("2. Decline");
+					System.out.println("3. Cancel operation");
+					int opSelect = sc.nextInt();
+					sc.nextLine();
+					Appointment selectedAppt = this.getApptReq().get(apptSelect - 1);
+					switch (opSelect) {
+						case 1:
+							//docCont.getApptSys().acceptAppt(docCont, selectedAppt);
+							docCont.addAccAppt(selectedAppt);
+							Collections.sort(comingAppt, (a1, a2) -> {
+								int dateCompare = a1.getDate().compareTo(a2.getDate());
+								return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
+							});
+							addPatient(selectedAppt.getPatient());
+							docCont.save();
+							System.out.println("Appointment accepted successfully.");
+							break;
+						case 2:
+							docCont.declineAppt(selectedAppt);
+							System.out.println("Appointment declined successfully.");
+							break;
+						case 3:
+							System.out.println("Operation cancelled.");
+							break;
+						default:
+							System.out.println("Invalid option selected.");
+							break;
+					}
+				} else if (apptSelect != 0) {
+					System.out.println("Invalid appointment number.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input.");
+				sc.nextLine();
+				apptOp(docCont, sc);
+			}
+			System.out.println();
 	}
 
 	/**

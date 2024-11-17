@@ -42,7 +42,8 @@ public class StaffSystem {
 				1. Filter by Role
 				2. Filter by Name
 				3. Filter by Age
-				4. Exit Filter Menu
+				4. View ALL
+				5. Exit Filter Menu
 				""");
 			while (true) {
 				System.out.print("Input Choice: ");
@@ -201,6 +202,9 @@ public class StaffSystem {
 					printfilteredList(filteredStaffList);
 					break;
 				case 4:
+					printStaff(staffList);
+					break;
+				case 5:
 					System.out.println("Exiting Filter Menu....");
 					break;
 				default:
@@ -357,7 +361,23 @@ public class StaffSystem {
 			}
 		}
 
-		int staffAge = getValidIntInput(sc, "Enter Staff Age: ");
+		int staffAge;
+		while (true) {
+			System.out.println("Enter new Staff Age: ");
+			// Check if input is a valid integer
+			if (sc.hasNextInt()) {
+				staffAge = sc.nextInt();
+				sc.nextLine();
+				if (staffAge < 16 || staffAge > 100) {
+					System.out.println("Invalid input. Age must be between 16 to 100! ");
+				}
+				else break;
+			} else {
+				System.out.println("Invalid input. Input must be an integer! ");
+				sc.nextLine(); // Clear the invalid input
+			}
+		}
+
 		String staffGender = null;
 		while (true) {
 			System.out.print("Enter Staff Gender: ");
@@ -499,7 +519,22 @@ public class StaffSystem {
 				break;
 			case 2: //update age
 				changeStaff = selectStaff(sc, staffList);
-				int staffAge = getValidIntInput(sc, "Enter new Staff Age: ");
+				int staffAge;
+				while (true) {
+					System.out.println("Enter new Staff Age: ");
+					// Check if input is a valid integer
+					if (sc.hasNextInt()) {
+						staffAge = sc.nextInt();
+						sc.nextLine();
+						if (staffAge < 16 || staffAge > 100) {
+							System.out.println("Invalid input. Age must be between 16 to 100! ");
+						}
+						else break;
+					} else {
+						System.out.println("Invalid input. Input must be an integer! ");
+						sc.nextLine(); // Clear the invalid input
+					}
+				}
 				
 				if (changeStaff <= docList.size()) { // Determine the staff type and update the name
 					Doctor d = docList.get(changeStaff - 1);
@@ -700,11 +735,11 @@ public class StaffSystem {
 	public int selectStaff(Scanner sc, ArrayList<User> staffList) {
 		int choice = 0, index = 0;
 		for (Doctor doc : docList) {
-			System.out.printf("%d. %s%n", ++index, doc); // Print index + 1 and the object’s toString()
+			System.out.printf("%d. %s%n", ++index, doc); // Print index + 1 and the object s toString()
 		}
 
 		for (Pharmacist pha : phaList) {
-			System.out.printf("%d. %s%n", ++index, pha); // Print index + 1 and the object’s toString()
+			System.out.printf("%d. %s%n", ++index, pha); // Print index + 1 and the object s toString()
 		}
 	
 		for (Administrator adm : admList) {
