@@ -408,6 +408,11 @@ public class Doctor extends User implements Serializable {
 			return;
 		}
 
+		Collections.sort(this.getApptReq(), (a1, a2) -> {
+			int dateCompare = a1.getDate().compareTo(a2.getDate());
+			return dateCompare != 0 ? dateCompare : a1.getTime().compareTo(a2.getTime());
+		});
+
 		System.out.println("\nPending Appointment Requests:");
 		int cnt = 1;
 		for (Appointment appt : this.getApptReq()) {
