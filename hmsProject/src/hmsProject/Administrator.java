@@ -62,10 +62,10 @@ public class Administrator extends User {
 					choice = sc.nextInt();
 					sc.nextLine();	// Clear the newline character after the integer
 					if (choice >= 1 && choice <= 6) {break;} // Exit loop if input is valid within the valid range
-					else { System.out.println("Input out of range. Please enter a number between 1 and 6.");}
+					else { System.out.println("Input out of range. Please enter a number between 1 and 5.");}
 				}
 				else { 
-					System.out.println("Invalid input. Please enter a number between 1 and 6.");
+					System.out.println("Invalid input. Please enter a number between 1 and 5.");
 					sc.nextLine();
 				}
 			}	
@@ -128,7 +128,7 @@ public class Administrator extends User {
 
 			switch (choice) {
 				case 1: //View Staff List
-					staffSys.printStaff(staffList);
+					staffSys.filerStaff(sc, staffList);
 					break;
 				case 2: //Add new Staff
 					staffSys.addStaff(adminCont,sc, staffList);
