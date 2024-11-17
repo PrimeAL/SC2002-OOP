@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
+/**
+ * Staff System in charge of managing staff (Doctors, Pharmacists and Admin) operations.
+ */
 public class StaffSystem {
-
 	private ArrayList<Doctor> docList;
 	private ArrayList<Pharmacist> phaList;
 	private ArrayList<Administrator> admList;
-	
+
+	/**
+	 * Staff System constructor.
+	 * @param staffList list of staffs from admin
+	 */
 	public StaffSystem(ArrayList<User> staffList) {
 		docList = new ArrayList<Doctor>();
 		phaList = new ArrayList<Pharmacist>();
@@ -34,6 +40,11 @@ public class StaffSystem {
 		admList.sort(Comparator.comparing(Administrator::gethID , String.CASE_INSENSITIVE_ORDER));
 	}
 
+	/**
+	 * Print list of staff based on filters.
+	 * @param sc Scanner class
+	 * @param staffList list of staffs from admin
+	 */
 	public void filerStaff(Scanner sc, ArrayList<User> staffList) {
 		int choice = 0;
 		while (choice != 6) {
@@ -259,6 +270,10 @@ public class StaffSystem {
 		}
 	}
 
+	/**
+	 * Formatting list of staff based on filter and then printing it. Called by filterStaff().
+	 * @param filteredList filtered users list to print
+	 */
 	public void printfilteredList(ArrayList<User> filteredList) {
 		int index = 0;
 		System.out.printf("%-10s %-10s %-20s %-15s %-10s %-5s%n", "Index", "Staff ID", "Name", "Role", "Gender", "Age");
@@ -303,6 +318,10 @@ public class StaffSystem {
 		System.out.println("");
 	}
 
+	/**
+	 * Print list of staff.
+	 * @param staffList list of staff from admin
+	 */
 	public void printStaff(ArrayList<User> staffList) {
 		int i = 0;
 		System.out.printf("%-10s %-10s %-20s %-15s %-10s %-5s%n", "Index", "Staff ID", "Name", "Role", "Gender", "Age");
@@ -345,6 +364,13 @@ public class StaffSystem {
 		}
 	}
 
+	/**
+	 * Add new staff to staff list in admin and user list in DataStorage.
+	 * Input all details of new staff and do respective input validations.
+	 * @param adminCont Admin Controller
+	 * @param sc Scanner class
+	 * @param staffList list of staffs
+	 */
 	public void addStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) {
 		int choice = 0;
 		System.out.println(
@@ -450,6 +476,7 @@ public class StaffSystem {
 				if (!validID) { // if unique, check if staff ID is for correct role
 					if (choice == 1 && staffID.toUpperCase().contains("D")) {
 						Doctor dr = new Doctor(staffID, "default", staffName, staffGender, staffAge);
+						docList.add(dr);
 						staffList.add(dr);
 						adminCont.addNewStaff(dr);
 						break;
@@ -457,6 +484,7 @@ public class StaffSystem {
 					else if (choice == 2 && staffID.toUpperCase().contains("P")) {
 						//Add new Pharmacist
 						Pharmacist phar = new Pharmacist(staffID, "default", staffName, staffGender, staffAge);
+						phaList.add(phar);
 						staffList.add(phar);
 						adminCont.addNewStaff(phar);
 						break;
@@ -464,6 +492,7 @@ public class StaffSystem {
 					else if (choice == 3 && staffID.toUpperCase().contains("A")) {
 						//Add new Administrator
 						Administrator admin = new Administrator(staffID, "default", staffName, staffGender, staffAge);
+						admList.add(admin);
 						staffList.add(admin);
 						adminCont.addNewStaff(admin);
 						break;
@@ -478,6 +507,12 @@ public class StaffSystem {
 		System.out.println("Staff added successfully!");
 	}
 
+	/**
+	 * Update staff information.
+	 * @param adminCont Admin Controller
+	 * @param sc Scanner class
+	 * @param staffList list of staffs
+	 */
 	public void updateStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) { 
 		int changeStaff = 0; int choice = 0;
 		System.out.println(
@@ -713,15 +748,18 @@ public class StaffSystem {
 
 						Doctor d = docList.get(changeStaff - 1);
 						staffList.remove(d);
+						docList.remove(d);
 						if (selectRole == 2) {
 							Pharmacist p = new Pharmacist(id, d.getPw(),d.getName(), d.getGender(), d.getAge());
 							staffList.add(p);
+							phaList.add(p);
 							break;
 						}
 						
 						if (selectRole == 3) {
 							Administrator a = new Administrator(id, d.getPw(),d.getName(), d.getGender(), d.getAge());
 							staffList.add(a);
+							admList.add(a);
 							break;
 						}
 					} 
@@ -733,15 +771,18 @@ public class StaffSystem {
 
 						Pharmacist p = phaList.get(changeStaff - docList.size() - 1);
 						staffList.remove(p);
+						phaList.remove(p);
 						if (selectRole == 1) {
 							Doctor d = new Doctor(id, p.getPw(), p.getName(), p.getGender(), p.getAge());
 							staffList.add(d);
+							docList.add(d);
 							break;
 						}
 						
 						if (selectRole == 3) {
 							Administrator a = new Administrator(id, p.getPw(), p.getName(), p.getGender(), p.getAge());
 							staffList.add(a);
+							admList.add(a);
 							break;
 						}
 					} 
@@ -752,21 +793,25 @@ public class StaffSystem {
 						}
 						Administrator a = admList.get(changeStaff - docList.size() - phaList.size() - 1);
 						staffList.remove(a);
+						admList.remove(a);
 						if (selectRole == 1) {
 							Doctor d = new Doctor(id, a.getPw(), a.getName(), a.getGender(), a.getAge());
 							staffList.add(d);
+							docList.add(d);
 							break;
 						}
 						
 						if (selectRole == 2) {
 							Pharmacist p = new Pharmacist(id, a.getPw(),a.getName(), a.getGender(), a.getAge());
 							staffList.add(p);
+							phaList.add(p);
 							break;
 						}
 					}
 				}
 				staffList.sort(Comparator.comparing(User::gethID , String.CASE_INSENSITIVE_ORDER));
 				System.out.println("Staff Role updated successfully!");
+				adminCont.saveData();
 				break;
 			case 6:
 				System.out.println("Exiting update staff menu.");
@@ -777,6 +822,12 @@ public class StaffSystem {
 		}
 	}
 
+	/**
+	 * Get staff position in doctor list or pharmacist list or admin list.
+	 * @param sc Scanner sc
+	 * @param staffList list of staffs
+	 * @return index position in respective list.
+	 */
 	public int selectStaff(Scanner sc, ArrayList<User> staffList) {
 		int choice = 0, index = 0;
 		for (Doctor doc : docList) {
@@ -807,6 +858,13 @@ public class StaffSystem {
 
 		return choice;
 	}
+
+	/**
+	 * Remove staff from staff list in admin and role list in this class as well as user list in DataStorage.
+	 * @param adminCont Admin Controller
+	 * @param sc Scanner class
+	 * @param staffList list of staffs
+	 */
 	public void removeStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList) {
 		String staffID = "";
 		int choice = selectStaff(sc, staffList);
@@ -837,7 +895,12 @@ public class StaffSystem {
 		}
 	}
 
-
+	/**
+	 * Integer input validation.
+	 * @param sc Scanner class
+	 * @param prompt reason for input
+	 * @return integer input.
+	 */
 	//input checking
 	public int getValidIntInput(Scanner sc, String prompt) {
         int input = 0;
@@ -861,6 +924,12 @@ public class StaffSystem {
         return input;
     }
 
+	/**
+	 * Check if input contains only alphabets and spaces.
+	 * @param sc Scanner class
+	 * @param prompt reason for input
+	 * @return string input.
+	 */
 	public String getValidAlphabeticString(Scanner sc, String prompt) {
 		String input;
 		while (true) {
@@ -876,6 +945,12 @@ public class StaffSystem {
 		return input;
 	}
 
+	/**
+	 * Update Staff ID
+	 * @param sc Scanner class
+	 * @param staffList list of staffs
+	 * @param changeStaff index of staff to change
+	 */
 	public void updateStaffID(Scanner sc, ArrayList<User> staffList, int changeStaff) {
 		String staffID; boolean validID = false;
 		while (true) {
@@ -918,6 +993,13 @@ public class StaffSystem {
 		System.out.println("Staff Gender updated successfully!");
 	}
 
+	/**
+	 * Check if ID is new, unique and valid.
+	 * @param sc Scanner class
+	 * @param staffList list of staff from admin
+	 * @param role role
+	 * @return valid ID
+	 */
 	public String checkValidID(Scanner sc, ArrayList<User> staffList, int role) {
 		// Prompt for a new, unique, and valid staff ID
 		String staffID;

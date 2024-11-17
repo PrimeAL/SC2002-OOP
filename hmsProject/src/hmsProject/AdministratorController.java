@@ -11,8 +11,8 @@ public class AdministratorController extends Controller{
 
 	/**
 	 * AdminController class constructor
-	 * @param maincont
-	 * @param adm
+	 * @param maincont Main Controller
+	 * @param adm Admin
 	 */
 	public AdministratorController(MainController maincont, Administrator adm) {
 		super(maincont);
@@ -29,16 +29,24 @@ public class AdministratorController extends Controller{
 
 	/**
 	 * Scheduled appointment list Getter
-	 * @return ArrayList<Appointment>
+	 * @return Appointments list
 	 */
 	public ArrayList<Appointment> getScheduledAppts(){
 		return this.getApptSys().getSchAppt();
 	}
-	
+
+	/**
+	 * Inventory getter.
+	 * @return Inventory
+	 */
 	public Inventory getInventory(){
 		return this.getDataStorage().getInventory();
 	}
-	
+
+	/**
+	 * Staff (Doctors, Pharmacists and Admin) list getter.
+	 * @return list of Staffs
+	 */
 	public ArrayList<User> getStaffs() {
 		ArrayList<User> staffList = new ArrayList<User>();
 		for (User user : this.getDataStorage().getUserList()) {
@@ -50,14 +58,25 @@ public class AdministratorController extends Controller{
 		return staffList;
 	}
 
+	/**
+	 * Add new staff.
+	 * @param staffUser staff to add
+	 */
 	public void addNewStaff(User staffUser) {
 		this.getDataStorage().addNewStaff(staffUser);
 	}
 
+	/**
+	 * Remove staff.
+	 * @param staffUser staff to remove
+	 */
 	public void removeStaff(User staffUser) {
 		this.getDataStorage().removeStaff(staffUser);
 	}
-	
+
+	/**
+	 * Save entire project.
+	 */
 	public void saveData() {
 		this.getDataStorage().save();
 	}

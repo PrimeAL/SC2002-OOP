@@ -64,9 +64,9 @@ public class AppointmentSystem implements Serializable {
 	public ArrayList<OutcomeRecord> getOutcomeRec(){ return this.apptOutcomeRec; }
 
 	/**
-	 * TO-BE-ADDED
-	 * @param pharmacistCont 
-	 * @param sc TO-BE-ADDED
+	 * Update OutcomeRecord by Pharmacist regarding dispensing medicine.
+	 * @param pharmacistCont Pharmacist Controller
+	 * @param sc Scanner class
 	 */
 	public void updateOutcomeRec(PharmacistController pharmacistCont, Scanner sc) {		//used by Pharmacists, add controller to parameter here when
 		if(this.getOutcomeRec().isEmpty()) {

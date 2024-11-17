@@ -10,7 +10,15 @@ public class Administrator extends User {
 	private String name;
 	private String gender;
 	private int age;
-	
+
+	/**
+	 * Administrator constructor.
+	 * @param uid unique user identifier
+	 * @param pw password
+	 * @param name name
+	 * @param gender gender
+	 * @param age age
+	 */
 	public Administrator(String uid, String pw, String name, String gender, int age) {
 		super(uid, pw);
 		this.name=name;
@@ -18,34 +26,67 @@ public class Administrator extends User {
 		this.age=age;
 	}
 
+	/**
+	 * Admin details in a row.
+	 * @return admin detail row.
+	 */
     public String toString() {
         return String.format("Administrator [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
 
+	/**
+	 * Name getter.
+	 * @return name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Name setter.
+	 * @param name new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Age getter.
+	 * @return age.
+	 */
 	public int getAge() {
 		return age;
 	}
 
+	/**
+	 * Age setter.
+	 * @param age new age
+	 */
 	public void setAge(int age) {
 		this.age = age;
 	}
 
+	/**
+	 * Gender getter.
+	 * @return gender.
+	 */
 	public String getGender() {
 		return gender;
 	}
 
+	/**
+	 * Gender setter.
+	 * @param gender new gender
+	 */
 	public void setGender(String gender) {	
 		this.gender = gender;
 	}
-	
+
+	/**
+	 * Admin user interface.
+	 * @param adminCont Admin Controller
+	 * @param sc Scanner class for input
+	 */
 	public void userInterface(AdministratorController adminCont, Scanner sc) {
 		//StockRequest sr = new StockRequest("Aspirin", 20, "pending");
 		//StockRequest sr2 = new StockRequest("Paracetamol", 20, "pending");
@@ -96,6 +137,11 @@ public class Administrator extends User {
 		adminCont.saveData();
 	}
 
+	/**
+	 * View, add, update, remove staffs.
+	 * @param adminCont Admin Controller
+	 * @param sc Scanner class for input
+	 */
 	public void manageStaff(AdministratorController adminCont, Scanner sc) {
 		ArrayList<User> staffList = adminCont.getStaffs();
 		StaffSystem staffSys = new StaffSystem(staffList);
@@ -151,6 +197,10 @@ public class Administrator extends User {
 		}
 	}
 
+	/**
+	 * Print real-time scheduled and completed appointments.
+	 * @param adminCont Admin Controller
+	 */
 	public void apptOp(AdministratorController adminCont) {
 		ArrayList<Appointment> scheduledAppt = adminCont.getApptSys().getSchAppt();
 		if (scheduledAppt.size() == 0) {
@@ -199,6 +249,12 @@ public class Administrator extends User {
 		
 	}
 
+	/**
+	 * View, change, add, remove medicine and change stock level and threshold.
+	 * @param adminCont Admin Controller
+	 * @param inventory Inventory
+	 * @param sc Scanner class
+	 */
 	public void manageMedicines(AdministratorController adminCont,Inventory inventory, Scanner sc) {
 		int choice = 0, changeMedOption = 0, newStockLevel = 0, newStockThreshold = 0;
 	
@@ -299,7 +355,10 @@ public class Administrator extends User {
 		}
 	}
 
-
+	/**
+	 * Approve medicine replenishment.
+	 * @param adminCont Admin Controller
+	 */
 	public void approveReplenishment(AdministratorController adminCont) {
 		Inventory inventory = adminCont.getInventory();
 
@@ -324,6 +383,12 @@ public class Administrator extends User {
 		}
 	}
 
+	/**
+	 * Integer input checking.
+	 * @param sc Scanner class
+	 * @param prompt What are you inputting int for
+	 * @return the input integer.
+	 */
 	public int getValidIntInput(Scanner sc, String prompt) {
         int input = 0;
 
@@ -346,6 +411,12 @@ public class Administrator extends User {
         return input;
     }
 
+	/**
+	 * Check if input contains only alphabets and spaces.
+	 * @param sc Scanner class
+	 * @param prompt What you are inputting for
+	 * @return the input String.
+	 */
 	public String getValidAlphabeticString(Scanner sc, String prompt) {
 		String input;
 		while (true) {
@@ -361,6 +432,9 @@ public class Administrator extends User {
 		return input;
 	}
 
+	/**
+	 * Admin menu.
+	 */
 	public void displayMenu() {
 		System.out.println(
 			"""

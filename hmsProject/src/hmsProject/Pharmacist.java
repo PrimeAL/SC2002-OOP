@@ -2,40 +2,78 @@ package hmsProject;
 
 import java.util.Scanner;
 
+/**
+ * Pharmacist subclass of User.
+ */
 public class Pharmacist extends User {
 	private String name;
 	private String gender;
 	private int age;
-	
+
+	/**
+	 * Name getter.
+	 * @return pharmacist name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Name setter.
+	 * @param name new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gender getter.
+	 * @return gender.
+	 */
 	public String getGender() {
 		return gender;
 	}
 
+	/**
+	 * Gender setter.
+	 * @param gender new gender
+	 */
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
+	/**
+	 * Age getter.
+	 * @return age.
+	 */
 	public int getAge() {
 		return age;
 	}
 
+	/**
+	 * Age setter.
+	 * @param age new age
+	 */
 	public void setAge(int age) {
 		this.age = age;
 	}
 
+	/**
+	 * Pharmacist details in a row.
+	 * @return pharmacist details row.
+	 */
     public String toString() {
         return String.format("Pharmacist [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
-	
-	
+
+	/**
+	 * Pharmacist constructor.
+	 * @param uid unique user identifier
+	 * @param pw password
+	 * @param name pharmacist name
+	 * @param gender gender
+	 * @param age age
+	 */
 	public Pharmacist(String uid, String pw, String name, String gender, int age) {
 		super(uid, pw);
 		setName(name);
@@ -43,6 +81,11 @@ public class Pharmacist extends User {
 		setAge(age);
 	}
 
+	/**
+	 * Pharmacist user interface.
+	 * @param pharmacistCont Pharmacist Controller
+	 * @param sc Scanner class
+	 */
 	public void userInterface(PharmacistController pharmacistCont, Scanner sc) {
 		int choice = 0;
 		try {
@@ -82,8 +125,10 @@ public class Pharmacist extends User {
 			sc.next();  // Clear the invalid input
 		}
 	}
-		
 
+	/**
+	 * Pharmacist menu.
+	 */
 	private void displayMenu(){
 		System.out.println("\nPharmacist UI");
 		String text = 
@@ -94,14 +139,11 @@ public class Pharmacist extends User {
 			+"5. Log out\n\n"; 
 		System.out.print(text);
 	}
-	
-	
 
-	public void apptOp() {
-		// TODO - implement Pharmacist.apptOp
-		throw new UnsupportedOperationException();
-	}
-
+	/**
+	 * Print outcome records
+	 * @param pharmacistCont Pharmacist Controller
+	 */
 	private void viewApptOutcomeRec(PharmacistController pharmacistCont) {
 		if(pharmacistCont.getApptSys().getOutcomeRec().isEmpty()) {
 			System.out.println("No outcome records available.");
@@ -115,7 +157,12 @@ public class Pharmacist extends User {
 			cnt++;
 		}		
 	}
-	
+
+	/**
+	 * Medicine replenishment request.
+	 * @param pharmaCont Pharmacist Controller
+	 * @param sc Scanner class
+	 */
 	private void replenishRequest(PharmacistController pharmaCont, Scanner sc) {
 		StockRequest stockReq=StockRequest.createStockRequest(pharmaCont, sc);
 		if(pharmaCont.getInventory().checkStockRequest(stockReq)) {

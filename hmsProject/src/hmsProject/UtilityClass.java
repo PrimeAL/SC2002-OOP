@@ -66,7 +66,13 @@ public class UtilityClass {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Check if input contains only alphabets and spaces.
+	 * @param sc Scanner class
+	 * @param prompt reason for input
+	 * @return string input.
+	 */
 	public static String getValidAlphabeticString(Scanner sc, String prompt) {
 		String input;
 
@@ -86,7 +92,13 @@ public class UtilityClass {
 		
 		return input;
 	}
-	
+
+	/**
+	 * Integer input validation.
+	 * @param sc Scanner class
+	 * @param prompt reason for input
+	 * @return integer input.
+	 */
 	public static int getValidIntInput(Scanner sc, String prompt) {
         int input = 0;
 

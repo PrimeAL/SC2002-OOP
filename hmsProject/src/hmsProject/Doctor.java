@@ -40,9 +40,12 @@ public class Doctor extends User implements Serializable {
         this.gender = gender;
         this.age = age;
     }
-    
-    
-    public String toString() {
+
+	/**
+	 * Doctor details in a row.
+	 * @return doctor details row.
+	 */
+	public String toString() {
         return String.format("Doctor [Name: %s, ID: %s, Age: %d, Gender: %s]", getName(), gethID(), getAge(), getGender());
     }
 
@@ -185,11 +188,19 @@ public class Doctor extends User implements Serializable {
 	public ArrayList<Appointment> getAvailableAppt() {
 		return availableAppt;
 	}
-	
+
+	/**
+	 * Gender getter.
+	 * @return gender.
+	 */
 	public String getGender() {
 		return this.gender;
 	}
 
+	/**
+	 * Age getter.
+	 * @return age.
+	 */
 	public int getAge() {
 		return this.age;
 	}
@@ -544,17 +555,26 @@ public class Doctor extends User implements Serializable {
 		}
 	}
 
-
+	/**
+	 * Name setter.
+	 * @param staffName new name
+	 */
 	public void setName(String staffName) {
 		this.name=staffName;		
 	}
 
-
+	/**
+	 * Age setter.
+	 * @param staffAge new age
+	 */
 	public void setAge(int staffAge) {
 		this.age=staffAge;		
 	}
 
-
+	/**
+	 * Gender setter.
+	 * @param gender new gender
+	 */
 	public void setGender(String gender) {
 		this.gender=gender;
 	}

@@ -133,11 +133,18 @@ public class OutcomeRecord implements Serializable {
     public ArrayList<PrescribedMed> getMeds() {
     	return this.meds;
     }
-    
+
+    /**
+     * Check if medicine already dispensed.
+     * @return whether medicine is dispensed.
+     */
     public Boolean getUpdated() {
 		return updated;
 	}
 
+    /**
+     * If all medicine already dispensed, set updated value to true.
+     */
 	public void setUpdated() {
 		for(PrescribedMed pM:this.getMeds()) {
 			if(pM.getStatus().equals("pending")) return;

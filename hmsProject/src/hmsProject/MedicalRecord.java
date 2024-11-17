@@ -214,6 +214,10 @@ public class MedicalRecord implements Serializable {
 		treatments.add(newTreatment);
 	}
 
+	/**
+	 * Dependencies list getter.
+	 * @return dependencies list.
+	 */
 	public ArrayList<Patient> getDependencies() {
 		return this.dependencies;
 	}

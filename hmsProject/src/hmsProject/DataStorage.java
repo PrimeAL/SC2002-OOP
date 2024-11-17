@@ -233,20 +233,36 @@ public class DataStorage {
 		this.save();
 	}
 
+	/**
+	 * Request stock.
+	 * @param stockReq StockRequest
+	 */
 	public void addStockReq(StockRequest stockReq) {
 		this.getInventory().addPendingStockReq(stockReq);
 		this.save();
 	}
 
+	/**
+	 * User list getter.
+	 * @return User list.
+	 */
 	public ArrayList<User> getUserList() {
 		return this.user;
 	}
 
+	/**
+	 * Add new staff.
+	 * @param staffUser staff to add
+	 */
 	public void addNewStaff(User staffUser) {
 		this.getUserList().add(staffUser);
 		this.save();
 	}
 
+	/**
+	 * Remove staff.
+	 * @param staffUser staff to remove
+	 */
 	public void removeStaff(User staffUser) {
 		this.getUserList().remove(staffUser);
 	}

@@ -19,7 +19,7 @@ public class DataSerialization {
 	 * @param inven Inventory
 	 * @param user List of Users
 	 */
-    public void serializeAll(AppointmentSystem apptSystem, Inventory inven,ArrayList<User> user) {
+    public void serializeAll(AppointmentSystem apptSystem, Inventory inven, ArrayList<User> user) {
     	try {
     		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("hmsProject/src/hmsProject/newDB.ser"));
     		out.writeObject(apptSystem);
@@ -35,7 +35,6 @@ public class DataSerialization {
 	 * @param dataStorage DataStorage class
 	 */
 	public void deserializeAll(DataStorage dataStorage) {
-		// TODO Auto-generated method stub
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("hmsProject/src/hmsProject/newDB.ser"));
 			dataStorage.setAppt((AppointmentSystem)in.readObject());
@@ -54,7 +53,6 @@ public class DataSerialization {
 	 * @param user List of Users from DataStorage
 	 */
 	public void initializeUser(ArrayList<User> user) {
-		// TODO Auto-generated method stub
 		String line = "";
 		String splitBy = ",";
 		
@@ -122,7 +120,6 @@ public class DataSerialization {
 	 * @param inven Inventory class from DataStorage
 	 */
 	public void initializeMedData(Inventory inven) {
-		// TODO Auto-generated method stub
 		String line = "";
 		String splitBy = ",";
 
