@@ -211,7 +211,7 @@ public class Administrator extends User {
 			System.out.println("List of Scheduled Appointments: ");
 			System.out.printf("%-5s %-5s %-5s %-15s %-10s %-10s \n", "Index", "Patient ID", "Doctor ID", "Status", "Date", "Time");
 			System.out.println("===========================================================================================");
-	
+
 			for (int i = 0; i < scheduledAppt.size(); i++) {
 				Appointment appt = scheduledAppt.get(i);
 				System.out.printf("%-5s %-5s %-5s %-15s %-10s %-10s \n", 
@@ -221,7 +221,11 @@ public class Administrator extends User {
 			    appt.getStatus(),
 				appt.getDate(),
 				appt.getTime());
-				appt.getApptOutcomeRecord().printAll();
+				try {
+					appt.getApptOutcomeRecord().printAll();
+				} catch (Exception e) {
+					System.out.println("No outcome record.");
+				}
 			}
 		}
 		
@@ -244,7 +248,11 @@ public class Administrator extends User {
 		    appt.getStatus(),
 			appt.getDate(),
 			appt.getTime());
-			appt.getApptOutcomeRecord().printAll();
+			try {
+				appt.getApptOutcomeRecord().printAll();
+			} catch (Exception e) {
+				System.out.println("No outcome record.");
+			}
 		}
 		
 	}

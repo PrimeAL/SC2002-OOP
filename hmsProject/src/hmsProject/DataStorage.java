@@ -278,7 +278,10 @@ public class DataStorage {
 	 * @param id dependant id
 	 */
 	public void addDependant(Patient curPatient, String id) {
-		Patient u = (Patient) this.retrieveUser(id);
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Password of dependant:");
+		String pw = sc.nextLine();
+		Patient u = (Patient) this.getUser(id, pw);
 		if (u == null) System.out.println("User does not exist. ");
 		else if (curPatient.getMedicalRecord().getDependencies().contains(u)) System.out.println("User already added. ");
 		else if (curPatient == u) System.out.println("You cannot add yourself as dependant. ");

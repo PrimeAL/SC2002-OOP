@@ -2,6 +2,7 @@ package hmsProject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -307,9 +308,11 @@ public class Patient extends User implements Serializable {
 			System.out.println(
 					"""
                     Which would you like to do?
-                    1. Add dependant
-                    2. Remove dependant
-                    3. Login to dependant
+                    1.Add dependant
+                    2.Remove dependant
+                    3.View dependant medical records
+                    4.Login to dependant
+                    5.Back
                     """);
 			choice = sc.nextInt();
 			sc.nextLine();
@@ -341,6 +344,21 @@ public class Patient extends User implements Serializable {
 							System.out.println(cnt + ". " + p.getMedicalRecord().getName());
 							cnt++;
 						}
+						System.out.print("Please select the dependent you wish to view medical record of (0 to return): ");
+						index = sc.nextInt() - 1;
+						sc.nextLine();
+						if (index != -1) this.getMedicalRecord().getDependencies().get(index).getMedicalRecord().viewAll();
+					} else {
+						System.out.println("You have no dependent.");
+					}
+					break;
+				case 4:
+					if (this.getMedicalRecord().getDependencies().size() > 0) {
+						cnt = 1;
+						for (Patient p : this.getMedicalRecord().getDependencies()) {
+							System.out.println(cnt + ". " + p.getMedicalRecord().getName());
+							cnt++;
+						}
 						System.out.print("Please select the dependent you wish to login to (0 to return): ");
 						index = sc.nextInt() - 1;
 						sc.nextLine();
@@ -348,6 +366,9 @@ public class Patient extends User implements Serializable {
 					} else {
 						System.out.println("You have no dependent.");
 					}
+					break;
+				case 5:
+					break;
 				default:
 					break;
 			}
