@@ -160,9 +160,11 @@ public class Inventory implements Serializable{
 			}
 			else {
 				System.out.println("Warning! The following medicines are low on stock: ");
-				for (int i = 0; i < medicineList.size(); i++) {
-					System.out.println(tempArray.get(i).getName() + ", ");
+				for (int i = 0; i < tempArray.size(); i++) {
+					System.out.print(tempArray.get(i).getName());
+					if (i < tempArray.size()-1) System.out.print(", ");
 				}
+				System.out.println();
 			}
 		}
 	}

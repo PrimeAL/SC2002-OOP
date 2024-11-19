@@ -54,7 +54,12 @@ public class StockRequest implements Serializable{
 		}
 				
 		String newMedName = pharmaCont.getInventory().getMedicineList().get(option-1).getName();
-		int stockAmt = UtilityClass.getValidIntInput(sc, "Input Stock Amount to replenish: ");
+		int stockAmt=0;
+		while(true) {
+			stockAmt = UtilityClass.getValidIntInput(sc, "Input Stock Amount to replenish: ");
+			if(stockAmt>0) break;
+			System.out.println("Quantity cannot be lesser than 0!");
+		}
 		return new StockRequest(newMedName, stockAmt,"Pending");
 	}
 

@@ -88,41 +88,40 @@ public class Pharmacist extends User {
 	 */
 	public void userInterface(PharmacistController pharmacistCont, Scanner sc) {
 		int choice = 0;
-		try {
 		while(choice!=5) {
-			displayMenu();
-			choice=sc.nextInt();
-			sc.nextLine();
-			
-			switch (choice) {
-			case 1:
-				System.out.println("Option 1 selected");
-				viewApptOutcomeRec(pharmacistCont);
-				break;
-			case 2:
-				System.out.println("Option 2 selected");
-				pharmacistCont.getApptSys().updateOutcomeRec(pharmacistCont, sc);
-				pharmacistCont.save();
-				break;
-			case 3: 
-				pharmacistCont.getInventory().viewInventory(2);
-				break;
-			case 4:
-				System.out.println("Option 4 selected");
-				replenishRequest(pharmacistCont,sc);
-				break;
-			case 5:
-				System.out.println("Logging Out.\n");
-				break;
-			default:
-				System.out.println("Invalid input. Please enter a number between 1 and 5.");
-				break;
+			try {
+				displayMenu();
+				choice = sc.nextInt();
+				sc.nextLine();
+
+				switch (choice) {
+					case 1:
+						System.out.println("Option 1 selected");
+						viewApptOutcomeRec(pharmacistCont);
+						break;
+					case 2:
+						System.out.println("Option 2 selected");
+						pharmacistCont.getApptSys().updateOutcomeRec(pharmacistCont, sc);
+						pharmacistCont.save();
+						break;
+					case 3:
+						pharmacistCont.getInventory().viewInventory(2);
+						break;
+					case 4:
+						System.out.println("Option 4 selected");
+						replenishRequest(pharmacistCont, sc);
+						break;
+					case 5:
+						System.out.println("Logging Out.\n");
+						break;
+					default:
+						System.out.println("Invalid input. Please enter a number between 1 and 5.");
+						break;
+				}
+			} catch (Exception e) {
+				System.out.println("Invalid input. Please enter a number.");
+				sc.next();  // Clear the invalid input
 			}
-			
-		}
-		} catch (Exception e) {
-			System.out.println("Invalid input. Please enter a number.");
-			sc.next();  // Clear the invalid input
 		}
 	}
 

@@ -113,7 +113,7 @@ public class Administrator extends User {
 
 			switch(choice) {
 			case 1:
-				this.manageStaff(adminCont, sc);
+				this.manageStaff(adminCont, sc, this.gethID());
 				break;
 			case 2:
 				this.apptOp(adminCont);
@@ -141,8 +141,9 @@ public class Administrator extends User {
 	 * View, add, update, remove staffs.
 	 * @param adminCont Admin Controller
 	 * @param sc Scanner class for input
+	 * @param adminID admin ID
 	 */
-	public void manageStaff(AdministratorController adminCont, Scanner sc) {
+	public void manageStaff(AdministratorController adminCont, Scanner sc, String adminID) {
 		ArrayList<User> staffList = adminCont.getStaffs();
 		StaffSystem staffSys = new StaffSystem(staffList);
 		int choice = 0;
@@ -185,7 +186,7 @@ public class Administrator extends User {
 					staffSys.updateStaff(adminCont, sc, staffList);
 					break;
 				case 4: //Remove Staff
-					staffSys.removeStaff(adminCont, sc, staffList);
+					staffSys.removeStaff(adminCont, sc, staffList, adminID);
 					break;
 				case 5: //Logout
 					System.out.println("Exiting Manage Staff Menu...");
@@ -324,13 +325,13 @@ public class Administrator extends User {
 					//changeMedOption = selectMedicine(inventory, sc, "Select Medicine to change: ");
 					inventory.deleteMedicine(changeMedOption - 1);
 					break;
+
 				case 5: //Change Stock Level
 					inventory.viewInventory(1);
 					changeMedOption=inventory.selectMedicine(sc, "Select Medicine to change stock level: ");
-					//changeMedOption = selectMedicine(inventory, sc, "Select Medicine to change stock level: ");
 					newStockLevel = getValidIntInput(sc, "Input New Stock Level: ");
 
-					while (inventory.getMedicineList().get(changeMedOption - 1).getStockThreshold() <= newStockLevel) { //Checks if input is valid
+					while (inventory.getMedicineList().get(changeMedOption - 1).getStockThreshold() >= newStockLevel) { //Checks if input is valid
 						System.out.println("Stock Level must be higher than Stock Alert!!!\n");
 						newStockLevel = getValidIntInput(sc, "Input Stock new Level: ");
 					}
@@ -339,16 +340,13 @@ public class Administrator extends User {
 					break;
 				case 6: //Change Stock Alert
 					inventory.viewInventory(1);
-					inventory.selectMedicine(sc, "Select Medicine to change stock alert threshold: ");
-					//changeMedOption = selectMedicine(inventory, sc, "Select Medicine to change stock alert threshold: ");
-
-					System.out.println("Input New Stock Threshold: ");
+					changeMedOption=inventory.selectMedicine(sc, "Select Medicine to change stock alert threshold: ");
 					newStockThreshold = getValidIntInput(sc, "Input New Stock Threshold: ");
-					
+
 					while (inventory.getMedicineList().get(changeMedOption - 1).getStock() <= newStockThreshold) { //Checks if input is valid
 						System.out.println("Stock Level must be higher than Stock Alert!!!\n");
 						System.out.println("Input New Stock Threshold: ");
-						newStockLevel = sc.nextInt();
+						newStockThreshold = sc.nextInt();
 					}
 					inventory.getMedicineList().get(changeMedOption - 1).setStockThreshold(newStockThreshold);
 					break;
@@ -369,15 +367,15 @@ public class Administrator extends User {
 	 */
 	public void approveReplenishment(AdministratorController adminCont) {
 		Inventory inventory = adminCont.getInventory();
+		int size = inventory.getPendingStockReq().size();
 
-		if (inventory.getPendingStockReq().size() == 0) {
+		if (size == 0) {
 			System.out.println("There are no pending replenishment requests.\n");
 			return;
 		}
 
-		for (int i = 0; i < inventory.getPendingStockReq().size(); i++) {
-			StockRequest stockRequest = inventory.getPendingStockReq().get(i);
-
+		for (int i = 0; i < size; i++) {
+			StockRequest stockRequest = inventory.getPendingStockReq().get(0);
 			for (int j = 0; j < inventory.getMedicineList().size(); j++) {
 				if (stockRequest.getMedicineName().equalsIgnoreCase(inventory.getMedicineList().get(j).getName())) {
 					inventory.getMedicineList().get(j).setStock(inventory.getMedicineList().get(j).getStock() + stockRequest.getStockAmt());
