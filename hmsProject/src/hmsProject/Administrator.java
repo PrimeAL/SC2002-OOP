@@ -267,7 +267,7 @@ public class Administrator extends User {
 	public void manageMedicines(AdministratorController adminCont,Inventory inventory, Scanner sc) {
 		int choice = 0, changeMedOption = 0, newStockLevel = 0, newStockThreshold = 0;
 	
-		while (choice != 7) {
+		while (choice != 8) {
 			System.out.println(
 				"""
 				\n=======================================================================================
@@ -279,14 +279,15 @@ public class Administrator extends User {
 				4. Remove Medicine
 				5. Change Stock Level
 				6. Change Stock Alert Threshold
-				7. Logout
+				7. View Completed Stock Request
+				8. Exit
 				""");
 			
 			while (true) {
 				System.out.println("Input Choice: ");
 				if (sc.hasNextInt()) { // check if input is an integer
 					choice = sc.nextInt();	
-					if (choice >= 1 && choice <= 7) {break;} // Exit loop if input is valid within the valid range
+					if (choice >= 1 && choice <= 8) {break;} // Exit loop if input is valid within the valid range
 					else { System.out.println("Invalid input. Please enter a number between 1 and 7.");}
 				}
 				else { System.out.println("Invalid input. Please enter a number.");}
@@ -350,7 +351,13 @@ public class Administrator extends User {
 					}
 					inventory.getMedicineList().get(changeMedOption - 1).setStockThreshold(newStockThreshold);
 					break;
-				case 7: //Exit to Admin Menu
+				case 7:
+					System.out.println("Completed Stock request:");
+					for(StockRequest compSR: inventory.getCompletedStockReq()) {
+						System.out.println("Medicine Name: "+compSR.getMedicineName()+"| Status: "+compSR.getStatus()+"| Restocked Amt:"+compSR.getStockAmt());
+					}
+					break;
+				case 8: //Exit to Admin Menu
 					System.out.println("Exiting Manage Medicine Menu...");
 					break;
 				default:
