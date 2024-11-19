@@ -59,10 +59,15 @@ public class Patient extends User implements Serializable {
 	 * Print all current appointments.
 	 */
 	public void viewAppt() {
-		int cnt=1;
-		for(Appointment appt: this.getAppt()) {
-			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
-			cnt++;
+		System.out.println("\n=== Scheduled Appointments ===");
+		if (this.getAppt().isEmpty()) {
+			System.out.println("No scheduled appointments.");
+		} else {
+			int cnt = 1;
+			for (Appointment appt : this.getAppt()) {
+				System.out.println(cnt + ". Date: " + appt.getDate() + " | Time: " + appt.getTime() + " | Status: " + appt.getStatus());
+				cnt++;
+			}
 		}
 	}
 
@@ -70,11 +75,16 @@ public class Patient extends User implements Serializable {
 	 * Print all completed appointments.
 	 */
 	public void viewCompAppt() {
-		int cnt=1;
-		for(Appointment appt: this.getCompletedAppt()) {
-			System.out.println(cnt+". Date:"+appt.getDate()+"| Time:"+appt.getTime()+"| Status:"+appt.getStatus());
-			appt.getApptOutcomeRecord().printAll();
-			cnt++;
+		System.out.println("\n=== Completed Appointments ===");
+		if (this.getCompletedAppt().isEmpty()) {
+			System.out.println("No completed appointments.");
+		} else {
+			int cnt = 1;
+			for (Appointment appt : this.getCompletedAppt()) {
+				System.out.println(cnt + ". Date: " + appt.getDate() + " | Time: " + appt.getTime() + " | Status: " + appt.getStatus());
+				appt.getApptOutcomeRecord().printAll();
+				cnt++;
+			}
 		}
 	}
 
@@ -136,7 +146,7 @@ public class Patient extends User implements Serializable {
 							patientCont.save();
 							break;
 						case 8:
-							System.out.println("Logging out...");
+							System.out.println("Logging out.\n");
 							break;
 						default:
 							System.out.println("Input out of range");
@@ -146,7 +156,7 @@ public class Patient extends User implements Serializable {
 				return switchTo;
 			} catch (Exception e) {
 				sc.nextLine();
-				System.out.println("Wrong input. Please try again. ");
+				System.out.println("Wrong input. Please try again.");
 			}
 		}
 	}
@@ -157,15 +167,14 @@ public class Patient extends User implements Serializable {
 	private void displayMenu() {
 		System.out.println(
                 """
-                
-                1.View Medical Record
-                2.Update Personal Information
-                3.Schedule, Reschedule or Cancel Appointment
-                4.View Scheduled Appointments
-                5.View Past Appointment Outcome Records
-                6.Manage Dependencies
-                7.Change Password
-                8.Logout
+                1. View Medical Record
+                2. Update Personal Information
+                3. Schedule, Reschedule or Cancel Appointment
+                4. View Scheduled Appointments
+                5. View Past Appointment Outcome Records
+                6. Manage Dependencies
+                7. Change Password
+                8. Logout
                 """);
 	}
 
@@ -187,8 +196,8 @@ public class Patient extends User implements Serializable {
 			System.out.println(
 					"""
                     Which would you like to change?
-                    1.Phone Number
-                    2.Email
+                    1. Phone Number
+                    2. Email
                     """);
 			success = 0;
 			choice = sc.nextInt();
@@ -212,13 +221,13 @@ public class Patient extends User implements Serializable {
 			if (success == 0) {
 				if(choice==1) this.getMedicalRecord().setPhone(input);
 				if(choice==2) this.getMedicalRecord().setEmail(input);
-				System.out.println("Your information has been updated. ");
+				System.out.println("Your information has been updated.");
 			}
-			else if (success == 1) System.out.println("Update unsuccessful. Make sure the phone number only contains number and include country code. ");
-			else System.out.println("Update unsuccessful. Make sure you use the correct email format. ");
+			else if (success == 1) System.out.println("Update unsuccessful. Make sure the phone number only contains number and include country code.");
+			else System.out.println("Update unsuccessful. Make sure you use the correct email format.");
 		} catch (Exception e) {
 			sc.nextLine();
-			System.out.println("Wrong input. Please try again. ");
+			System.out.println("Wrong input. Please try again.");
 		}
 	}
 
@@ -236,10 +245,10 @@ public class Patient extends User implements Serializable {
 			while (uApptOpIn != 4) {
 				System.out.println(
 						"""
-						1.View and Schedule available appointments
-						2.Reschedule appointments
-						3.Cancel appointments
-						4.Exit managing appointment
+						1. View and Schedule available appointments
+						2. Reschedule appointments
+						3. Cancel appointments
+						4. Exit managing appointment
 						""");
 				uApptOpIn = sc.nextInt();
 				if (uApptOpIn == 1)
@@ -298,9 +307,9 @@ public class Patient extends User implements Serializable {
 			System.out.println(
 					"""
                     Which would you like to do?
-                    1.Add dependant
-                    2.Remove dependant
-                    3.Login to dependant
+                    1. Add dependant
+                    2. Remove dependant
+                    3. Login to dependant
                     """);
 			choice = sc.nextInt();
 			sc.nextLine();
@@ -345,7 +354,7 @@ public class Patient extends User implements Serializable {
 			return null;
 		} catch (Exception e) {
 			sc.nextLine();
-			System.out.println("Wrong input. Please try again. ");
+			System.out.println("Wrong input. Please try again.");
 			return null;
 		}
 	}

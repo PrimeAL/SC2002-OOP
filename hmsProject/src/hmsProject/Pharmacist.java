@@ -112,7 +112,7 @@ public class Pharmacist extends User {
 				replenishRequest(pharmacistCont,sc);
 				break;
 			case 5:
-				System.out.println("Logging Out.");
+				System.out.println("Logging Out.\n");
 				break;
 			default:
 				System.out.println("Invalid input. Please enter a number between 1 and 5.");
@@ -130,7 +130,7 @@ public class Pharmacist extends User {
 	 * Pharmacist menu.
 	 */
 	private void displayMenu(){
-		System.out.println("\nPharmacist UI");
+		System.out.println("Pharmacist UI");
 		String text = 
 			"1. View appointment outcome record\n"
     		+"2. Update prescription (Appt Outcome Record)\n"
