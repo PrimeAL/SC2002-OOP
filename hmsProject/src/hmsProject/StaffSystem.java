@@ -882,38 +882,37 @@ public class StaffSystem {
 	public void removeStaff(AdministratorController adminCont, Scanner sc, ArrayList<User> staffList, String adminID) {
 		String staffID = "";
 		int choice = selectStaff(sc, staffList);
-		System.out.println(adminID);
 
-			if (choice <= docList.size()) {
-				staffID = docList.get(choice - 1).gethID();
-				System.out.println("Doctor removed successfully!");
-				docList.remove(choice - 1);
-			}
-			else if (choice <= docList.size() + phaList.size()) {
-				staffID = phaList.get(choice - docList.size() - 1).gethID();
-				System.out.println("Pharmacist removed successfully!");
-				phaList.remove(choice - docList.size() - 1);
-			}
-			else {
-				try {if (admList.get(choice - docList.size() - phaList.size() - 1).gethID() == adminID) { // if staff to remove is admin, ask for confirmation
-					System.out.println("You cannot remove yourself.");
-					return;
-				}}catch (Exception e) {
-					
-				}
-				staffID = admList.get(choice - docList.size() - phaList.size() - 1).gethID();
-				System.out.println("Administrator removed successfully!");
-				admList.remove(choice - docList.size() - phaList.size() - 1);
-			}
+		if (choice <= docList.size()) {
+			staffID = docList.get(choice - 1).gethID();
+			System.out.println("Doctor removed successfully!");
+			docList.remove(choice - 1);
+		}
+		else if (choice <= docList.size() + phaList.size()) {
+			staffID = phaList.get(choice - docList.size() - 1).gethID();
+			System.out.println("Pharmacist removed successfully!");
+			phaList.remove(choice - docList.size() - 1);
+		}
+		else {
+			try {if (admList.get(choice - docList.size() - phaList.size() - 1).gethID() == adminID) { // if staff to remove is admin, ask for confirmation
+				System.out.println("You cannot remove yourself.");
+				return;
+			}}catch (Exception e) {
 
-			User user = null;
-			for (int i = 0; i < staffList.size(); i++) {
-				if (staffList.get(i).gethID().equals(staffID)) {
-					user = staffList.get(i);
-				}
-				staffList.remove(user);
-				adminCont.removeStaff(user);
 			}
+			staffID = admList.get(choice - docList.size() - phaList.size() - 1).gethID();
+			System.out.println("Administrator removed successfully!");
+			admList.remove(choice - docList.size() - phaList.size() - 1);
+		}
+
+		User user = null;
+		for (int i = 0; i < staffList.size(); i++) {
+			if (staffList.get(i).gethID().equals(staffID)) {
+				user = staffList.get(i);
+			}
+			staffList.remove(user);
+			adminCont.removeStaff(user);
+		}
 
 	}
 
