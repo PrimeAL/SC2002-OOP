@@ -31,12 +31,17 @@ public class DataStorage {
 
 		while (true) {
 			try {
-				if (scanner.nextInt() == 1) {
+				int input = scanner.nextInt();
+				if (input == 1) {
+					System.out.println("Data refreshed successfully.");
 					dataOps.initializeUser(this.user);
 					dataOps.initializeMedData(this.inven);
 					dataOps.serializeAll(apptSystem, inven, user);
-				} else {
+				} else if (input == 0) {
 					dataOps.deserializeAll(this);
+				} else {
+					System.out.println("Invalid input. Please try again.");
+					continue;
 				}
 				this.docList = new ArrayList<Doctor>();
 				for (User u : this.user) {
@@ -46,7 +51,7 @@ public class DataStorage {
 				break;
 			} catch (Exception e) {
 				scanner.nextLine();
-				System.out.println("Wrong input. Please try again. ");
+				System.out.println("Invalid input. Please try again.");
 			}
 		}
 	}

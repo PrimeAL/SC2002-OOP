@@ -14,7 +14,7 @@ When first initialised, doctors will have no appointment slots. You would be req
 # Contributions
 Lee Yi Yuan - Leader, UML, Appointment System, HMS, Patient, Doctor, Medicine, Pharmacist, Administrator, Code Clean-up  
 Wei Jie - Administrator, StaffSystem  
-Alden Budiman - Doctor  
+Alden Budiman - Doctor and related classes, Final system testing and bug fixing  
 Alan - Pharmacist, UML  
 Wong Jing Han - Patient, Data Serialization/Initialisation, Report, Javadocs  
 

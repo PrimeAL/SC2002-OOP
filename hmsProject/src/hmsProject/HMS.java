@@ -29,7 +29,7 @@ public class HMS {
 			
 			Controller userCont=mainController.getUserCont(currentUser);
 			if(currentUser instanceof Patient) {
-				System.out.println("Patient");
+				System.out.println("Patient\n");
 				Patient p = ((Patient)(currentUser)).userInterface((PatientController)userCont, sc);
 				if (p != null) {
 					this.mainController.save();
@@ -38,15 +38,15 @@ public class HMS {
 				}
 			}
 			if(currentUser instanceof Doctor) {
-				System.out.println("Doctor");
+				System.out.println("Doctor\n");
 				((Doctor)(currentUser)).userInterface((DoctorController)userCont, sc); 
 			}
 			if(currentUser instanceof Administrator) {
-				System.out.println("Admin");
+				System.out.println("Admin\n");
 				((Administrator)(currentUser)).userInterface((AdministratorController)userCont, sc); 
 			}
 			if(currentUser instanceof Pharmacist){
-				System.out.println("Pharmacist");
+				System.out.println("Pharmacist\n");
 				((Pharmacist)(currentUser)).userInterface((PharmacistController)userCont, sc);  
 			}
 		
@@ -62,15 +62,15 @@ public class HMS {
 	 */
 	private void login(Scanner sc) {
 		int choice;
-		System.out.println("1.Login\n2.Exit");
+		System.out.println("1. Login\n2. Exit");
 		try {
 			choice = 0;
 			choice = sc.nextInt();
 			if (choice == 1) {
 				sc.nextLine();//clear buffer
-				System.out.print("Username:");
+				System.out.print("Username: ");
 				String userName = sc.nextLine();
-				System.out.print("Password:");
+				System.out.print("Password: ");
 				String pw = sc.nextLine();
 				try {
 					this.currentUser = this.mainController.authenticateUser(userName, pw);
