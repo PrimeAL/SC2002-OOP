@@ -11,13 +11,6 @@ When you first login, the default password will be "default". The username would
 Doctor:
 When first initialised, doctors will have no appointment slots. You would be required to add appointment slots where the doctor would be available for the patient to see those slots. 
 
-# Contributions
-Lee Yi Yuan - Leader, UML, Appointment System, HMS, Patient, Doctor, Medicine, Pharmacist, Administrator, Code Clean-up  
-Wei Jie - Administrator, StaffSystem  
-Alden Budiman - Doctor  
-Alan - Pharmacist, UML  
-Wong Jing Han - Patient, Data Serialization/Initialisation, Report, Javadocs  
-
 # Branches:
 1. **TRY TO BRANCH EVERYTIME YOU WORK ON A NEW FEATURE**
 2. **DO NOT PUSH TO MAIN**
